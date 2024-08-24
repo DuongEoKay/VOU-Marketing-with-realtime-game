@@ -40,6 +40,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping(value = "/username/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.getByUsername(username);
+        return ResponseEntity.ok(user);
+    }
 
 
     @PutMapping
@@ -48,9 +53,12 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/id/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable ObjectId id) {
         userService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+
+
 }

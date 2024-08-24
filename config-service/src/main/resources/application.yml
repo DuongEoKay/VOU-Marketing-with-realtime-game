@@ -8,6 +8,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/igorkosandyak/demo-config-server.git
+          uri: https://github.com/DuongEoKay/VOU-Marketing-with-realtime-game.git
           clone-on-start: true
 

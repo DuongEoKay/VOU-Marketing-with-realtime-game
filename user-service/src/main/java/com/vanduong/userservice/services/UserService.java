@@ -33,6 +33,7 @@ public class UserService {
         return this.repository.findById(id).orElse(null);
     }
 
+
     public User update(User user) {
         return this.repository.save(user);
     }
@@ -40,6 +41,10 @@ public class UserService {
     public void delete(ObjectId id) {
         this.repository.deleteById(id);
     }
+
+    public User getByUsername(String username) {
+    return this.repository.findByUsername(username).orElse(null);
+}
 
 
 
