@@ -1,0 +1,210 @@
+###
+GET http://localhost:3000/api/setup/create
+
+###
+GET http://localhost:3000/api/setup/insert
+
+###
+GET http://localhost:3000/api/setup/drop
+
+###
+GET http://localhost:3000/api/setup/
+
+
+###
+POST http://localhost:3000/api/brand/register
+Content-Type: application/json
+
+{
+    "sms": "0123456787",
+    "matkhau": "123"
+}
+
+###
+POST http://localhost:3000/api/brand/login
+Content-Type: application/json
+
+{
+    "sms": "0123456787",
+    "matkhau": "123"
+}
+
+###
+POST http://localhost:3000/api/event/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "tensukien": "Catwalk",
+    "soluongvoucher": 100,
+    "thoigianbatdau": "08/25/2024",
+    "thoigianketthuc": "08/26/2024"
+}
+
+###
+GET  http://localhost:3000/api/event/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+###
+DELETE http://localhost:3000/api/event/EV00000001
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+###
+PUT http://localhost:3000/api/event/EV00000001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "tensukien": "CATWALK",
+    "soluongvoucher": 50,
+    "thoigianbatdau": "08/25/2024",
+    "thoigianketthuc": "08/28/2024"
+}
+
+###
+POST http://localhost:3000/api/event/createquestion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001",
+    "stt": 1,
+    "cauhoi": "What's your favorite color?",
+    "a": "Red",
+    "b": "Green",
+    "c": "Blue",
+    "d": "Yellow",
+    "dapan": "Red"
+}
+
+###
+POST http://localhost:3000/api/event/createquestion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001",
+    "cauhoi": "What's your favorite anime?",
+    "a": "MHA",
+    "b": "Naruto",
+    "c": "Bleach",
+    "d": "Death Note",
+    "dapan": "MHA"
+}
+
+###
+GET http://localhost:3000/api/event/fetchquestion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001"
+}
+
+###
+GET http://localhost:3000/api/event/deletequestion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001",
+    "stt": 1
+}
+
+###
+GET http://localhost:3000/api/event/updatequestion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001",
+    "stt": 2,
+    "a": "Spirited away"
+}
+
+
+
+
+###
+POST http://localhost:3000/api/voucher/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "trigia": 50000,
+    "mota": "Voucher1",
+    "ngayhethan": "09/30/2024"
+}
+
+###
+POST http://localhost:3000/api/voucher/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "trigia": 200000,
+    "mota": "Voucher 3",
+    "ngayhethan": "09/30/2024"
+}
+
+###
+GET http://localhost:3000/api/voucher/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+###
+DELETE http://localhost:3000/api/voucher/VC00000002
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+###
+PUT http://localhost:3000/api/voucher/VC00000001
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "trigia": 100000,
+    "mota": "Voucher 2",
+    "ngayhethan": "09/25/2024"
+}
+
+###
+POST http://localhost:3000/api/voucher/createvoucherevent
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_voucher": "VC00000002",
+    "id_sukien": "EV00000001",
+    "soluong": 500
+}
+
+###
+GET http://localhost:3000/api/voucher/voucherofevent
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_sukien": "EV00000001"
+}
+
+###
+GET http://localhost:3000/api/voucher/deletevoucherevent
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_voucher": "VC00000002",
+    "id_sukien": "EV00000001"
+}
+
+###
+GET http://localhost:3000/api/voucher/updatevoucherevent
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+
+{
+    "id_voucher": "VC00000001",
+    "id_sukien": "EV00000001",
+    "soluong": 2000,
+    "ngansach": 10000000
+}
