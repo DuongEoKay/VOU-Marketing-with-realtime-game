@@ -27,13 +27,9 @@ public class AuthService {
     }
 
 
+    @Autowired
+    private RedisService redisService;
 
-
-    private Map<String, String> otpStorage = new HashMap<>();
-
-    private String retrieveOtp(String username) {
-        return otpStorage.get(username);
-    }
 
     public AuthResponse register(AuthRequest authRequest) {
         //do validation if user already exists
@@ -59,7 +55,7 @@ public class AuthService {
             String otp = generateOtp();
 
             // Store OTP in a temporary storage
-            otpStorage.put(loginRequest.getUsername(), otp);
+            redisService.setOtp(loginRequest.getUsername(), otp);
 
             // Send OTP
             String apiKeySid = "SK.0.smr6FMyYiyjzIDHuFao0T1VMBRsh5k";
@@ -101,7 +97,7 @@ public class AuthService {
 public AuthResponse validateOtp(OtpValidationRequest otpValidationRequest) {
     try {
         // Retrieve the OTP associated with the username from the session or temporary storage
-        String storedOtp = retrieveOtp(otpValidationRequest.getUsername());
+        String storedOtp = redisService.getOtp(otpValidationRequest.getUsername());
 
         System.out.println("Stored OTP: " + storedOtp);
         System.out.println("request : " + otpValidationRequest.toString());

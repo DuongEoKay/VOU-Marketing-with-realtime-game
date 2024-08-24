@@ -4,13 +4,11 @@ server:
 spring:
   application:
     name: game-service
-  datasource:
-    username: duong
-    password: 17112003
-    url: jdbc:mysql://localhost:3306/microservice
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+  data:
+    mongodb:
+      uri: mongodb+srv://duong:17112003@ktpm.syri56f.mongodb.net/<KTPM>?retryWrites=true&w=majority&appName=KTPM
+
+
+jwt:
+  secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
+  expiration: 86400

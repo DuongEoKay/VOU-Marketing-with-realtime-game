@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/games")
 @Slf4j
 public class GameController {
 
@@ -16,8 +16,8 @@ public class GameController {
 
 
     @PostMapping
-    public Game save(@RequestBody Game department) {
-        return gameService.save(department);
+    public Game save(@RequestBody Game game) {
+        return gameService.save(game);
     }
 
     @GetMapping("/{id}")
@@ -31,8 +31,8 @@ public class GameController {
     }
 
     @PutMapping
-    public Game update(@RequestBody Game department) {
-        return gameService.update(department);
+    public Game update(@RequestBody Game game) {
+        return gameService.update(game);
     }
 
 }

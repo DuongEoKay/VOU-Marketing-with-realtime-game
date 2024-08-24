@@ -20,10 +20,12 @@ public class GatewayConfig {
                 .route("user-service", r -> r.path("/users/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://user-service"))
-
                 .route("auth-service", r -> r.path("/auth/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://auth-service"))
+                .route("auth-service", r -> r.path("/games/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://game-service"))
                 .build();
     }
 
