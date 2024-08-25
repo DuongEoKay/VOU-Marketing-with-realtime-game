@@ -65,9 +65,7 @@ public boolean callOtp(String phoneNumber, String otp) {
 
     Map<String, String> to = new HashMap<>();
     to.put("type", "external");
-    //to.put("number", phoneNumber);
     to.put("number", phoneNumber);
-    //spam em kiet
     to.put("alias", "TO_NUMBER");
 
     List<Map<String, String>> toList = new ArrayList<>();
@@ -75,7 +73,7 @@ public boolean callOtp(String phoneNumber, String otp) {
 
     Map<String, String> action = new HashMap<>();
     action.put("action", "talk");
-    action.put("text", "Helle cu otp của cu là " + otp );
+    action.put("text", "OTP của bạn là " + otp   +". Nhắc lại OTP của bạn là " + otp   );
 
 
     List<Map<String, String>> actionsList = new ArrayList<>();

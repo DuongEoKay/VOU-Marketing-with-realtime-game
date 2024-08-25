@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User {
 
-
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 
@@ -40,7 +39,6 @@ public class User {
     private String sex;
 
     private String facebook;
-
 
     private USER_ROLE role;
 
