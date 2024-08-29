@@ -76,10 +76,10 @@ public class AuthService {
             // Store OTP in user's session or a temporary storage
 
             // Return a response indicating that the OTP has been sent
-            return new OtpResponse("OTP sent");
+            return new OtpResponse(true,"OTP sent");
         }
         else {
-            return new OtpResponse("Invalid username or password");
+            return new OtpResponse(false,"Invalid username or password");
         }
     } catch (HttpClientErrorException e) {
         if (e.getStatusCode() == HttpStatus.NOT_FOUND) {

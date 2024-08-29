@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OtpResponse {
 
+    private boolean isValid;
     private String message;
 
 }
