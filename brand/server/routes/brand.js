@@ -7,16 +7,16 @@ module.exports = (pool) => {
 
     router.get("/", verifyToken, async (req, res) => {
         try {
-        const brand = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ThuongHieu = ${req.ID_ThuongHieu}`)
-        if (!brand) {
-            return res
-            .status(400)
-            .json({ success: false, message: "Brand not found" });
-        }
-        res.json({ success: true, brand });
+            const brand = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
+            if (!brand) {
+                return res
+                .status(400)
+                .json({ success: false, message: "Brand not found" });
+            }
+            res.json({ success: true, brand: brand.rows[0] });
         } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+            console.log(error);
+            res.status(500).json({ success: false, message: "Internal server error" });
         }
     });
 
@@ -25,9 +25,9 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/register", async (req, res) => {
-        const { sms, matkhau } = req.body;
+        const { sms, ten, matkhau } = req.body;
     
-        if (!sms || !matkhau) {
+        if (!sms || !ten || !matkhau) {
         return res
             .status(400)
             .json({ success: false, message: "Missing information" });
@@ -57,7 +57,7 @@ module.exports = (pool) => {
                 newID = 'ID00000001';
             }
 
-            const newBrand = await pool.query(`INSERT INTO ThuongHieu(ID_ThuongHieu, SMS, MatKhau, TrangThai) VALUES ('${newID}', '${sms}', '${matkhau}', true) RETURNING *;`)
+            const newBrand = await pool.query(`INSERT INTO ThuongHieu(ID_ThuongHieu, SMS, Ten, MatKhau, TrangThai) VALUES ('${newID}', '${sms}', '${ten}', '${matkhau}', true) RETURNING *;`)
             var accessToken;
 
             if(newBrand.rowCount > 0) {
@@ -119,7 +119,68 @@ module.exports = (pool) => {
           });
         }
     });
+
+    router.get("/allbrand", async (req, res) => {
+        const allBrand = await pool.query(`SELECT * FROM ThuongHieu;`)
+        res.json({ success: true, brands: allBrand.rows });
+    });
       
+    // update brand
+    router.put("/:id", verifyToken, async (req, res) => {
+        const {  
+            ten, 
+            sms, 
+            password, 
+            hinhanh,
+            linhvuc,
+            diachi
+        } = req.body;
+
+        let updateParam = "";
+
+        let conditions = [];
+
+        conditions.push(`ten = '${ten}'`);
+        conditions.push(`sms = '${sms}'`);
+        conditions.push(`matkhau = '${password}'`);
+        conditions.push(`hinhanh = '${hinhanh}'`);
+        conditions.push(`linhvuc = '${linhvuc}'`);
+        conditions.push(`diachi = '${diachi}'`);
+
+        if (conditions.length > 0) {
+            updateParam = conditions.join(' , ');
+        }
+      
+        try {
+            const existSms = await pool.query(`SELECT * FROM ThuongHieu WHERE SMS = '${sms}' AND ID_ThuongHieu != '${req.params.id}';`)
+            if (existSms.rows.length !== 0) {
+                return res
+                .status(400)
+                .json({ success: false, message: "SMS is already in use" });
+            }
+      
+            const isUpdated = await pool.query(`UPDATE ThuongHieu SET ${updateParam} WHERE ID_ThuongHieu = '${req.params.id}' RETURNING *;`)
+
+            if (isUpdated.rowCount > 0) {
+                return res.json({
+                    success: true,
+                    message: "Brand updated succesfully",
+                    brand: isUpdated.rows[0]
+                }); 
+            }
+            return res
+                .status(401)
+                .json({ success: false, message: "User not authorized" });
+        } 
+        catch (error) {
+          console.log(error);
+          res.status(500).json({
+            success: false,
+            message: "Internal server error",
+          });
+        }
+    });
+
 
     return router;
 }

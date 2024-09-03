@@ -25,9 +25,9 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/create", verifyToken, async (req, res) => {
-        const { qrcode, hinhanh, trigia, mota, ngayhethan } = req.body;
+        const { ten, qrcode, hinhanh, trigia, mota, ngayhethan } = req.body;
     
-        if (!trigia || !ngayhethan) {
+        if (!ten || !trigia || !ngayhethan) {
         return res
             .status(400)
             .json({ success: false, message: "Missing information" });
@@ -35,7 +35,7 @@ module.exports = (pool) => {
         try {
             let tmp_qrcode
             if (qrcode) {
-                const existVoucher = await pool.query(`SELECT * FROM Voucher WHERE qrcocde != '${ process.env.URL_DEFAULT_QRCODE }' AND qrcode = '${qrcode}'`)
+                const existVoucher = await pool.query(`SELECT * FROM Voucher WHERE ten = '${ten}'`)
                 if (existVoucher.rows.length > 0) {
                     return res
                     .status(400)
@@ -67,20 +67,12 @@ module.exports = (pool) => {
 
             const id_thuonghieu = req.ID_ThuongHieu
 
-            const newVoucher = await pool.query(`INSERT INTO Voucher(ID_Voucher, ID_ThuongHieu, qrcode, hinhanh, trigia, mota, ngayhethan, trangthai) VALUES ('${newID}', '${id_thuonghieu}', '${tmp_qrcode}', '${tmp_hinhanh}', ${trigia}, '${mota}', '${ngayhethan}', true) RETURNING *;`)
-            var accessToken;
-
-            if(newVoucher.rowCount > 0) {
-                accessToken = jwt.sign(
-                    { ID_Voucher: newID },
-                    process.env.ACCESS_TOKEN
-                );
-            }
+            const newVoucher = await pool.query(`INSERT INTO Voucher(ID_Voucher, ID_ThuongHieu, ten, qrcode, hinhanh, trigia, mota, ngayhethan, trangthai) VALUES ('${newID}', '${id_thuonghieu}', '${ten}', '${tmp_qrcode}', '${tmp_hinhanh}', ${trigia}, '${mota}', '${ngayhethan}', true) RETURNING *;`)
         
             res.json({
                 success: true,
                 message: "Create new voucher successfully",
-                accessToken,
+                voucher: newVoucher.rows[0]
             });
         } catch (error) {
             console.log(error);

@@ -13,7 +13,7 @@ module.exports = (pool) => {
                 .status(400)
                 .json({ success: false, message: "Event not found" });
             }
-            res.json({ success: true, event: event.rows });
+            res.json({ success: true, events: event.rows });
             } catch (error) {
                 console.log(error);
                 res.status(500).json({ success: false, message: "Internal server error" });
@@ -25,9 +25,9 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/create", verifyToken, async (req, res) => {
-        const { tensukien, soluongvoucher, thoigianbatdau, thoigianketthuc } = req.body;
+        const { tensukien, hinhanh, soluongvoucher, thoigianbatdau, thoigianketthuc } = req.body;
     
-        if (!tensukien || !soluongvoucher || !thoigianbatdau || !thoigianketthuc) {
+        if (!tensukien || !hinhanh || !soluongvoucher || !thoigianbatdau || !thoigianketthuc) {
         return res
             .status(400)
             .json({ success: false, message: "Missing information" });
@@ -59,20 +59,12 @@ module.exports = (pool) => {
 
             const id_thuonghieu = req.ID_ThuongHieu
 
-            const newEvent = await pool.query(`INSERT INTO SuKien(ID_SuKien, ID_ThuongHieu, TenSuKien, SoLuongVoucher, ThoiGianBatDau, ThoiGianKetThuc) VALUES ('${newID}', '${id_thuonghieu}', '${tensukien}', ${soluongvoucher}, '${thoigianbatdau}', '${thoigianketthuc}') RETURNING *;`)
-            var accessToken;
-
-            if(newEvent.rowCount > 0) {
-                accessToken = jwt.sign(
-                    { ID_SuKien: newID },
-                    process.env.ACCESS_TOKEN
-                );
-            }
+            const newEvent = await pool.query(`INSERT INTO SuKien(ID_SuKien, ID_ThuongHieu, TenSuKien, HinhAnh, SoLuongVoucher, ThoiGianBatDau, ThoiGianKetThuc) VALUES ('${newID}', '${id_thuonghieu}', '${tensukien}', '${hinhanh}', ${soluongvoucher}, '${thoigianbatdau}', '${thoigianketthuc}') RETURNING *;`)
         
             res.json({
                 success: true,
                 message: "Create new event successfully",
-                accessToken,
+                event: newEvent.rows[0],
             });
         } catch (error) {
             console.log(error);
@@ -221,19 +213,10 @@ module.exports = (pool) => {
             const newQuestion = await pool.query(`INSERT INTO CauHoi_SuKien(ID_SuKien, STT, CauHoi, A, B, C, D, DapAn)
                                                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
                                             [id_sukien, newSTT, cauhoi, a, b, c, d, dapan])
-            var accessToken;
-
-            if(newQuestion.rowCount > 0) {
-                accessToken = jwt.sign(
-                    { STT: stt },
-                    process.env.ACCESS_TOKEN
-                );
-            }
-        
             return res.json({
                 success: true,
                 message: "Create new question for event successfully",
-                accessToken,
+                question: newQuestion.rows[0],
             });
         } catch (error) {
             console.log(error);
@@ -320,6 +303,47 @@ module.exports = (pool) => {
               message: "Internal server error",
             });
         }  
+    });
+
+    // @route GET api/event
+    // @desc Get detail event
+    // @access Private
+
+    router.post("/detailevent", async (req, res) => {
+        const { id } = req.body;
+        try {
+            const detailedEvent = await pool.query(`SELECT * FROM SuKien WHERE ID_SuKien = '${id}';`)
+            if (detailedEvent.rows.length === 0) {
+                return res
+                .status(400)
+                .json({ success: false, message: "Event is not exist" });
+            }
+            res.json({ success: true, events: detailedEvent.rows });
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
+        }
+    });
+
+    // @route GET api/eventofbrand
+    // @desc GET eventofbrand
+    // @access Public
+
+    router.get("/eventofbrand", async (req, res) => {
+        const { id } = req.body
+        try {
+            const events = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id}';`)
+            if (events.rowCount > 0) res.json({ success: true, events: events.rows });
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
+        }
     });
 
     return router;

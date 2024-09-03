@@ -1,8 +1,10 @@
 require("dotenv").config();
 const { Pool } = require('pg')
 
+const cors = require("cors")
+
 const express = require('express')
-const port = 3000
+const port = 5000
 
 const pool = new Pool({
     host: process.env.DB_HOST,
@@ -32,9 +34,12 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors())
+
 app.use("/api/setup", setupRouter);
 app.use("/api/brand", brandRouter);
 app.use("/api/event", eventRouter);
 app.use("/api/voucher", voucherRouter);
+
 
 app.listen(port, () => console.log(`Server has started on port: ${port}`))
