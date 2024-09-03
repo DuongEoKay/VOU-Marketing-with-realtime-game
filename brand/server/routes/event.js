@@ -145,7 +145,7 @@ module.exports = (pool) => {
         }  
     });
 
-    router.get("/fetchquestion", verifyToken, async (req, res) => {
+    router.get("/fetchquestion", async (req, res) => {
         const { id_sukien } = req.body
 
         if(!id_sukien) {
@@ -336,6 +336,23 @@ module.exports = (pool) => {
         const { id } = req.body
         try {
             const events = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id}';`)
+            if (events.rowCount > 0) res.json({ success: true, events: events.rows });
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
+        }
+    });
+
+    // @route GET api/allevent
+    // @desc GET allevent
+    // @access Public
+
+    router.get("/allevent", async (req, res) => {
+        try {
+            const events = await pool.query(`SELECT * FROM SuKien;`)
             if (events.rowCount > 0) res.json({ success: true, events: events.rows });
         } catch (error) {
         console.log(error);
