@@ -36,10 +36,10 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
-app.use("/api/setup", setupRouter);
-app.use("/api/brand", brandRouter);
-app.use("/api/event", eventRouter);
-app.use("/api/voucher", voucherRouter);
+app.use("/brand/api/setup", setupRouter);
+app.use("/brand/api/brand", brandRouter);
+app.use("/brand/api/event", eventRouter);
+app.use("/brand/api/voucher", voucherRouter);
 
 
 app.listen(port, () => console.log(`Server has started on port: ${port}`))

@@ -1,0 +1,16 @@
+.banner{
+    background-image: url('https://res.cloudinary.com/dxsvumas8/image/upload/fl_preserve_transparency/v1713481881/FSPHOTO__486_of_486__Original_qhrwmy.jpg?_s=public-apps');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 4rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+}

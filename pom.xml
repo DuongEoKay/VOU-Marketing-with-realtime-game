@@ -16,6 +16,7 @@
         <module>user-service</module>
         <module>game-service</module>
 
+
     </modules>
 
     <parent>

@@ -26,6 +26,9 @@ public class GatewayConfig {
                 .route("auth-service", r -> r.path("/games/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://game-service"))
+                .route("brand-service", r -> r.path("/brand/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://brand-service"))
                 .build();
     }
 

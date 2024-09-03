@@ -1,5 +1,5 @@
 ###
-GET http://localhost:5000/api/setup/create
+GET http://localhost:5000/brand/api/setup/create
 
 ###
 GET http://localhost:5000/api/setup/insert
@@ -8,7 +8,7 @@ GET http://localhost:5000/api/setup/insert
 GET http://localhost:5000/api/setup/drop
 
 ###
-GET http://localhost:5000/api/setup/
+GET http://localhost:8080/brand/api/setup/
 
 
 ###
