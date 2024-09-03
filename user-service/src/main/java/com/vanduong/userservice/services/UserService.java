@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class UserService {
@@ -48,11 +50,11 @@ public class UserService {
 
 
 
-//    public ResponseTemplateVO getUserWithDepartment(String id) {
-//        User user = this.getById(new ObjectId(id));
-//
-//        Department department = restTemplate.getForObject("http://department-service/departments/" + user.getDepartmentId(), Department.class);
-//
-//        return new ResponseTemplateVO(user, department);
-//    }
+    public List<User> getAllUser() {
+        return this.repository.findAll();
+    }
+
+    public User findByUsername(String username) {
+        return this.repository.findByUsername(username).orElse(null);
+    }
 }

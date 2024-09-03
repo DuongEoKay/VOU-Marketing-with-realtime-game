@@ -19,26 +19,30 @@ public class UserController {
 
     @PostMapping
     public User save(@RequestBody User user) {
+        if(user == null) {
+            return null;
+        }
+        User existingUser = userService.findByUsername(user.getUsername());
+        if(existingUser != null) {
+            return null;
+        }
+
         return userService.save(user);
     }
 
-//    @GetMapping
-//    public User getUser(
-//            @RequestHeader(value = "id") ObjectId userId,
-//            @RequestHeader(value = "role") String role) {
-//        return userService.getById(userId);
-//    }
-
-    @GetMapping(value = "/secure")
-    public String getSecure() {
-        return "Secure endpoint available";
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUserById(@PathVariable ObjectId id) {
         User user = userService.getById(id);
         return ResponseEntity.ok(user);
     }
+
+
+@GetMapping(value = "/")
+public ResponseEntity<List<User>> getAllUser() {
+    List<User> users = userService.getAllUser();
+    return ResponseEntity.ok(users);
+}
 
     @GetMapping(value = "/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {

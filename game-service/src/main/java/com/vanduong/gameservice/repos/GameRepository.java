@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GameRepository extends MongoRepository<Game, Long> {
 
+    Game findByName(String name);
 }

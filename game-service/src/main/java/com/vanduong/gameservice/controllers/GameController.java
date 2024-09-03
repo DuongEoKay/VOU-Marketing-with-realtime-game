@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/games")
 @Slf4j
@@ -23,6 +25,11 @@ public class GameController {
     @GetMapping("/{id}")
     public Game getById(@PathVariable long id) {
         return gameService.getById(id);
+    }
+
+    @GetMapping("/")
+    public List<Game> getAllGame() {
+        return gameService.getAllGame();
     }
 
     @DeleteMapping("/{id}")
