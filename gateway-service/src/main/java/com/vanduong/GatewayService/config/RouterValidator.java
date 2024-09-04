@@ -14,6 +14,7 @@ public class RouterValidator {
             "/auth/register",
             "/auth/login",
             "/auth/validate-otp",
+            "/auth/validate-phone",
             "/brand/api/setup/"
     );
 

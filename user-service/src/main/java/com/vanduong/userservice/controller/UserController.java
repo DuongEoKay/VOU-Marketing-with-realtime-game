@@ -19,11 +19,11 @@ public class UserController {
 
     @PostMapping
     public User save(@RequestBody User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         }
         User existingUser = userService.findByUsername(user.getUsername());
-        if(existingUser != null) {
+        if (existingUser != null) {
             return null;
         }
 
@@ -38,11 +38,11 @@ public class UserController {
     }
 
 
-@GetMapping(value = "/")
-public ResponseEntity<List<User>> getAllUser() {
-    List<User> users = userService.getAllUser();
-    return ResponseEntity.ok(users);
-}
+    @GetMapping(value = "/")
+    public ResponseEntity<List<User>> getAllUser() {
+        List<User> users = userService.getAllUser();
+        return ResponseEntity.ok(users);
+    }
 
     @GetMapping(value = "/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
@@ -63,6 +63,11 @@ public ResponseEntity<List<User>> getAllUser() {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/is-phone-exist/{phone}")
+    public ResponseEntity<Boolean> isPhoneExist(@PathVariable String phone) {
+        boolean isPhoneExist = userService.isPhoneExist(phone);
+        return ResponseEntity.ok(isPhoneExist);
+    }
 
 
 }

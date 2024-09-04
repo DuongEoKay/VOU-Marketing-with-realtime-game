@@ -1,10 +1,8 @@
 package com.vanduong.authservice.controller;
 
 import com.vanduong.authservice.entities.*;
-import com.vanduong.authservice.entities.value_objects.UserVO;
 import com.vanduong.authservice.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +35,12 @@ public class AuthController {
     public ResponseEntity<AuthResponse> validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
         return ResponseEntity.ok(authService.validateOtp(otpValidationRequest));
     }
+
+
+    @PostMapping(value = "/validate-phone")
+    public ResponseEntity<OtpResponse> validatePhone(@RequestBody PhoneValidateRequest phoneValidateRequest) {
+        return ResponseEntity.ok(authService.validatePhone(phoneValidateRequest));
+    }
+
 
 }

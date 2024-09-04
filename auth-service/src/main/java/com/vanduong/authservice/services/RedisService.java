@@ -12,6 +12,7 @@ public class RedisService {
     private final StringRedisTemplate redisTemplate;
     private final ValueOperations<String, String> valueOperations;
 
+
     public RedisService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.valueOperations = redisTemplate.opsForValue();
@@ -23,5 +24,13 @@ public class RedisService {
 
     public String getOtp(String username) {
         return valueOperations.get(username);
+    }
+
+    public void setRegisterOtp(String phone, String otp) {
+        valueOperations.set(phone, otp, 3, TimeUnit.MINUTES);
+    }
+
+    public String getRegisterOtp(String phone) {
+        return valueOperations.get(phone);
     }
 }
