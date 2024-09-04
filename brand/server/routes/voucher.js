@@ -202,8 +202,8 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/voucherofevent", verifyToken, async (req, res) => {
-        const { id_sukien } = req.body;
+    router.get("/voucherofevent/:id", verifyToken, async (req, res) => {
+        const id_sukien = req.params.id;
         try {
         const voucher = await pool.query(`SELECT * FROM Voucher_SuKien WHERE ID_SuKien = '${id_sukien}'`)
         if (!voucher) {
@@ -218,7 +218,7 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/deletevoucherevent", verifyToken, async (req, res) => {
+    router.post("/deletevoucherevent", verifyToken, async (req, res) => {
         const { id_voucher, id_sukien } = req.body;
     
         if (!id_voucher || !id_sukien) {
@@ -255,7 +255,7 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/updatevoucherevent", verifyToken, async (req, res) => {
+    router.post("/updatevoucherevent", verifyToken, async (req, res) => {
         const { id_voucher, id_sukien, soluong, ngansach } = req.body;
     
         if (!id_voucher || !id_sukien) {

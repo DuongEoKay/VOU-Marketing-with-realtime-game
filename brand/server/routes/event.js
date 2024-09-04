@@ -145,8 +145,8 @@ module.exports = (pool) => {
         }  
     });
 
-    router.get("/fetchquestion", async (req, res) => {
-        const { id_sukien } = req.body
+    router.get("/fetchquestion/:id", async (req, res) => {
+        const id_sukien = req.params.id
 
         if(!id_sukien) {
             return res
@@ -227,7 +227,7 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/deletequestion", verifyToken, async (req, res) => {
+    router.post("/deletequestion", verifyToken, async (req, res) => {
         const { id_sukien, stt } = req.body
         if (!id_sukien || !stt) return res
             .status(400)
@@ -259,7 +259,7 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/updatequestion", verifyToken, async (req, res) => {
+    router.post("/updatequestion", verifyToken, async (req, res) => {
         let { id_sukien, stt, cauhoi, a, b, c, d, dapan } = req.body
         if(!id_sukien || !stt) return res
             .status(400)
@@ -309,8 +309,8 @@ module.exports = (pool) => {
     // @desc Get detail event
     // @access Private
 
-    router.post("/detailevent", async (req, res) => {
-        const { id } = req.body;
+    router.get("/detailevent/:id", async (req, res) => {
+        const id = req.params.id;
         try {
             const detailedEvent = await pool.query(`SELECT * FROM SuKien WHERE ID_SuKien = '${id}';`)
             if (detailedEvent.rows.length === 0) {
@@ -332,8 +332,8 @@ module.exports = (pool) => {
     // @desc GET eventofbrand
     // @access Public
 
-    router.get("/eventofbrand", async (req, res) => {
-        const { id } = req.body
+    router.get("/eventofbrand/:id", async (req, res) => {
+        const id = req.params.id
         try {
             const events = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id}';`)
             if (events.rowCount > 0) res.json({ success: true, events: events.rows });
