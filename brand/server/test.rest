@@ -1,18 +1,18 @@
 ###
-GET http://localhost:5000/brand/api/setup/create
+GET http://localhost:5000/brand/brand/api/setup/create
 
 ###
-GET http://localhost:5000/api/setup/insert
+GET http://localhost:5000/brand/api/setup/insert
 
 ###
-GET http://localhost:5000/api/setup/drop
+GET http://localhost:5000/brand/api/setup/drop
 
 ###
 GET http://localhost:8080/brand/api/setup/
 
 
 ###
-POST http://localhost:5000/api/brand/register
+POST http://localhost:5000/brand/api/brand/register
 Content-Type: application/json
 
 {
@@ -23,16 +23,16 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:5000/api/brand/allbrand
+GET http://localhost:5000/brand/api/brand/allbrand
 
 
 ###
-GET http://localhost:5000/api/brand/
+GET http://localhost:5000/brand/api/brand/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDg1ODYzNn0.c0cwMPhoSDegIP_DnHrmv6c9mGIpEvwkJCh3g07QdA0
 
 ###
-POST http://localhost:5000/api/brand/login
+POST http://localhost:5000/brand/api/brand/login
 Content-Type: application/json
 
 {
@@ -41,7 +41,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5000/api/event/create
+POST http://localhost:5000/brand/api/event/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
 
@@ -53,33 +53,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET  http://localhost:5000/api/event/
+GET  http://localhost:5000/brand/api/event/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
 
 ###
-GET  http://localhost:5000/api/event/detailevent
+GET  http://localhost:5000/brand/api/event/detailevent/EV00000001
 Content-Type: application/json
 
-{
-    "id": "EV00000001"
-}
-
 ###
-POST http://localhost:5000/api/event/detailevent
+GET http://localhost:5000/brand/api/event/detailevent/EV00000001
 Content-Type: application/json 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
-{
-    "id": "EV00000001"
-}
-
 ###
-DELETE http://localhost:5000/api/event/EV00000001
+DELETE http://localhost:5000/brand/api/event/EV00000001
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 ###
-PUT http://localhost:5000/api/event/EV00000001
+PUT http://localhost:5000/brand/api/event/EV00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -91,7 +83,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/api/event/createquestion
+POST http://localhost:5000/brand/api/event/createquestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -107,7 +99,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/api/event/createquestion
+POST http://localhost:5000/brand/api/event/createquestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -122,16 +114,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/api/event/fetchquestion
+GET http://localhost:5000/brand/api/event/fetchquestion/EV00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
-{
-    "id_sukien": "EV00000001"
-}
-
 ###
-GET http://localhost:5000/api/event/deletequestion
+POST http://localhost:5000/brand/api/event/deletequestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -141,7 +129,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/api/event/updatequestion
+POST http://localhost:5000/brand/api/event/updatequestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -155,7 +143,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 
 ###
-POST http://localhost:5000/api/voucher/create
+POST http://localhost:5000/brand/api/voucher/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -166,7 +154,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/api/voucher/create
+POST http://localhost:5000/brand/api/voucher/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -177,15 +165,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/api/voucher/
+GET http://localhost:5000/brand/api/voucher/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-DELETE http://localhost:5000/api/voucher/VC00000002
+DELETE http://localhost:5000/brand/api/voucher/VC00000002
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-PUT http://localhost:5000/api/voucher/VC00000001
+PUT http://localhost:5000/brand/api/voucher/VC00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -196,7 +184,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/api/voucher/createvoucherevent
+POST http://localhost:5000/brand/api/voucher/createvoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -207,16 +195,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/api/voucher/voucherofevent
+GET http://localhost:5000/brand/api/voucher/voucherofevent/EV00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
-{
-    "id_sukien": "EV00000001"
-}
-
 ###
-GET http://localhost:5000/api/voucher/deletevoucherevent
+POST http://localhost:5000/brand/api/voucher/deletevoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -226,7 +210,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/api/voucher/updatevoucherevent
+POST http://localhost:5000/brand/api/voucher/updatevoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 

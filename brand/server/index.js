@@ -44,4 +44,4 @@ app.use("/brand/api/voucher", voucherRouter);
 
 app.listen(port, () => console.log(`Server has started on port: ${port}`))
 
-require('./eureka-client');
+// require('./eureka-client');
