@@ -41,17 +41,16 @@ const BrandItemStyles = styled.div`
 `;
 
 const BrandItem = ({ brand }) => {
-  console.log(brand)
   const navigate = useNavigate();
   return (
     <BrandItemStyles>
-      <div className="brand" onClick={() => navigate(`/brand/${brand[0]}`)}>
+      <div className="brand" onClick={() => navigate(`/brand/${brand.id_thuonghieu}`)}>
         <div className="brand-image">
-          <img src={brand[4]} alt="brandAvt" />
+          <img src={brand.hinhanh} alt="brandAvt" />
         </div>
         <div className="brand-content">
-          <h3 className="brand-name">{brand[1]}</h3>
-          <p className="brand-desc">{brand[2]}</p>
+          <h3 className="brand-name">{brand.ten}</h3>
+          <p className="brand-desc">{brand.linhvuc}</p>
         </div>
       </div>
     </BrandItemStyles>

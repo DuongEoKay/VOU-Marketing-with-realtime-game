@@ -1,5 +1,5 @@
 ###
-GET http://localhost:5000/brand/brand/api/setup/create
+GET http://localhost:5000/brand/api/setup/create
 
 ###
 GET http://localhost:5000/brand/api/setup/insert
@@ -8,7 +8,7 @@ GET http://localhost:5000/brand/api/setup/insert
 GET http://localhost:5000/brand/api/setup/drop
 
 ###
-GET http://localhost:8080/brand/api/setup/
+GET http://localhost:5000/brand/api/setup/
 
 
 ###
@@ -47,9 +47,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 {
     "tensukien": "CatWalk",
+    "hinhanh": "https://www.google.com/",
+    "id_game": "GAME00001",
     "soluongvoucher": 1000,
     "thoigianbatdau": "09/03/2024 01:00:00",
     "thoigianketthuc": "09/05/2024"
+}
+
+###
+POST http://localhost:5000/brand/api/event/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
+
+{
+    "tensukien": "DogWalk",
+    "hinhanh": "https://www.google.com/",
+    "id_game": "GAME00002",
+    "soluongvoucher": 5000,
+    "thoigianbatdau": "09/04/2024",
+    "thoigianketthuc": "09/06/2024"
 }
 
 ###
@@ -73,13 +89,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 ###
 PUT http://localhost:5000/brand/api/event/EV00000001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTQ0MDUxOH0.V2O5Jv-U9la7GXzercMFt6ISKek0XEWqtz0ZEHRtumw
 
 {
-    "tensukien": "CATWALK",
-    "soluongvoucher": 50,
-    "thoigianbatdau": "08/25/2024",
-    "thoigianketthuc": "08/28/2024"
+    "id_game": "GAME00001",
+    "mota": "Something"
 }
 
 ###
@@ -145,9 +159,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 ###
 POST http://localhost:5000/brand/api/voucher/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 {
+    "ten": "Voucher 1",
     "trigia": 50000,
     "mota": "Voucher1",
     "ngayhethan": "09/30/2024"
@@ -156,7 +171,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 ###
 POST http://localhost:5000/brand/api/voucher/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 {
     "trigia": 200000,
@@ -179,18 +194,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 {
     "trigia": 100000,
-    "mota": "Voucher 2",
+    "mota": "Something",
     "ngayhethan": "09/25/2024"
 }
 
 ###
 POST http://localhost:5000/brand/api/voucher/createvoucherevent
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 {
-    "id_voucher": "VC00000002",
-    "id_sukien": "EV00000001",
+    "id_voucher": "VC00000001",
+    "id_sukien": "EV00000003",
     "soluong": 500
 }
 
@@ -219,4 +234,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
     "id_sukien": "EV00000001",
     "soluong": 2000,
     "ngansach": 10000000
+}
+
+
+###
+GET http://localhost:5000/brand/api/event/allevent
+
+###
+GET http://localhost:5000/brand/api/event/eventofbrand/ID00000001
+
+###
+POST http://localhost:5000/brand/api/voucher/updatevoucheramount
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
+
+{
+    "id_voucher": "VC00000001",
+    "id_sukien": "EV00000003",
+    "soluong": 100
 }

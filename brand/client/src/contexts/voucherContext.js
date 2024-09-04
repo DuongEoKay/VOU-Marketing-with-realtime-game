@@ -14,7 +14,7 @@ const VoucherContextProvider = ({children}) => {
     // get all vouchers
     const getAllVouchers = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/api/voucher/");
+          const response = await axios.get("http://localhost:5000/brand/api/voucher/");
           if (response.data.success) {
             dispatch({
               type: "VOUCHERS_LOADED_SUCCESS",
@@ -31,7 +31,7 @@ const VoucherContextProvider = ({children}) => {
     // add voucher
     const addVoucher = async (Voucher) => {
         try {
-          const response = await axios.post("http://localhost:5000/api/voucher/create", Voucher);
+          const response = await axios.post("http://localhost:5000/brand/api/voucher/create", Voucher);
           if (response.data.success) {
             dispatch({ type: "ADD_VOUCHER", payload: response.data.voucher });
             return response.data;
@@ -47,7 +47,7 @@ const VoucherContextProvider = ({children}) => {
     const deleteVoucher = async (voucherId) => {
         try {
         const response = await axios.delete(
-            `http://localhost:5000/api/voucher/${voucherId}`
+            `http://localhost:/brand/api/voucher/${voucherId}`
         );
         if (response.data.success) {
             dispatch({ type: "DELETE_VOUCHER", payload: voucherId });

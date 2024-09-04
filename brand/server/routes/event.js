@@ -13,8 +13,19 @@ module.exports = (pool) => {
                 .status(400)
                 .json({ success: false, message: "Event not found" });
             }
-            res.json({ success: true, events: event.rows });
-            } catch (error) {
+            if (event.rowCount > 0) {
+                const formatData = await Promise.all(event.rows.map(async row => {
+                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                        game_name: game_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, events: formatData });
+            }
+        } catch (error) {
                 console.log(error);
                 res.status(500).json({ success: false, message: "Internal server error" });
         }
@@ -25,13 +36,22 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/create", verifyToken, async (req, res) => {
-        const { tensukien, hinhanh, soluongvoucher, thoigianbatdau, thoigianketthuc } = req.body;
+        const { tensukien, hinhanh, id_game, soluongvoucher, mota, thoigianbatdau, thoigianketthuc } = req.body;
     
-        if (!tensukien || !hinhanh || !soluongvoucher || !thoigianbatdau || !thoigianketthuc) {
+        if (!tensukien || !hinhanh || !id_game || !soluongvoucher || !thoigianbatdau || !thoigianketthuc) {
         return res
             .status(400)
             .json({ success: false, message: "Missing information" });
         }
+
+        const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
+        if(isGameExist.rowCount === 0) {
+            return res.json({
+                success: false,
+                message: "There is no game that match your choice"
+            })
+        }
+
         try {
             const existEvent = await pool.query(`SELECT * FROM SuKien WHERE tensukien = '${tensukien}'`)
             if (existEvent.rows.length > 0) {
@@ -59,7 +79,7 @@ module.exports = (pool) => {
 
             const id_thuonghieu = req.ID_ThuongHieu
 
-            const newEvent = await pool.query(`INSERT INTO SuKien(ID_SuKien, ID_ThuongHieu, TenSuKien, HinhAnh, SoLuongVoucher, ThoiGianBatDau, ThoiGianKetThuc) VALUES ('${newID}', '${id_thuonghieu}', '${tensukien}', '${hinhanh}', ${soluongvoucher}, '${thoigianbatdau}', '${thoigianketthuc}') RETURNING *;`)
+            const newEvent = await pool.query(`INSERT INTO SuKien(ID_SuKien, ID_ThuongHieu, ID_Game, TenSuKien, HinhAnh, SoLuongVoucher, MoTa, ThoiGianBatDau, ThoiGianKetThuc) VALUES ('${newID}', '${id_thuonghieu}', '${id_game}', '${tensukien}', '${hinhanh}', ${soluongvoucher}, '${mota}', '${thoigianbatdau}', '${thoigianketthuc}') RETURNING *;`)
         
             res.json({
                 success: true,
@@ -104,12 +124,24 @@ module.exports = (pool) => {
     });
 
     router.put("/:id", verifyToken, async (req, res) => {
-        let { tensukien, hinhanh, soluongvoucher, thoigianbatdau, thoigianketthuc } = req.body
+        let { tensukien, hinhanh, soluongvoucher, mota, thoigianbatdau, thoigianketthuc, id_game } = req.body
+        
+        if(id_game) {
+            const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
+            if(isGameExist.rowCount === 0) {
+                return res.json({
+                    success: false,
+                    message: "There is no game that match your choice"
+                })
+            }
+        }
 
         let updateParam = "";
 
         let conditions = [];
 
+        if (mota) conditions.push(`mota = '${mota}'`);
+        if (id_game) conditions.push(`id_game = '${id_game}'`);
         if (tensukien) conditions.push(`tensukien = '${tensukien}'`);
         if (hinhanh) conditions.push(`hinhanh = '${hinhanh}'`);
         if (soluongvoucher && soluongvoucher > 0) conditions.push(`soluongvoucher = ${soluongvoucher}`);
@@ -305,7 +337,7 @@ module.exports = (pool) => {
         }  
     });
 
-    // @route GET api/event
+    // @route GET api/detailevent
     // @desc Get detail event
     // @access Private
 
@@ -318,7 +350,18 @@ module.exports = (pool) => {
                 .status(400)
                 .json({ success: false, message: "Event is not exist" });
             }
-            res.json({ success: true, events: detailedEvent.rows });
+            if (detailedEvent.rowCount > 0) {
+                const formatData = await Promise.all(detailedEvent.rows.map(async row => {
+                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                        game_name: game_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, events: formatData });
+            }
         } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -336,7 +379,18 @@ module.exports = (pool) => {
         const id = req.params.id
         try {
             const events = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id}';`)
-            if (events.rowCount > 0) res.json({ success: true, events: events.rows });
+            if (events.rowCount > 0) {
+                const formatData = await Promise.all(events.rows.map(async row => {
+                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                        game_name: game_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, events: formatData });
+            }
         } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -353,7 +407,18 @@ module.exports = (pool) => {
     router.get("/allevent", async (req, res) => {
         try {
             const events = await pool.query(`SELECT * FROM SuKien;`)
-            if (events.rowCount > 0) res.json({ success: true, events: events.rows });
+            if (events.rowCount > 0) {
+                const formatData = await Promise.all(events.rows.map(async row => {
+                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                        game_name: game_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, events: formatData });
+            }
         } catch (error) {
         console.log(error);
         res.status(500).json({

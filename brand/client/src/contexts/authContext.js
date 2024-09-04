@@ -20,7 +20,7 @@ const AuthContextProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get("http://localhost:5000/api/brand");
+      const response = await axios.get("http://localhost:5000/brand/api/brand");
       if (response.data.success) {
         dispatch({
           type: "SET_AUTH",
@@ -43,7 +43,7 @@ const AuthContextProvider = ({ children }) => {
   const loginBrand = async (Brand) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/brand/login",
+        "http://localhost:5000/brand/api/brand/login",
         Brand
       );
       if (response.data.success) {
@@ -64,7 +64,7 @@ const AuthContextProvider = ({ children }) => {
   const registerBrand = async (Brand) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/brand/register",
+        "http://localhost:5000/brand/api/brand/register",
         Brand
       );
       if (response.data.success) {
@@ -93,7 +93,7 @@ const AuthContextProvider = ({ children }) => {
 
   const allBrand = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/brand/allbrand");
+      const response = await axios.get("http://localhost:5000/brand/api/brand/allbrand");
       if (response.data.success) {
         dispatch({
           type: "ALL_BRAND",
@@ -112,7 +112,7 @@ const AuthContextProvider = ({ children }) => {
   const updateBrand = async (Brand, id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/brand/${id}`,
+        `http://localhost:5000/brand/api/brand/${id}`,
         Brand
       );
       await loadBrand();

@@ -9,13 +9,18 @@ import { Button } from "components/button";
 import DashboardHeading from "module/dashboard/DashboardHeading";
 import { useNavigate } from "react-router-dom";
 import CloudinaryUploader from "components/image/CloudinaryUploader";
-import { soluongvoucherArray } from "utils/constants";
+import { soluongvoucherArray, game } from "utils/constants";
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { eventContext } from "contexts/eventContext";
 import { questionContext } from "contexts/questionContext";
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import ImageResize from "quill-image-resize-module-react";
+
+Quill.register("modules/imageResize", ImageResize);
 
 const EventAddNew = () => {
   const navigate = useNavigate();
@@ -34,9 +39,26 @@ const EventAddNew = () => {
       image: "",
       eventStartDate: dayjs(),
       eventEndDate: dayjs(),
-      questions: []
+      questions: [],
+      gamename: "",
+      gameid: ""
     },
   });
+
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -44,15 +66,18 @@ const EventAddNew = () => {
   });
 
   const [selectvoucherNum, setSelectvoucherNum] = useState();
+  const [selectgameName, setSelectgameName] = useState();
   const [loading, setLoading] = useState(false);
   const [url, updateUrl] = useState();
   const [error, updateError] = useState();
   const [StartDateValue, setStartDateValue] = useState(dayjs());
   const [EndDateValue, setEndDateValue] = useState(dayjs());
   const [numQuestions, setNumQuestions] = useState(0);
+  const [mota, setMota] = useState("");
+
 
   const addEventHandler = async (values) => {
-    const { tensukien, voucherAmount, eventStartDate, eventEndDate } = values
+    const { tensukien, voucherAmount, gameid, eventStartDate, eventEndDate } = values
 
     const startDate_day = values.eventStartDate.date()
     const startDate_month = values.eventStartDate.month() + 1
@@ -76,13 +101,15 @@ const EventAddNew = () => {
 
     const hinhanh = url
     const soluongvoucher = voucherAmount
+    const id_game = gameid
     
     if(tensukien == "" || tensukien == undefined) toast.error("Please fill in Brand's Name");
     else if(voucherAmount == 0) toast.error("Please fill in voucherNum");
+    else if(gameid == "") toast.error("Please choose game for your Event");
     else if(Date_startDate >= Date_endDate) toast.error("End Date/Time must be after Start Date/Time");
     else {
       try {
-        const newEventData = await addEvent({ tensukien, hinhanh, soluongvoucher, thoigianbatdau, thoigianketthuc });
+        const newEventData = await addEvent({ tensukien, hinhanh, id_game, soluongvoucher, mota, thoigianbatdau, thoigianketthuc });
         if (newEventData["success"]) {
           let allquestionscreated = 0
           for (let i = 0; i < numQuestions; i++) {
@@ -120,6 +147,12 @@ const EventAddNew = () => {
     setValue("voucherId", item.id);
     setValue("voucherAmount", item.amount);
     setSelectvoucherNum(item);
+  };
+
+  const handleClickGameOption = (item) => {
+    setValue("gameid", item.id);
+    setValue("gamename", item.name);
+    setSelectgameName(item);
   };
 
   function handleOnUpload(error, result, widget) {
@@ -192,7 +225,7 @@ const EventAddNew = () => {
               <Dropdown.Select placeholder="Select number of Voucher"></Dropdown.Select>
               <Dropdown.List>
                 {soluongvoucherArray.length > 0 &&
-                  soluongvoucherArray.slice(1).map((item) => (
+                  soluongvoucherArray.slice(0).map((item) => (
                     <Dropdown.Option
                       key={item.id}
                       onClick={() => handleClickOption(item)}
@@ -257,6 +290,43 @@ const EventAddNew = () => {
               </>
             )}
           </Field>
+          <Field>
+            <Label>Game Name</Label>
+            <Dropdown>
+              <Dropdown.Select placeholder="Select game for your Event"></Dropdown.Select>
+              <Dropdown.List>
+                {game.length > 0 &&
+                  game.slice(0).map((item) => (
+                    <Dropdown.Option
+                      key={item.id}
+                      onClick={() => handleClickGameOption(item)}
+                    >
+                      {item.name}
+                    </Dropdown.Option>
+                  ))}
+              </Dropdown.List>
+            </Dropdown>
+            {selectgameName?.name && (
+              <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">
+                {selectgameName?.name}
+              </span>
+            )}
+          </Field>
+        </div>
+        <div className="solo-form-layout">
+          <div className="mb-10">
+            <Field>
+              <Label>Description</Label>
+              <div className="w-full entry-content">
+                <ReactQuill
+                  modules={modules}
+                  name="mota"
+                  value={mota}
+                  onChange={setMota}
+                />
+              </div>
+            </Field>
+          </div>
         </div>
         <div className="single-form-layout">
           <Field>

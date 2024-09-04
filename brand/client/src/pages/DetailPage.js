@@ -7,8 +7,9 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { eventContext } from "contexts/eventContext";
 import { authContext } from "contexts/authContext";
-// import HTMLReactParser from "html-react-parser";
+import HTMLReactParser from "html-react-parser";
 import BrandItem from "components/brand/BrandItem";
+import EventRelated from "module/event/EventRelated";
 
 const EventDetailsPageStyles = styled.div`
   padding-bottom: 100px;
@@ -61,42 +62,32 @@ const EventDetailsPageStyles = styled.div`
 const DetailPage = () => {
   const { slug } = useParams();
   const {
-    eventState: { detailedevent },
-    getDetailedEvent,
+    eventState: { detailedevent, allevents },
+    getDetailedEvent, getAllEventsEver
   } = useContext(eventContext);
   const id = slug;
-  const detailid = { id };
+  const detailid = id;
+
   useState(() => getDetailedEvent(detailid), []);
 
+  const brand_name = detailedevent[0]?.brand_name;
+
   const {
-    authState: { allbrand },
-    allBrand,
+    authState: { brand },
   } = useContext(authContext);
 
-  useState(() => allBrand(), []);
-  // useState(() => getAllEventsEver(), []);
+  useState(() => getAllEventsEver(detailid), []);
 
-  const getBrand = (id) => {
-    if (!allbrand || !Array.isArray(allbrand)) {
-      return "Unknown Brand";
-    }
-    const brand = allbrand.filter((u) => {
-      return u?.id_thuonghieu === id;
-    });
-    return Object.values(brand[0]) || "Unknown Brand";
-  };
+  let relatedEvents = allevents.filter((event) => {
+    return (
+      event?.id_sukien !== detailedevent[0]?.id_sukien
+    );
+  });
+  relatedEvents =
+    relatedEvents.length > 4 ? relatedEvents.slice(0, 4) : relatedEvents;
 
-  const brand = getBrand(detailedevent[0]?.id_thuonghieu);
-  console.log(brand)
+  console.log(relatedEvents)
 
-  // let relatedEvents = allevents.filter((event) => {
-  //   return (
-  //     event?.category === detailevent[0]?.category &&
-  //     event?._id !== detailevent[0]?._id
-  //   );
-  // });
-  // relatedEvents =
-  //   relatedEvents.length > 4 ? relatedEvents.slice(0, 4) : relatedEvents;
   return (
     <>
       {detailedevent.map((event) => (
@@ -113,16 +104,17 @@ const DetailPage = () => {
                   <h1 className="event-heading">{event.tensukien}</h1>
                   <EventMeta
                     date={event.thoigianbatdau.slice(0, -5)}
-                    brandName={brand[1]}
+                    brandName={brand_name}
                   ></EventMeta>
                 </div>
               </div>
               <div className="event-content">
-                {/* <div className="entry-content">
-                  {HTMLReactParser(event?.content || "")}
-                </div> */}
+                <div className="entry-content">
+                  {HTMLReactParser(event?.mota || "")}
+                </div>
                 <BrandItem brand={brand}></BrandItem>
               </div>
+              <EventRelated events={relatedEvents}></EventRelated>
             </div>
           </Layout>
         </EventDetailsPageStyles>

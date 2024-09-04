@@ -12,9 +12,9 @@ const QuestionContextProvider = ({children}) => {
     });
 
     // get all questions
-    const getAllQuestions = async () => {
+    const getAllQuestions = async (id) => {
         try {
-          const response = await axios.get("http://localhost:5000/api/event/fetchquestion");
+          const response = await axios.get(`http://localhost:5000/brand/api/event/fetchquestion/${id}`);
           if (response.data.success) {
             dispatch({
               type: "QUESTIONS_LOADED_SUCCESS",
@@ -31,7 +31,7 @@ const QuestionContextProvider = ({children}) => {
     // add question
     const addQuestion = async (Question) => {
         try {
-          const response = await axios.post("http://localhost:5000/api/event/createquestion", Question);
+          const response = await axios.post("http://localhost:5000/brand/api/event/createquestion", Question);
           if (response.data.success) {
             dispatch({ type: "ADD_QUESTION", payload: response.data.question });
             return response.data;

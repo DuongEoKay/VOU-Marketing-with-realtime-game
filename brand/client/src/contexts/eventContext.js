@@ -10,13 +10,15 @@ const EventContextProvider = ({ children }) => {
       event: {},
       events: [],
       detailedevent: [],
+      brandevents: [],
+      allevents: [],
       eventsLoading: true,
     });
   
     // get all events
     const getAllEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/event");
+        const response = await axios.get("http://localhost:5000/brand/api/event");
         if (response.data.success) {
           dispatch({
             type: "EVENTS_LOADED_SUCCESS",
@@ -33,9 +35,8 @@ const EventContextProvider = ({ children }) => {
     // getDetailedEvent
     const getDetailedEvent = async (EventId) => {
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/event/detailevent",
-          EventId
+        const response = await axios.get(
+          `http://localhost:5000/brand/api/event/detailevent/${EventId}`
         );
         if (response.data.success) {
           dispatch({
@@ -55,21 +56,21 @@ const EventContextProvider = ({ children }) => {
     const deleteEvent = async (eventId) => {
         try {
         const response = await axios.delete(
-            `http://localhost:5000/api/event/${eventId}`
+            `http://localhost:5000/brand/api/event/${eventId}`
         );
         if (response.data.success) {
             dispatch({ type: "DELETE_EVENT", payload: eventId });
             return response.data;
         }
         } catch (error) {
-        console.log(error);
+          console.log(error);
         }
     };
 
     // add event
     const addEvent = async (Event) => {
       try {
-        const response = await axios.post("http://localhost:5000/api/event/create", Event);
+        const response = await axios.post("http://localhost:5000/brand/api/event/create", Event);
         if (response.data.success) {
           dispatch({ type: "ADD_EVENT", payload: response.data.event });
           return response.data;
@@ -84,7 +85,7 @@ const EventContextProvider = ({ children }) => {
     // get all eventofbrand
     const getAllEventsOfBrand = async (id) => {
       try {
-        const response = await axios.post("http://localhost:5000/api/event/eventofbrand", id);
+        const response = await axios.get(`http://localhost:5000/brand/api/event/eventofbrand/${id}`);
         if (response.data.success) {
           dispatch({
             type: "EVENTS_LOADED_SUCCESS_BRAND",
@@ -98,6 +99,22 @@ const EventContextProvider = ({ children }) => {
       }
     };
   
+    const getAllEventsEver = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/brand/api/event/allevent`);
+        if (response.data.success) {
+          dispatch({
+            type: "ALL",
+            payload: response.data.events,
+          });
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+      }
+    };
+
     // event context data
     const eventContextData = {
       eventState,
@@ -106,6 +123,7 @@ const EventContextProvider = ({ children }) => {
       deleteEvent,
       addEvent,
       getAllEventsOfBrand,
+      getAllEventsEver
     };
   
     return (

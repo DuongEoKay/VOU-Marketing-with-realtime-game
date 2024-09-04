@@ -299,5 +299,54 @@ module.exports = (pool) => {
         }  
     });
 
+    // @route POST api/event/updatevoucheramount
+    // @desc POST updatevoucheramount
+    // @access Public
+
+    router.post("/updatevoucheramount", async (req, res) => {
+        const { id_voucher, id_sukien, soluong } = req.body
+        if(!id_voucher || !id_sukien || !soluong)
+            res.json({ success: false, messages: "Missing information" });
+
+        const existsVoucherofEvent = await pool.query(`SELECT * FROM Voucher_SuKien WHERE ID_Voucher = '${id_voucher}' AND ID_SuKien = '${id_sukien}';`)
+        if (existsVoucherofEvent.rows.length === 0) {
+            return res
+            .status(400)
+            .json({ success: false, message: "Voucher of this Event is not exist" });
+        }
+        else {
+            const amount_left = existsVoucherofEvent.rows[0].soluong - soluong
+            if(amount_left < 0) {
+                return res
+                .status(400)
+                .json({ success: false, message: "Amount left of this Event is not enough" });
+            }
+            else {
+                try {
+                    const isUpdated = await pool.query(`UPDATE Voucher_SuKien SET soluong = ${amount_left} WHERE ID_Voucher = '${id_voucher}' AND ID_SuKien = '${id_sukien}' RETURNING *;`)
+                    if (isUpdated.rowCount > 0) {
+                        return res.json({
+                            success: true,
+                            message: "Voucher updated succesfully",
+                            voucher: isUpdated.rows[0].id_voucher,
+                            soluongconlai: isUpdated.rows[0].soluong
+                            });
+                    }
+                    return res
+                        .status(401)
+                        .json({ success: false, message: "User not authorized" });
+                    
+                } 
+                catch (error) {
+                    console.log(error);
+                    res.status(500).json({
+                      success: false,
+                      message: "Internal server error",
+                    });
+                }  
+            }
+        }
+    });
+
     return router;
 }

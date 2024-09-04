@@ -105,3 +105,12 @@ export const soluongvoucherArray = [
     amount: 50000,
   },
 ];
+
+export const game = [
+  { id: "GAME00001", 
+    name: "Shake" },
+  {
+    id: "GAME00002",
+    name: "Quiz"
+  }
+];
