@@ -16,7 +16,7 @@ export const voucherReducer = (state, action) => {
       case "DETAIL_VOUCHER":
         return {
           ...state,
-          detailvoucher: payload,
+          detailedvoucher: payload,
           vouchersLoading: false,
         };
       default:

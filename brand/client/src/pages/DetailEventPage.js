@@ -59,7 +59,7 @@ const EventDetailsPageStyles = styled.div`
   }
 `;
 
-const DetailPage = () => {
+const DetailEventPage = () => {
   const { slug } = useParams();
   const {
     eventState: { detailedevent, allevents },
@@ -71,22 +71,22 @@ const DetailPage = () => {
   useState(() => getDetailedEvent(detailid), []);
 
   const brand_name = detailedevent[0]?.brand_name;
+  const brand_id = detailedevent[0]?.id_thuonghieu;
 
   const {
     authState: { brand },
   } = useContext(authContext);
 
-  useState(() => getAllEventsEver(detailid), []);
+  useState(() => getAllEventsEver(), []);
 
   let relatedEvents = allevents.filter((event) => {
     return (
+      event?.id_thuonghieu === detailedevent[0]?.id_thuonghieu &&
       event?.id_sukien !== detailedevent[0]?.id_sukien
     );
   });
   relatedEvents =
     relatedEvents.length > 4 ? relatedEvents.slice(0, 4) : relatedEvents;
-
-  console.log(relatedEvents)
 
   return (
     <>
@@ -103,8 +103,10 @@ const DetailPage = () => {
                   <EventVoucherNum className="mb-6">Vouchers Available: {event.soluongvoucher}</EventVoucherNum>
                   <h1 className="event-heading">{event.tensukien}</h1>
                   <EventMeta
-                    date={event.thoigianbatdau.slice(0, -5)}
+                    startdate={event.thoigianbatdau.slice(0, -5)}
+                    enddate={event.thoigianketthuc.slice(0, -5)}
                     brandName={brand_name}
+                    brandId={brand_id}
                   ></EventMeta>
                 </div>
               </div>
@@ -122,4 +124,4 @@ const DetailPage = () => {
     </>
   );
 };
-export default DetailPage;
+export default DetailEventPage;

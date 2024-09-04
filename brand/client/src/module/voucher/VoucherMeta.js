@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-const EventMetaStyles = styled.div`
+const VoucherMetaStyles = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -18,7 +18,7 @@ const EventMetaStyles = styled.div`
     css`
       color: inherit;
     `};
-  .event {
+  .voucher {
     &-dot {
       display: inline-block;
       width: 5px;
@@ -29,19 +29,18 @@ const EventMetaStyles = styled.div`
   }
 `;
 
-const EventMeta = ({
-  startdate = "",
-  enddate = "",
+const VoucherMeta = ({
+  date = "",
   brandName,
   className = "",
   color = "gray",
   brandId = "",
-  event = {},
+  voucher = {},
 }) => {
   const [brand, setBrand] = useState();
   const navigate = useNavigate();
 
-  const format = (date) => {
+  const format = () => {
     const year = date.slice(0, 4)
     const month = date.slice(5,7) - 1
     const day = date.slice(8,10)
@@ -51,16 +50,13 @@ const EventMeta = ({
     const formatDate = new Date(year, month, day, hour, minute, second).toLocaleString()
     return formatDate
   }
-  const startDate = format(startdate)
-  const endDate = format(enddate)
+  const formatDate = format()
   return (
-    <EventMetaStyles className={className} color={color}>
-      <span className="event-time">Start Date: {startDate}</span>
-      <span className="event-dot"></span>
-      <span className="event-time">End Date: {endDate}</span>
-      <span className="event-dot"></span>
+    <VoucherMetaStyles className={className} color={color}>
+      <span className="voucher-time">Expired Date: {formatDate || date}</span>
+      <span className="voucher-dot"></span>
       <span
-        className="event-author"
+        className="voucher-author"
         onClick={() => {
           navigate(`/brand/${brandId}`);
           window.location.reload();
@@ -68,8 +64,8 @@ const EventMeta = ({
       >
         {brandName || brand?.ten}
       </span>
-    </EventMetaStyles>
+    </VoucherMetaStyles>
   );
 };
 
-export default EventMeta;
+export default VoucherMeta;

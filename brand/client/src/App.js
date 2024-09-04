@@ -12,7 +12,9 @@ import EventAddNew from "module/event/EventAddNew";
 import VoucherAddNew from "module/voucher/VoucherAddNew";
 import VoucherManage from "module/voucher/VoucherManage"
 import ContactPage from "pages/ContactPage";
-import DetailPage from 'pages/DetailPage';
+import DetailEventPage from 'pages/DetailEventPage';
+import DetailVoucherPage from 'pages/DetailVoucherPage';
+import EventUpdate from 'module/event/EventUpdate';
 
 function App() {
   return (
@@ -21,7 +23,8 @@ function App() {
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/sign-in" element={<Auth authRoute="sign-in" />} />
         <Route path="/sign-up" element={<Auth authRoute="sign-up" />} />
-        <Route path="/event/:slug" element={<DetailPage></DetailPage>}></Route>
+        <Route path="/event/:slug" element={<DetailEventPage></DetailEventPage>}></Route>
+        <Route path="/voucher/:slug" element={<DetailVoucherPage></DetailVoucherPage>}></Route>
         <Route path="/contact" element={<ContactPage></ContactPage>}></Route>
         <Route element={<ProtectedRoute Component={DashboardLayout} />}>
           <Route
@@ -35,6 +38,10 @@ function App() {
           <Route
             path="/manage/add-event"
             element={<EventAddNew></EventAddNew>}
+          ></Route>
+          <Route
+            path="/manage/update-event/:slug"
+            element={<EventUpdate></EventUpdate>}
           ></Route>
           <Route
             path="/manage/vouchers"

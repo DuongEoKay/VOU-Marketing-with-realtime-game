@@ -8,6 +8,8 @@ const VoucherContextProvider = ({children}) => {
     const [voucherState, dispatch] = useReducer(voucherReducer, {
         voucher: {},
         vouchers: [],
+        detailedvoucher: [],
+        allvouchers: [],
         vouchersLoading: true,
     });
 
@@ -58,12 +60,50 @@ const VoucherContextProvider = ({children}) => {
         }
     };
 
+    // getDetailedVoucher
+    const getDetailedVoucher = async (VoucherId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/brand/api/voucher/detailvoucher/${VoucherId}`
+        );
+        if (response.data.success) {
+          dispatch({
+            type: "DETAIL_VOUCHER",
+            payload: response.data.vouchers,
+          });
+          return response.data;
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+      }
+    };
+
+    const getAllVouchersEver = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/brand/api/voucher/allvoucher`);
+        if (response.data.success) {
+          dispatch({
+            type: "ALL",
+            payload: response.data.vouchers,
+          });
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+      }
+    };
+
     const voucherContextData = {
-        voucherState,
-        getAllVouchers,
-        addVoucher,
-        deleteVoucher,
-      };
+      voucherState,
+      getAllVouchers,
+      addVoucher,
+      deleteVoucher,
+      getDetailedVoucher,
+      getAllVouchersEver
+    };
 
     return (
         <voucherContext.Provider value={voucherContextData}>

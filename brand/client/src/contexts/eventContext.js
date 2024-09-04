@@ -82,6 +82,20 @@ const EventContextProvider = ({ children }) => {
       }
     };
 
+    // update event
+    const updateEvent = async (id, Event) => {
+      try {
+        const response = await axios.put(
+          `http://localhost:5000/brand/api/event/${id}`, Event
+        );
+        return response.data;
+      } catch (error) {
+        if (error.response.data) {
+          return error.response.data;
+        } else return { success: false, message: error.message };
+      }
+    }
+
     // get all eventofbrand
     const getAllEventsOfBrand = async (id) => {
       try {
@@ -122,6 +136,7 @@ const EventContextProvider = ({ children }) => {
       getDetailedEvent,
       deleteEvent,
       addEvent,
+      updateEvent,
       getAllEventsOfBrand,
       getAllEventsEver
     };

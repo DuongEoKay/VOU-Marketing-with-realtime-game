@@ -144,7 +144,7 @@ module.exports = (pool) => {
                 return res.json({
                     success: true,
                     message: "Voucher updated succesfully",
-                    event: isUpdated.rows[0]
+                    voucher: isUpdated.rows[0]
                     });
                 
             }
@@ -281,7 +281,7 @@ module.exports = (pool) => {
                 return res.json({
                     success: true,
                     message: "Voucher of event updated succesfully",
-                    event: isUpdated.rows[0]
+                    voucher: isUpdated.rows[0]
                     });
                 
             }
@@ -345,6 +345,64 @@ module.exports = (pool) => {
                     });
                 }  
             }
+        }
+    });
+
+    // @route GET api/detailvoucher
+    // @desc Get detail voucher
+    // @access Private
+
+    router.get("/detailvoucher/:id", async (req, res) => {
+        const id = req.params.id;
+        try {
+            const detailedVoucher = await pool.query(`SELECT * FROM Voucher WHERE ID_Voucher = '${id}';`)
+            if (detailedVoucher.rows.length === 0) {
+                return res
+                .status(400)
+                .json({ success: false, message: "Voucher is not exist" });
+            }
+            if (detailedVoucher.rowCount > 0) {
+                const formatData = await Promise.all(detailedVoucher.rows.map(async row => {
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, vouchers: formatData });
+            }
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
+        }
+    });
+
+    // @route GET api/allvoucher
+    // @desc GET allvoucher
+    // @access Public
+
+    router.get("/allvoucher", async (req, res) => {
+        try {
+            const vouchers = await pool.query(`SELECT * FROM Voucher;`)
+            if (vouchers.rowCount > 0) {
+                const formatData = await Promise.all(vouchers.rows.map(async row => {
+                    const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
+                    return {
+                        ...row,
+                        brand_name: brand_name.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, vouchers: formatData });
+            }
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
         }
     });
 

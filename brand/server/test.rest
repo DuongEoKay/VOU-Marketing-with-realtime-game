@@ -253,3 +253,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
     "id_sukien": "EV00000003",
     "soluong": 100
 }
+
+###
+GET http://localhost:5000/brand/api/voucher/detailvoucher/VC00000001
+
+###
+GET http://localhost:5000/brand/api/voucher/allvoucher/
