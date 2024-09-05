@@ -67,6 +67,21 @@ const EventContextProvider = ({ children }) => {
         }
     };
 
+    // delete questionevent
+    const deleteQuestionEvent = async (eventId) => {
+      try {
+      const response = await axios.delete(
+        `http://localhost:5000/brand/api/event/deleteallquestionoffevent/${eventId}`
+      );
+      if (response.data.success) {
+          dispatch({ type: "DELETE_EVENT", payload: eventId });
+          return response.data;
+      }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     // add event
     const addEvent = async (Event) => {
       try {
@@ -138,7 +153,8 @@ const EventContextProvider = ({ children }) => {
       addEvent,
       updateEvent,
       getAllEventsOfBrand,
-      getAllEventsEver
+      getAllEventsEver,
+      deleteQuestionEvent
     };
   
     return (

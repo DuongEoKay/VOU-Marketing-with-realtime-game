@@ -103,8 +103,8 @@ const DetailEventPage = () => {
                   <EventVoucherNum className="mb-6">Vouchers Available: {event.soluongvoucher}</EventVoucherNum>
                   <h1 className="event-heading">{event.tensukien}</h1>
                   <EventMeta
-                    startdate={event.thoigianbatdau.slice(0, -5)}
-                    enddate={event.thoigianketthuc.slice(0, -5)}
+                    startdate={event.thoigianbatdau}
+                    enddate={event.thoigianketthuc}
                     brandName={brand_name}
                     brandId={brand_id}
                   ></EventMeta>

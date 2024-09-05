@@ -2,6 +2,7 @@ import { ActionDelete, ActionEdit, ActionView } from "components/action";
 import React, { useContext } from "react";
 import Swal from "sweetalert2";
 import { eventContext } from "../../contexts/eventContext";
+import { voucherContext } from "contexts/voucherContext";
 import { useNavigate } from "react-router-dom";
 import EventTableItem from "./EventTableItem";
 
@@ -9,7 +10,7 @@ const EventTable = ({ filterevents, brands, isAdmin = false, sortedEvents }) => 
     const handleDeleteEvent = async (eventId) => {
         Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "If you delete event, all of its vouchers will be deleted too",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#1DC071",
@@ -18,23 +19,28 @@ const EventTable = ({ filterevents, brands, isAdmin = false, sortedEvents }) => 
         }).then(async (result) => {
         if (result.isConfirmed) {
             try {
-            const deleted = await deleteEvent(eventId);
-            console.log(deleted);
-            if (deleted["success"]) {
-                Swal.fire("Deleted!", "Your event has been deleted.", "success");
-                setTimeout(function () {
-                window.location.reload();
-                }, 2000);
-            } else {
-                Swal.fire("Error occured");
-            }
+                const questiondeleted = await deleteQuestionEvent(eventId)
+                const voucherdeleted = await deleteVoucherEvent(eventId)
+                if(questiondeleted["success"] && voucherdeleted["success"]){
+                    const deleted = await deleteEvent(eventId);
+                    if (deleted["success"]) {
+                        Swal.fire("Deleted!", "Your event has been deleted.", "success");
+                        setTimeout(function () {
+                        window.location.reload();
+                        }, 2000);
+                    } 
+                    else {
+                        Swal.fire("Error occured");
+                    }
+                }
             } catch (error) {
-            console.log(error);
-            }
+                console.log(error);
+                }    
         }
         });
     };
-    const { deleteEvent } = useContext(eventContext);
+    const { deleteEvent, deleteQuestionEvent } = useContext(eventContext);
+    const { deleteVoucherEvent } = useContext(voucherContext)
 
     const navigate = useNavigate();
 

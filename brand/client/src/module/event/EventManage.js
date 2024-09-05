@@ -88,7 +88,6 @@ const EventManage = () => {
       event.tensukien.toLowerCase().includes(filters.tensukien.toLowerCase());
 
     // Return true only if both date and category match
-    console.log(event.tensukien)
     return isNumMatch && isNameMatch;
   });
 
@@ -106,8 +105,6 @@ const EventManage = () => {
   const handleNameChange = (e) => {
     setFilters({ ...filters, tensukien: e.target.value });
   };
-
-  console.log(filteredEvents);
 
   const sortedEvents = filteredEvents.sort((a, b) => {
     if (filters.thoigianbatdau === "Latest") {

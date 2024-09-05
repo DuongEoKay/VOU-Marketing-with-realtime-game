@@ -291,6 +291,26 @@ module.exports = (pool) => {
         }
     });
 
+    router.delete("/deleteallquestionoffevent/:id", verifyToken, async (req, res) => {
+        const id_sukien = req.params.id
+
+        try {
+            const isDeleted = await pool.query(`DELETE FROM CauHoi_SuKien WHERE ID_SuKien = '${id_sukien}'`)
+            if (isDeleted.rowCount >= 0) {
+                return res.json({
+                    success: true,
+                    message: "Question succesfully deleted",
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+              success: false,
+              message: "Internal server error",
+            });
+        }
+    });
+
     router.post("/updatequestion", verifyToken, async (req, res) => {
         let { id_sukien, stt, cauhoi, a, b, c, d, dapan } = req.body
         if(!id_sukien || !stt) return res

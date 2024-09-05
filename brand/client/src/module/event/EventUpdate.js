@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, reset } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Label } from "components/label";
 import { Input } from "components/input";
@@ -24,6 +24,8 @@ import { useParams } from "react-router-dom";
 Quill.register("modules/imageResize", ImageResize);
 
 const EventUpdate = () => {
+  const navigate = useNavigate()
+
   const [isDefaultImageVisible, setDefaultImageVisible] = useState(true);
 
   const { slug } = useParams();
@@ -31,12 +33,20 @@ const EventUpdate = () => {
     eventState: { detailedevent },
     getDetailedEvent,
     updateEvent,
+    deleteQuestionEvent
   } = useContext(eventContext);
+
+  const {
+    questionState: { questions },
+    getAllQuestions, 
+    addQuestion
+  } = useContext(questionContext)
   const id = slug;
   const detailid = id;
   useState(() => getDetailedEvent(detailid), []);
+  useState(() => getAllQuestions(detailid), []);
 
-  const { control, watch, register, formState: { errors }, setValue, handleSubmit } = useForm({
+  const { control, watch, register, formState: { errors }, reset, setValue, handleSubmit } = useForm({
     mode: "onChange",
     defaultValues: {
       tensukien: "",
@@ -66,34 +76,64 @@ const EventUpdate = () => {
   const [EndDateValue, setEndDateValue] = useState(dayjs());
   const [numQuestions, setNumQuestions] = useState(0);
   const [mota, setMota] = useState("");
+  const [question, setQuestions] = useState([])
 
   const updateEventHandler = async (values) => {
-    // const currentEvent = await getDetailedEvent(detailid);
-    // let { title, categoryName } = values;
-    // title = title == "" ? currentEvent.events[0].title : title;
-    // let category =
-    //   categoryName == "" ? currentEvent.events[0].category : categoryName;
-    // let image;
-    // // console.log(values)
-    // image = url == undefined ? currentEvent.events[0].image : url;
-    // let mota = mota == "" ? currentEvent.events[0].mota : mota;
-    // console.log(content);
-    // const updateEventInfo = { title, category, image, content };
-    // try {
-    //   const updateEventData = await updateEvent(updateEventInfo, id);
-    //   if (updateEventData["success"]) {
-    //     toast.success("Event edited successfully");
-    //     setTimeout(1500);
-    //     // window.location.reload();
-    //     navigate("/manage/events");
-    //   } else {
-    //     toast.error(updateEventData["message"]);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    console.log(values)
-    console.log(mota)
+    const startDate_day = StartDateValue.date()
+    const startDate_month = StartDateValue.month() + 1
+    const startDate_year = StartDateValue.year()
+    const startDate_hour = StartDateValue.hour()
+    const startDate_minute = StartDateValue.minute()
+    const startDate_second = StartDateValue.second()
+
+    const endDate_day = EndDateValue.date()
+    const endDate_month = EndDateValue.month() + 1
+    const endDate_year = EndDateValue.year()
+    const endDate_hour = EndDateValue.hour()
+    const endDate_minute = EndDateValue.minute()
+    const endDate_second = EndDateValue.second()
+
+    let hinhanh;
+    hinhanh = url == undefined ? detailedevent[0].hinhanh : url;
+    const thoigianbatdau = startDate_month + "/" + startDate_day + "/" + startDate_year + " " + startDate_hour + ":" + startDate_minute + ":" + startDate_second
+    const thoigianketthuc = endDate_month + "/" + endDate_day + "/" + endDate_year + " " + endDate_hour + ":" + endDate_minute + ":" + endDate_second
+    let { tensukien, voucherAmount, gameid } = values
+    const id_game = gameid
+    tensukien = tensukien == "" ? detailedevent[0].tensukien : tensukien;
+    let soluongvoucher
+    soluongvoucher = voucherAmount == 0 ? detailedevent[0].soluongvoucher : voucherAmount;
+    const updateInfor = {tensukien, hinhanh, soluongvoucher, mota, thoigianbatdau, thoigianketthuc, id_game}
+
+    try {
+      const updateEventData = await updateEvent(detailid, updateInfor);
+      if (updateEventData["success"]) {
+        const isQuestionsDeleted = await deleteQuestionEvent(detailid)
+        if(isQuestionsDeleted["success"]) {
+          let allquestionscreated = 0
+          for (let i = 0; i < numQuestions; i++) {
+            const id_sukien = detailid
+            const cauhoi = watch(`questions[${i}].question`)
+            const a = watch(`questions[${i}].answerA`)
+            const b = watch(`questions[${i}].answerB`)
+            const c = watch(`questions[${i}].answerC`)
+            const d = watch(`questions[${i}].answerD`)
+            const dapan = watch(`questions[${i}].correctAnswer`)
+            const newQuestionData = await addQuestion({ id_sukien, cauhoi, a, b, c, d, dapan });
+            if(newQuestionData["success"]) {
+              allquestionscreated = allquestionscreated + 1
+            }
+          }
+          if (allquestionscreated == numQuestions) {
+            toast.success(`Event updated successfully`);
+            navigate("/manage/events");
+          }
+        }
+      } else {
+        toast.error(updateEventData["message"]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -108,6 +148,24 @@ const EventUpdate = () => {
       setEndDateValue(dayjs(event.thoigianketthuc) || dayjs())
     }
   }, [detailedevent]);
+
+  useEffect(() => {
+    if (questions && questions.length > 0) {
+      reset({
+        ...watch(),  // Keep existing values in the form
+        questions: questions.map((question) => ({
+          question: question.questionText,
+          answerA: question.answers[0],
+          answerB: question.answers[1],
+          answerC: question.answers[2],
+          answerD: question.answers[3],
+          correctAnswer: question.correctAnswer,
+          onScreencorrectAnswer: question.correctAnswer,
+        })),
+      });
+      setNumQuestions(questions.length || 0);
+    }
+  }, [questions, reset]);
 
   const handleClickOption = (item) => {
     setValue("voucherId", item.id);
@@ -178,6 +236,8 @@ const EventUpdate = () => {
       ["clean"],
     ],
   };
+
+  console.log(StartDateValue)
 
   return (
     <>
@@ -302,11 +362,9 @@ const EventUpdate = () => {
                     ))}
                   </Dropdown.List>
                 </Dropdown>
-                {numQuestions && (
-                  <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">
-                    {numQuestions}
-                  </span>
-                )}
+                <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">
+                  {numQuestions}
+                </span>
               </Field>
             </div>
     
@@ -422,7 +480,7 @@ const EventUpdate = () => {
               isLoading={loading}
               disabled={loading}
             >
-              Add new Event
+              Update Event
             </Button>
           </form>
       ))}

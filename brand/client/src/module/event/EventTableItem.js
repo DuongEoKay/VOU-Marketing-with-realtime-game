@@ -9,6 +9,7 @@ const truncatetensukien = (tensukien, maxLength) => {
 };
 
 const EventTableItem = ({ event }) => {
+  const date = new Date(event?.thoigianbatdau)
   const truncatedtensukien = truncatetensukien(event.tensukien, 60);
   return (
     <div className="flex items-center gap-x-3">
@@ -19,7 +20,7 @@ const EventTableItem = ({ event }) => {
       />
       <div className="flex-1">
         <h3 className="font-semibold">{truncatedtensukien}</h3>
-        <time className="text-sm text-gray-500">{event?.thoigianbatdau}</time>
+        <time className="text-sm text-gray-500">{date.toLocaleString()}</time>
       </div>
     </div>
   );

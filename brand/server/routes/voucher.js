@@ -406,5 +406,28 @@ module.exports = (pool) => {
         }
     });
 
+    router.delete("/allvoucherofevent/:id" , async (req, res) => {
+        try {
+            const id_event = req.params.id;
+
+            const deleteVoucherSuKien = await pool.query(
+                `DELETE FROM Voucher_SuKien WHERE ID_SuKien = $1`, [id_event]
+            );         
+            if (deleteVoucherSuKien.rowCount >= 0) {
+                return res.json({
+                    success: true,
+                    message: "Voucher successfully deleted",
+                });
+            }
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+              success: false,
+              message: "Internal server error",
+            });
+        }
+    })
+    
     return router;
 }

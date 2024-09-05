@@ -49,7 +49,7 @@ const VoucherContextProvider = ({children}) => {
     const deleteVoucher = async (voucherId) => {
         try {
         const response = await axios.delete(
-            `http://localhost:/brand/api/voucher/${voucherId}`
+            `http://localhost:5000/brand/api/voucher/${voucherId}`
         );
         if (response.data.success) {
             dispatch({ type: "DELETE_VOUCHER", payload: voucherId });
@@ -58,6 +58,21 @@ const VoucherContextProvider = ({children}) => {
         } catch (error) {
         console.log(error);
         }
+    };
+
+    // delete all voucher event
+    const deleteVoucherEvent = async (voucherId) => {
+      try {
+      const response = await axios.delete(
+          `http://localhost:5000/brand/api/voucher/allvoucherofevent/${voucherId}`
+      );
+      if (response.data.success) {
+          dispatch({ type: "DELETE_VOUCHER", payload: voucherId });
+          return response.data;
+      }
+      } catch (error) {
+      console.log(error);
+      }
     };
 
     // getDetailedVoucher
@@ -102,7 +117,8 @@ const VoucherContextProvider = ({children}) => {
       addVoucher,
       deleteVoucher,
       getDetailedVoucher,
-      getAllVouchersEver
+      getAllVouchersEver,
+      deleteVoucherEvent
     };
 
     return (
