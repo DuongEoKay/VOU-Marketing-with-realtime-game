@@ -108,6 +108,29 @@ public class AuthService {
         }
     }
 
+    public AuthResponse adminRegister(AuthRequest authRequest) {
+        //do validation if user already exists
+
+
+        boolean isPhoneExist = Boolean.TRUE.equals(restTemplate.getForObject("http://user-service/users/is-phone-exist/" + authRequest.getPhone(), Boolean.class));
+
+
+        UserVO tempUser = restTemplate.getForObject("http://user-service/users/username/" + authRequest.getUsername(), UserVO.class);
+        if (tempUser != null) {
+            return new AuthResponse(null, null, "Username already exists");
+        }
+        authRequest.setPassword(BCrypt.hashpw(authRequest.getPassword(), BCrypt.gensalt()));
+
+        UserVO userVO = restTemplate.postForObject("http://user-service/users", authRequest, UserVO.class);
+        Assert.notNull(userVO, "Failed to register user. Please try again later");
+
+        String accessToken = jwt.generate(userVO, "ACCESS");
+        String refreshToken = jwt.generate(userVO, "REFRESH");
+
+        return new AuthResponse(accessToken, refreshToken, "User registered successfully");
+
+    }
+
 
     public OtpResponse login(LoginRequest loginRequest) {
         try {

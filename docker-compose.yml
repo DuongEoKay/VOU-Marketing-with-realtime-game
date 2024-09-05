@@ -1,8 +1,7 @@
-version: '4'
+version: '5'
 services:
   db:
     image: postgres
-    container_name: my_postgres
     environment:
       POSTGRES_PASSWORD: 123
       POSTGRES_USER: postgres
