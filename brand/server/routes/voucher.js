@@ -202,16 +202,25 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/voucherofevent/:id", verifyToken, async (req, res) => {
+    router.get("/voucherofevent/:id", async (req, res) => {
         const id_sukien = req.params.id;
         try {
-        const voucher = await pool.query(`SELECT * FROM Voucher_SuKien WHERE ID_SuKien = '${id_sukien}'`)
-        if (!voucher) {
-            return res
-            .status(400)
-            .json({ success: false, message: "There is no voucher of event" });
-        }
-        res.json({ success: true, voucher: voucher.rows });
+            const voucher = await pool.query(`SELECT * FROM Voucher_SuKien WHERE ID_SuKien = '${id_sukien}';`)
+            if (voucher.rows.length === 0) {
+                return res
+                .status(400)
+                .json({ success: false, message: "There is no voucher of event" });
+            }
+            if (voucher.rowCount > 0) {
+                const formatData = await Promise.all(voucher.rows.map(async row => {
+                const ten = await pool.query(`SELECT Ten FROM Voucher WHERE ID_Voucher = '${row.id_voucher}';`)
+                return {
+                        ...row,
+                        tenvoucher: ten.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, voucher: formatData });
+            }
         } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Internal server error" });

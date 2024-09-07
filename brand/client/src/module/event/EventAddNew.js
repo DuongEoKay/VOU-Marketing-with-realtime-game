@@ -16,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { eventContext } from "contexts/eventContext";
 import { questionContext } from "contexts/questionContext";
+import { voucherContext } from "contexts/voucherContext";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react";
@@ -29,6 +30,9 @@ const EventAddNew = () => {
 
   const { addEvent } = useContext(eventContext);
   const { addQuestion } = useContext(questionContext)
+  const { voucherState: { vouchers },  getAllVouchers, addVoucherEvent } = useContext(voucherContext)
+
+  useState(() => getAllVouchers(), [])
 
   const { control, watch, setValue, register, formState: { errors }, handleSubmit } = useForm({
     mode: "onChange",
@@ -41,7 +45,9 @@ const EventAddNew = () => {
       eventEndDate: dayjs(),
       questions: [],
       gamename: "",
-      gameid: ""
+      gameid: "",
+      id_voucher: [],
+      name_voucher: []
     },
   });
 
@@ -74,6 +80,7 @@ const EventAddNew = () => {
   const [EndDateValue, setEndDateValue] = useState(dayjs());
   const [numQuestions, setNumQuestions] = useState(0);
   const [mota, setMota] = useState("");
+  const [vouchersarr, setVouchersArray] = useState([])
 
 
   const addEventHandler = async (values) => {
@@ -125,7 +132,19 @@ const EventAddNew = () => {
               allquestionscreated = allquestionscreated + 1
             }
           }
-          if (allquestionscreated == numQuestions) {
+          const id_sukien = newEventData["event"].id_sukien
+          let totalvoucher = 0
+          if(vouchersarr) {
+            for (let i = 0; i < vouchersarr.length; i++) {
+              const id_voucher = vouchersarr[i].id_voucher
+              const soluong = vouchersarr[i].soluongvoucher
+              const data = { id_sukien, id_voucher, soluong }
+              const newVoucherEvent = await addVoucherEvent(data)
+              if(newVoucherEvent["success"]) totalvoucher += 1
+            }
+          }
+          
+          if (allquestionscreated == numQuestions && (totalvoucher == vouchersarr.length || totalvoucher == 0)) {
             toast.success(`New event added successfully`);
             navigate("/manage/events");
           }
@@ -137,6 +156,10 @@ const EventAddNew = () => {
         console.log(error);
       }
     }
+    // console.log(vouchersarr)
+    // let totalvoucher = 0
+    // for (let i = 0; i < vouchersarr.length; i++) totalvoucher += vouchersarr[i].soluongvoucher
+    // if(totalvoucher > voucherAmount) toast.error("Number voucher is over limit")
   };
 
   useEffect(() => {
@@ -147,6 +170,18 @@ const EventAddNew = () => {
     setValue("voucherId", item.id);
     setValue("voucherAmount", item.amount);
     setSelectvoucherNum(item);
+  };
+
+  const handleClickVoucherOption = (item) => {
+    if(vouchersarr.find(voucher => voucher.id_voucher === item.id_voucher))
+      setVouchersArray(vouchersarr.filter(voucher => voucher.id_voucher != item.id_voucher))
+    else setVouchersArray([...vouchersarr, { ...item, soluongvoucher: 0 }])
+  };
+
+  const handleVoucherInputChange = (id, value) => {
+    setVouchersArray(vouchersarr.map(voucher =>
+      voucher.id_voucher === id ? { ...voucher, soluongvoucher: parseInt(value, 10) } : voucher
+    ));
   };
 
   const handleClickGameOption = (item) => {
@@ -244,6 +279,69 @@ const EventAddNew = () => {
         </div>
         <div className="form-layout">
           <Field>
+            <Label>Game Name</Label>
+            <Dropdown>
+              <Dropdown.Select placeholder="Select game for your Event"></Dropdown.Select>
+              <Dropdown.List>
+                {game.length > 0 &&
+                  game.slice(0).map((item) => (
+                    <Dropdown.Option
+                      key={item.id}
+                      onClick={() => handleClickGameOption(item)}
+                    >
+                      {item.name}
+                    </Dropdown.Option>
+                  ))}
+              </Dropdown.List>
+            </Dropdown>
+            {selectgameName?.name && (
+              <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">
+                {selectgameName?.name}
+              </span>
+            )}
+          </Field>
+          <Field>
+            <Label>Voucher Available</Label>
+            <Dropdown>
+              <Dropdown.Select placeholder="Select Voucher"></Dropdown.Select>
+              <Dropdown.List>
+                {vouchers.length > 0 &&
+                  vouchers.slice(0).map((item) => (
+                    <Dropdown.Option
+                      key={item.id_voucher}
+                      onClick={() => handleClickVoucherOption(item)}
+                    >
+                      {item.ten}
+                    </Dropdown.Option>
+                  ))}
+              </Dropdown.List>
+            </Dropdown>
+            <div className="flex flex-wrap gap-4 mt-2">
+              {vouchersarr.length > 0 &&
+                vouchersarr.map((voucher) => (
+                  <div key={voucher.id_voucher} className="flex items-center gap-2">
+                    <span
+                      key={voucher.id_voucher}
+                      className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50 m-1"
+                    >
+                      {voucher.ten}
+                    </span>
+                    <input
+                      type="number"
+                      placeholder="Enter voucher num"
+                      value={voucher.soluongvoucher}
+                      onChange={(e) => handleVoucherInputChange(voucher.id_voucher, e.target.value)}
+                      className="p-2 border border-gray-300 rounded"
+                      min="0"
+                    />
+                  </div>
+                ))
+              }
+            </div>
+          </Field>
+        </div>
+        <div className="solo-form-layout">
+        <Field>
             <Label>Image</Label>
             <CloudinaryUploader onUpload={handleOnUpload}>
               {({ open }) => {
@@ -288,28 +386,6 @@ const EventAddNew = () => {
                   alt="Uploaded resource"
                 />
               </>
-            )}
-          </Field>
-          <Field>
-            <Label>Game Name</Label>
-            <Dropdown>
-              <Dropdown.Select placeholder="Select game for your Event"></Dropdown.Select>
-              <Dropdown.List>
-                {game.length > 0 &&
-                  game.slice(0).map((item) => (
-                    <Dropdown.Option
-                      key={item.id}
-                      onClick={() => handleClickGameOption(item)}
-                    >
-                      {item.name}
-                    </Dropdown.Option>
-                  ))}
-              </Dropdown.List>
-            </Dropdown>
-            {selectgameName?.name && (
-              <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">
-                {selectgameName?.name}
-              </span>
             )}
           </Field>
         </div>
