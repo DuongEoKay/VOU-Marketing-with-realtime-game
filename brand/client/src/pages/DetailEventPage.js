@@ -10,6 +10,7 @@ import { authContext } from "contexts/authContext";
 import HTMLReactParser from "html-react-parser";
 import BrandItem from "components/brand/BrandItem";
 import EventRelated from "module/event/EventRelated";
+import { voucherContext } from "contexts/voucherContext";
 
 const EventDetailsPageStyles = styled.div`
   padding-bottom: 100px;
@@ -77,7 +78,15 @@ const DetailEventPage = () => {
     authState: { brand },
   } = useContext(authContext);
 
+  const {
+    voucherState: { voucherevent },
+    getVoucherEvent
+  } = useContext(voucherContext)
+
   useState(() => getAllEventsEver(), []);
+  useState(() => getVoucherEvent(detailid), []);
+
+  console.log(voucherevent)
 
   let relatedEvents = allevents.filter((event) => {
     return (
@@ -100,8 +109,14 @@ const DetailEventPage = () => {
                   className="event-feature"
                 ></EventImage>
                 <div className="event-info">
-                  <EventVoucherNum className="mb-6">Vouchers Available: {event.soluongvoucher}</EventVoucherNum>
-                  <h1 className="event-heading">{event.tensukien}</h1>
+                  <EventVoucherNum className="mb-4">Vouchers Available:</EventVoucherNum>
+                  {voucherevent.map((voucher, i) => (
+                    <div key={i} className="ml-4 mb-4">
+                      <span className="text-white bg-green-600 p-1 rounded">{voucher.tenvoucher}</span>
+                      <span className="ml-4 text-white bg-red-600 p-1 rounded">{voucher.soluong}</span>
+                    </div>
+                  ))}
+                  <h1 className="event-heading mt-8">{event.tensukien}</h1>
                   <EventMeta
                     startdate={event.thoigianbatdau}
                     enddate={event.thoigianketthuc}

@@ -10,6 +10,7 @@ const VoucherContextProvider = ({children}) => {
         vouchers: [],
         detailedvoucher: [],
         allvouchers: [],
+        voucherevent: [],
         vouchersLoading: true,
     });
 
@@ -45,6 +46,21 @@ const VoucherContextProvider = ({children}) => {
         }
     };
 
+    // add voucher of event
+    const addVoucherEvent = async (Data) => {
+      try {
+        const response = await axios.post("http://localhost:5000/brand/api/voucher/createvoucherevent", Data);
+        if (response.data.success) {
+          dispatch({ type: "ADD_VOUCHER_EVENT", payload: response.data.voucher });
+          return response.data;
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+      }
+    };
+
     // delete voucher
     const deleteVoucher = async (voucherId) => {
         try {
@@ -74,6 +90,21 @@ const VoucherContextProvider = ({children}) => {
       console.log(error);
       }
     };
+
+    const getVoucherEvent = async (eventId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/brand/api/voucher/voucherofevent/${eventId}`
+        );
+        console.log(response)
+        if (response.data.success) {
+            dispatch({ type: "VOUCHER_OF_EVENT", payload: response.data.voucher });
+            return response.data;
+        }
+        } catch (error) {
+        console.log(error);
+      }
+    }
 
     // getDetailedVoucher
     const getDetailedVoucher = async (VoucherId) => {
@@ -118,7 +149,9 @@ const VoucherContextProvider = ({children}) => {
       deleteVoucher,
       getDetailedVoucher,
       getAllVouchersEver,
-      deleteVoucherEvent
+      deleteVoucherEvent,
+      addVoucherEvent,
+      getVoucherEvent
     };
 
     return (

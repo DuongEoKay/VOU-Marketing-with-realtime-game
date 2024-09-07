@@ -188,6 +188,9 @@ DELETE http://localhost:5000/brand/api/voucher/VC00000001
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTU0NDM5NX0.fsKYorW-3eDeSkz2DnZbriOAKJycYm9YQRlnACs6QdI
 
 ###
+GET http://localhost:5000/brand/api/voucher/voucherofevent/EV00000001
+
+###
 PUT http://localhost:5000/brand/api/voucher/VC00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
