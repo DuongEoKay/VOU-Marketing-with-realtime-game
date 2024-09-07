@@ -1,7 +1,8 @@
 package com.vanduong.userservice.controller;
 
 import com.vanduong.userservice.entities.User;
-import com.vanduong.userservice.entities.value_objects.ResponseTemplateVO;
+import com.vanduong.userservice.entities.VoucherRequest;
+import com.vanduong.userservice.entities.VoucherResponse;
 import com.vanduong.userservice.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,21 @@ public class UserController {
     public ResponseEntity<Boolean> isPhoneExist(@PathVariable String phone) {
         boolean isPhoneExist = userService.isPhoneExist(phone);
         return ResponseEntity.ok(isPhoneExist);
+    }
+
+    @GetMapping(value = "/voucher/{id}")
+    public ResponseEntity<VoucherResponse> getVoucherByUserId(@PathVariable ObjectId id) {
+        return userService.getVoucherByUserId(id);
+    }
+
+    @PostMapping(value = "/voucher/{id}")
+    public ResponseEntity<VoucherResponse> addVoucherToUser(@PathVariable ObjectId id, @RequestBody VoucherRequest voucherRequest) {
+        return userService.addVoucherToUser(id, voucherRequest);
+    }
+
+    @PostMapping(value = "/remove-voucher/{id}")
+    public ResponseEntity<VoucherResponse> removeVoucherFromUser(@PathVariable ObjectId id, @RequestBody VoucherRequest voucherRequest) {
+        return userService.removeVoucherFromUser(id, voucherRequest);
     }
 
 

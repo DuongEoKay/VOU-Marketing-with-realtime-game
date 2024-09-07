@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-
+import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,9 +42,22 @@ public class User {
 
     private USER_ROLE role;
 
-    private boolean isActive=true;
+    private boolean isActive = true;
 
+    private Map<String, Integer> vouchers = new HashMap<>();
 
+    public void addVoucher(String voucherId, int quantity) {
+        this.vouchers.put(voucherId, this.vouchers.getOrDefault(voucherId, 0) + quantity);
+    }
 
+    public void removeVoucher(String voucherId, int quantity) {
+        if (this.vouchers.containsKey(voucherId)) {
+            int currentQuantity = this.vouchers.get(voucherId);
+            if (currentQuantity <= quantity) {
+                this.vouchers.remove(voucherId);
+            } else {
+                this.vouchers.put(voucherId, currentQuantity - quantity);
+            }
+        }
+    }
 }
-

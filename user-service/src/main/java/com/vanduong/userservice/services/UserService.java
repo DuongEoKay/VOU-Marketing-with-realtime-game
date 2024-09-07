@@ -1,16 +1,21 @@
 package com.vanduong.userservice.services;
 
 import com.vanduong.userservice.entities.User;
+import com.vanduong.userservice.entities.VoucherRequest;
+import com.vanduong.userservice.entities.VoucherResponse;
 import com.vanduong.userservice.entities.value_objects.Department;
 import com.vanduong.userservice.entities.value_objects.ResponseTemplateVO;
 import com.vanduong.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -45,9 +50,8 @@ public class UserService {
     }
 
     public User getByUsername(String username) {
-    return this.repository.findByUsername(username).orElse(null);
-}
-
+        return this.repository.findByUsername(username).orElse(null);
+    }
 
 
     public List<User> getAllUser() {
@@ -61,5 +65,39 @@ public class UserService {
 
     public boolean isPhoneExist(String phone) {
         return this.repository.existsByPhone(phone);
+    }
+
+    public ResponseEntity<VoucherResponse> getVoucherByUserId(ObjectId id) {
+        User user = this.repository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Integer> vouchers = user.getVouchers();
+        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),vouchers));
+    }
+
+
+    public ResponseEntity<VoucherResponse> addVoucherToUser(ObjectId id, VoucherRequest voucherRequest) {
+        User user = this.repository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        user.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+        this.repository.save(user);
+        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
+    }
+
+    public ResponseEntity<VoucherResponse> removeVoucherFromUser(ObjectId id, VoucherRequest voucherRequest) {
+        User user = this.repository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        user.removeVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+        this.repository.save(user);
+        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
+
     }
 }
