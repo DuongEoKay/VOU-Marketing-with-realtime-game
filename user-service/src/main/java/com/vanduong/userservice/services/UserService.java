@@ -1,5 +1,6 @@
 package com.vanduong.userservice.services;
 
+import com.vanduong.userservice.entities.BasicResponse;
 import com.vanduong.userservice.entities.User;
 import com.vanduong.userservice.entities.VoucherRequest;
 import com.vanduong.userservice.entities.VoucherResponse;
@@ -84,7 +85,15 @@ public class UserService {
             return null;
         }
 
+
+
         user.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+
+        user.setPoint(user.getPoint()-voucherRequest.getPoint());
+
+        if(user.getPoint()<0){
+            return ResponseEntity.badRequest().body(new VoucherResponse("Not enough point",null));
+        }
         this.repository.save(user);
         return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
     }
@@ -100,4 +109,18 @@ public class UserService {
         return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
 
     }
+
+    public ResponseEntity<BasicResponse> addPointToUser(ObjectId id, int point) {
+        User user = this.repository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        user.setPoint(user.getPoint() + point);
+        this.repository.save(user);
+        return ResponseEntity.ok(new BasicResponse("Add point successfully"));
+    }
+
+
+
 }

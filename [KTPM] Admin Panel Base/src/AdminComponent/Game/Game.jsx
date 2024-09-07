@@ -1,9 +1,10 @@
 import { Card, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
 import React from 'react'
-import { FoodCategoryTable } from './FoodCategoryTable'
+import { GameTable, UserTable } from './GameTable';
 
 
-export const FoodCategory = () => {
+
+export const Game = () => {
   const [filterValue, setFilterValue] = React.useState('all')
 
   const handleFilter=(e)=>{
@@ -11,7 +12,7 @@ export const FoodCategory = () => {
   }
   return (
     <div className='px-2'>
-      <FoodCategoryTable/>
+      <GameTable/>
     </div>
   )
 }

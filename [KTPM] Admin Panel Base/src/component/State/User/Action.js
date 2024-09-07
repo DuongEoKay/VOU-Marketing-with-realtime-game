@@ -42,6 +42,26 @@ export const createUserItem = ({values, jwt}) => {
     };
 };
 
+export const getUserById = async (reqData) => {
+    
+    try {
+            const {data} = await api.get(`/users/${reqData.id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${reqData.jwt}`
+                }
+                
+            });
+            console.log("get user by id",data);
+            return data;
+        } catch (error) {
+            console.log("catch error",error);
+            return error;
+        }
+
+
+};
+
 export const getAllUser = (reqData) => {
    return async (dispatch) => {
         dispatch({type: GET_ALL_USER_REQUEST});
@@ -63,23 +83,7 @@ export const getAllUser = (reqData) => {
 };
 
 
-export const searchUSERItem =({keyword, jwt}) => {
-    return async (dispatch) => {
-        dispatch({type: SEARCH_USER_ITEM_REQUEST});
-        try {
-            const {data} = await api.get(`/food/search?name=${keyword}`,{
-                headers: {
-                    Authorization: `Bearer ${jwt}`
-                }
-            });
-            dispatch({type: SEARCH_USER_ITEM_SUCCESS, payload: data});
-            console.log("search USER item",data);
-        } catch (error) {
-            console.log("catch error",error);
-            dispatch({type: SEARCH_USER_ITEM_FAILURE, payload: error});
-        }
-    };
-}
+
 
 // export const getAllIngredientsOfUSERItem = (reqData) => {
 //     return async (dispatch) => {
@@ -100,7 +104,7 @@ export const searchUSERItem =({keyword, jwt}) => {
 // }
 
 
-export const updateUSERItemsAvailability=({foodId, jwt}) => {
+export const updateUser=({foodId, jwt}) => {
     return async (dispatch) => {
         dispatch({type: UPDATE_USER_ITEMS_AVAILABILITY_REQUEST});
         try {

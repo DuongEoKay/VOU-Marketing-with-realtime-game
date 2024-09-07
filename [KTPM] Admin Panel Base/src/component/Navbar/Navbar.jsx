@@ -24,7 +24,7 @@ export const Navbar = () => {
         }
     }
     const handleLogoClick = () => {
-        navigate('/')
+        navigate('/admin')
     }
 
 

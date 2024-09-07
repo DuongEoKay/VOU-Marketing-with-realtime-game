@@ -8,15 +8,15 @@ import { Delete, Edit as EditIcon, Add as AddIcon } from '@mui/icons-material';
 import FilterComponent from './FilterComponent';
 import { RegisterForm } from '../../component/Auth/RegisterForm';
 import { useLocation } from 'react-router-dom'
-import { UpdateUserForm } from './UpdateUserForm';
+import { getAllGame } from '../../component/State/Game/Action';
+import { CreateGameForm } from './CreateGameForm';
+import { UpdateGameForm } from './UpdateGameForm';
 
-export const UserTable = () => {
-    const [selectedUserId, setSelectedUserId] = useState(null);
+export const GameTable = () => {
     const location = useLocation()
 
     const handleOnClose = () => {
-        setSelectedUserId(null);
-        navigate('/admin/user')
+        navigate('/admin/game')
     }
 
     const style = {
@@ -32,71 +32,50 @@ export const UserTable = () => {
         
     };
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state);
+    const { game } = useSelector(state => state);
     const navigate = useNavigate();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     useEffect(() => {
-        dispatch(getAllUser({ jwt: localStorage.getItem('jwt') }));
+        dispatch(getAllGame({ jwt: localStorage.getItem('jwt') }));
     }, [dispatch]);
 
     const handleRemoveUser = (userId) => {
         dispatch(deleteFoodAction({ userId, jwt: localStorage.getItem('jwt') }));
     };
 
-
-
     const columns = [
         {
             name: 'ID',
             selector: row => row.id,
             sortable: true,
-        },
+        },,
         {
-            name: 'Avatar',
-            cell: row => <Avatar src={row.avatar} />,
-        },
-        {
-            name: 'Fullname',
-            selector: row => row.fullName,
+            name: 'Name',
+            selector: row => row.name,
             sortable: true,
         },
         {
-            name: 'Email',
-            selector: row => row.email,
+            name: 'Image',
+            cell: row => <Avatar src={row.image} />,
+        },
+        {
+            name: 'Type',
+            selector: row => row.type,
             sortable: true,
         },
         {
-            name: 'Phone',
-            selector: row => row.phone,
+            name: 'Allow Exchange?',
+            selector: row => (row.allowItemExchange? 'Yes' : 'No'),
             sortable: true,
         },
         {
-            name: 'Username',
-            selector: row => row.username,
+            name: 'Instruction',
+            selector: row => row.instructions,
             sortable: true,
         },
-        {
-            name: 'Date Of Birth',
-            selector: row => row.dateOfBirth,
-            sortable: true,
-        },
-        {
-            name: 'Gender',
-            selector: row => row.sex,
-            sortable: true,
-        },
-        {
-            name: 'Facebook',
-            selector: row => row.facebook,
-            sortable: true,
-        },
-        {
-            name: 'Role',
-            selector: row => row.role,
-            sortable: true,
-        },
+
         {
             name: 'Active?',
             selector: row => (row.active ? 'Yes' : 'No'),
@@ -106,7 +85,7 @@ export const UserTable = () => {
             name: 'Update',
             cell: row => (
                 <>
-                    <IconButton onClick={() => {handleUpdateClick(row.id)}}>
+                    <IconButton onClick={() => navigate(`/admin/restaurant/edit-user/${row.id}`)}>
                         <EditIcon style={{ color: 'black' }}/>
                     </IconButton>
                 </>
@@ -124,7 +103,10 @@ export const UserTable = () => {
         },
     ];
 
-    const filteredItems = user.user.filter(
+
+    console.log("game",game);
+
+    const filteredItems = game.game.filter(
         item => JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1
     );
 
@@ -145,19 +127,14 @@ export const UserTable = () => {
         );
     }, [filterText, resetPaginationToggle]);
 
-    const handleRegisterClick = () => {
-        navigate('/admin/user/register');
-    };
-    const handleUpdateClick = (id) => {
-        setSelectedUserId(id);
-        console.log("id", id);
-        navigate('/admin/user/update');
+    const handleAddGameClick = () => {
+        navigate('/admin/game/create');
     };
 
     return (
         <div>
             <DataTable
-                title="Manage All Users"
+                title="Manage All Games"
                 columns={columns}
                 data={filteredItems}
                 defaultSortField="fullName"
@@ -166,22 +143,15 @@ export const UserTable = () => {
                 subHeader
                 subHeaderComponent={subHeaderComponent}
             />
-            <a style={{ marginRight: '50px', color: 'blue', float: 'right' }}  onClick={handleRegisterClick}> Add New User ?</a>
+            <a style={{ marginRight: '50px', color: 'blue', float: 'right' }}  onClick={handleAddGameClick}> Add New Game ?</a>
             <Modal
-                open={location.pathname === '/admin/user/register'}
+                open={location.pathname === '/admin/game/create'}
                 onClose={handleOnClose}
             >
                 <Box sx={style}>
-                    <RegisterForm />
+                    <CreateGameForm />
                 </Box>
-            </Modal>
-            <Modal
-                open={location.pathname === '/admin/user/update'}
-                onClose={handleOnClose}
-            >
-                <Box sx={style}>
-                    <UpdateUserForm id={selectedUserId}/>
-                </Box>
+
             </Modal>
         </div>
     );

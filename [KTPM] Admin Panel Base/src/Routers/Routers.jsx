@@ -6,7 +6,7 @@ import { CustomerRoute } from './CustomerRoute'
 const Routers = () => {
   return (
     <Routes>
-        <Route path='/admin/restaurant/*' element={<AdminRoute/>}/>
+        <Route path='/admin/*' element={<AdminRoute/>}/>
         <Route path='/*' element={<CustomerRoute/>}/>
     </Routes>
 

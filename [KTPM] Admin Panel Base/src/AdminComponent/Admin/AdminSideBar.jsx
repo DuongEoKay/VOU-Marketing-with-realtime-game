@@ -20,9 +20,9 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 
 
 const menu = [
-    { name: 'Dashboard', icon: <BarChartIcon />, link: '/menu' },
+    { name: 'Dashboard', icon: <BarChartIcon />, link: '/dashboard' },
     { name: 'User', icon: <PersonIcon />, link: '/user' },
-    { name: 'Game', icon: <VideogameAssetIcon />, link: '/menu' },
+    { name: 'Game', icon: <VideogameAssetIcon />, link: '/game' },
     { name: 'Logout', icon: <LogoutIcon />, link: '/' },
 ]
 
@@ -36,7 +36,7 @@ export const AdminSideBar = ({handleClose}) => {
             navigate('/')
         }
         else
-        navigate(`/admin/restaurant${item.link}`)
+        navigate(`/admin${item.link}`)
     }
     
     const isSmallScreen = useMediaQuery('(max-width:1080px)')

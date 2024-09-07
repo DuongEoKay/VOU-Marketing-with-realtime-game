@@ -1,13 +1,12 @@
-import { AddPhotoAlternate, DateRange, Face } from '@mui/icons-material';
-import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, circularProgressClasses, makeStyles } from '@mui/material';
+import { AddPhotoAlternate, Face } from '@mui/icons-material';
+import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, circularProgressClasses } from '@mui/material';
 import { Field, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { upload2Cloudinary } from '../../AdminComponent/Utils/Upload2Cloudinary';
+import { upload2Cloudinary } from '../Utils/Upload2Cloudinary';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../State/Authentication/Action';
+import { updateUser, getUserById } from '../../component/State/User/Action';
 import { useNavigate } from 'react-router-dom';
-
 
 const initialValues = {
   email: '',
@@ -20,14 +19,17 @@ const initialValues = {
   dateOfBirth: '',
   sex: '',
   facebook: '',
+  active: true,
+  point: 0,
+  voucher: [],
+  
 };
 
-
-
-export const RegisterForm = () => {
+export const UpdateUserForm = ({ id }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [uploadImage, setUploadImage] = useState(false);
+  const [user, setUser] = useState(initialValues);
 
   const handleImageChange = async (e, setFieldValue) => {
     const file = e.target.files[0];
@@ -38,17 +40,28 @@ export const RegisterForm = () => {
   };
 
   const handleSubmit = (values) => {
-    const jwt=localStorage.getItem('jwt')
-    dispatch(registerUser({ userData: values,jwt, navigate }));
+    const jwt = localStorage.getItem('jwt');
+    dispatch(updateUser({ userData: values, jwt, navigate }));
   };
+
+  useEffect(() => {
+    if (id) {
+      const fetchUser = async () => {
+        const userData = await getUserById({ id, jwt: localStorage.getItem('jwt') });
+        setUser(userData);
+        console.log(userData);
+      };
+      fetchUser();
+    }
+  }, [id]);
 
   return (
     <div>
       <Typography variant='h5' className='text-center'>
-        Register
+        Update
       </Typography>
 
-      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+      <Formik onSubmit={handleSubmit} initialValues={user} enableReinitialize>
         {({ handleSubmit, setFieldValue, values }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -90,8 +103,6 @@ export const RegisterForm = () => {
                   variant='outlined'
                   fullWidth
                   margin='normal'
-                  type='date'
-
 
                 />
               </Grid>
@@ -116,27 +127,17 @@ export const RegisterForm = () => {
                   margin='normal'
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={2}>
                 <Field
                   as={TextField}
-                  name='username'
-                  label='Username'
+                  name='point'
+                  label='Point'
                   variant='outlined'
                   fullWidth
                   margin='normal'
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  as={TextField}
-                  name='password'
-                  label='Password'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
-                  type='password'
-                />
-              </Grid>
+
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth margin='normal'>
                   <InputLabel id="role-simple-select-label">Role</InputLabel>
@@ -191,9 +192,24 @@ export const RegisterForm = () => {
                   )}
                 </div>
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth margin='normal'>
+                  <InputLabel id="role-simple-select-label">Active?</InputLabel>
+                  <Field
+                    as={Select}
+                    labelId="role-simple-select-label"
+                    id="role-simple-select"
+                    label="Active"
+                    name='active'
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </Field>
+                </FormControl>
+              </Grid>
             </Grid>
             <Button sx={{ mt: 2, padding: "1rem" }} fullWidth variant='contained' type='submit' color='primary'>
-              Register
+              Update
             </Button>
           </form>
         )}

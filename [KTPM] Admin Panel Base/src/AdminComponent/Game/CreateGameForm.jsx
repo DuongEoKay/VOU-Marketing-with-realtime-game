@@ -1,30 +1,23 @@
-import { AddPhotoAlternate, DateRange, Face } from '@mui/icons-material';
-import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, circularProgressClasses, makeStyles } from '@mui/material';
+import { AddPhotoAlternate, Face } from '@mui/icons-material';
+import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, circularProgressClasses } from '@mui/material';
 import { Field, Formik } from 'formik';
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { upload2Cloudinary } from '../../AdminComponent/Utils/Upload2Cloudinary';
+import { upload2Cloudinary } from '../Utils/Upload2Cloudinary';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../State/Authentication/Action';
+import { createGame } from '../../component/State/Game/Action';
 import { useNavigate } from 'react-router-dom';
 
-
 const initialValues = {
-  email: '',
-  fullName: '',
-  password: '',
-  role: '',
-  phone: '',
-  username: '',
-  avatar: '',
-  dateOfBirth: '',
-  sex: '',
-  facebook: '',
+  name: '',
+  image: '',
+  type: '',
+  allowItemExchange: true,
+  instructions: '',
+  active: true,
 };
 
-
-
-export const RegisterForm = () => {
+export const CreateGameForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [uploadImage, setUploadImage] = useState(false);
@@ -33,19 +26,19 @@ export const RegisterForm = () => {
     const file = e.target.files[0];
     setUploadImage(true);
     const image = await upload2Cloudinary(file);
-    setFieldValue('avatar', image);
+    setFieldValue('image', image);
     setUploadImage(false);
   };
 
   const handleSubmit = (values) => {
-    const jwt=localStorage.getItem('jwt')
-    dispatch(registerUser({ userData: values,jwt, navigate }));
+    const jwt = localStorage.getItem('jwt')
+    dispatch(createGame({ userData: values, jwt, navigate }));
   };
 
   return (
     <div>
       <Typography variant='h5' className='text-center'>
-        Register
+        Create Game
       </Typography>
 
       <Formik onSubmit={handleSubmit} initialValues={initialValues}>
@@ -55,8 +48,8 @@ export const RegisterForm = () => {
               <Grid item xs={12} sm={12}>
                 <Field
                   as={TextField}
-                  name='fullName'
-                  label='Fullname'
+                  name='name'
+                  label='Game name'
                   variant='outlined'
                   fullWidth
                   margin='normal'
@@ -65,96 +58,44 @@ export const RegisterForm = () => {
               <Grid item xs={12} sm={12}>
                 <Field
                   as={TextField}
-                  name='email'
-                  label='Email'
+                  name='type'
+                  label='Type'
                   variant='outlined'
                   fullWidth
                   margin='normal'
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <Field
                   as={TextField}
-                  name='phone'
-                  label='Phone'
+                  name='instructions'
+                  label='Instruction'
                   variant='outlined'
                   fullWidth
                   margin='normal'
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  as={TextField}
-                  name='dateOfBirth'
-                  label='Date of Birth'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
-                  type='date'
-
-
-                />
-              </Grid>
-              <Grid item xs={12} sm={2}>
-                <Field
-                  as={TextField}
-                  name='sex'
-                  label='Sex'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
+                  multiline
+                  rows={4}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={10}>
-                <Field
-                  as={TextField}
-                  name='facebook'
-                  label='Facebook'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  as={TextField}
-                  name='username'
-                  label='Username'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Field
-                  as={TextField}
-                  name='password'
-                  label='Password'
-                  variant='outlined'
-                  fullWidth
-                  margin='normal'
-                  type='password'
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={2.5}>
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id="role-simple-select-label">Role</InputLabel>
+                  <InputLabel id="role-simple-select-label">Allow Item Exchange?</InputLabel>
                   <Field
                     as={Select}
                     labelId="role-simple-select-label"
                     id="role-simple-select"
-                    label="Role"
-                    name='role'
+                    label="Allow Item Exchange?"
+                    name='allowItemExchange'
                   >
-                    <MenuItem value={'ROLE_CUSTOMER'}>Customer</MenuItem>
-                    <MenuItem value={'ROLE_BRAND_OWNER'}>Brand Owner</MenuItem>
-                    <MenuItem value={'ROLE_ADMIN'}>Admin</MenuItem>
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+
                   </Field>
                 </FormControl>
               </Grid>
               <Grid className='flex flex-wrap gap-5' item xs={12}>
-                <label>Avatar</label>
+                <label>Image</label>
                 <input
                   accept='image/*'
                   id='fileInput'
@@ -173,12 +114,12 @@ export const RegisterForm = () => {
                   )}
                 </label>
                 <div className='flex flex-wrap gap-2'>
-                  {values.avatar && (
+                  {values.image && (
                     <div className='relative'>
                       <img
                         className='w-24 h-24 object-cover'
-                        src={values.avatar}
-                        alt='Avatar'
+                        src={values.image}
+                        alt='Image'
                       />
                       <IconButton
                         size='small'
@@ -193,7 +134,7 @@ export const RegisterForm = () => {
               </Grid>
             </Grid>
             <Button sx={{ mt: 2, padding: "1rem" }} fullWidth variant='contained' type='submit' color='primary'>
-              Register
+              Create
             </Button>
           </form>
         )}

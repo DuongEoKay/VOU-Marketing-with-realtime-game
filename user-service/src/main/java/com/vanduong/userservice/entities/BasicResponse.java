@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VoucherRequest {
-    private String voucher;
-    private int quantity;
-    private int point;
+public class BasicResponse {
+    private String message;
 }

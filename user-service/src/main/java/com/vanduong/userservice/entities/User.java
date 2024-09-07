@@ -44,6 +44,8 @@ public class User {
 
     private boolean isActive = true;
 
+    private int point=1000;
+
     private Map<String, Integer> vouchers = new HashMap<>();
 
     public void addVoucher(String voucherId, int quantity) {

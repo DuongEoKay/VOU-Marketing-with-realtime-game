@@ -8,14 +8,26 @@ export const registerUser = (data) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST })
 
     try {
-        
-        const {data:res} = await axios.post(`${API_URL}/auth/register`, data.userData)
 
-        console.log("data", data.userData)
+        console.log("data gui tu form", data)
+
+
+        
+        const {data:res} = await axios.post(`${API_URL}/auth/admin-register`, data.userData,
+            {
+                headers: {
+                    Authorization: `Bearer ${data.jwt}`
+                }
+            }
+        )
+
+        data.navigate("/admin/user")
+
+
         console.log("res", res)
         
+        
 
-        data.navigate("/")
 
         console.log("register success", res)
         dispatch({ type: REGISTER_SUCCESS, payload: res.jwt })
@@ -37,8 +49,9 @@ export const loginUser = (data) => async (dispatch) => {
         console.log("data", data.userData)
         if (res.accessToken) {
             localStorage.setItem("jwt", res.accessToken)
+
             
-            data.navigate("/admin/restaurant")
+            data.navigate("/admin")
         }
         else {
             data.navigate("/account/otp")
@@ -134,6 +147,8 @@ export const logout = () => async (dispatch) => {
     }
 
 }
+
+
 
 
 
