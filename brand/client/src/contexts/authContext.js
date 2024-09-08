@@ -20,7 +20,8 @@ const AuthContextProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get("http://localhost:5000/brand/api/brand");
+      const response = await axios.get("http://localhost:8080/brand/api/brand");
+      console.log(response)
       if (response.data.success) {
         dispatch({
           type: "SET_AUTH",
@@ -43,7 +44,7 @@ const AuthContextProvider = ({ children }) => {
   const loginBrand = async (Brand) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/brand/api/brand/login",
+        "http://localhost:8080/brand/api/brand/login",
         Brand
       );
       if (response.data.success) {
@@ -60,21 +61,52 @@ const AuthContextProvider = ({ children }) => {
       } else return { success: false, message: error.message };
     }
   };
+
+  const loginUser = async (brand) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/auth/login",
+        brand
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.data) {
+        return error.response.data;
+      } else return { success: false, message: error.message };
+    }
+  }
+
+  const validateOtp = async (brand) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/auth/validate-otp",
+        brand
+      );
+      console.log("otp", response.data)
+      if (response.data.accessToken) {
+        localStorage.setItem(
+          LOCAL_STORAGE_TOKEN_NAME,
+          response.data.accessToken
+        );
+      }
+      await loadBrand();
+      return response.data;
+    } catch (error) {
+      if (error.response.data) {
+        return error.response.data;
+      } else return { success: false, message: error.message };
+    }
+  }
 
   const registerBrand = async (Brand) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/brand/api/brand/register",
+        "http://localhost:8080/brand/api/brand/register",
         Brand
       );
       if (response.data.success) {
-        localStorage.setItem(
-          LOCAL_STORAGE_TOKEN_NAME,
-          response.data.accessToken
-        );
+        await loadBrand();
       }
-
-      await loadBrand();
       return response.data;
     } catch (error) {
       if (error.response.data) {
@@ -82,6 +114,41 @@ const AuthContextProvider = ({ children }) => {
       } else return { success: false, message: error.message };
     }
   };
+
+  const registerUser = async (Brand) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/auth/register",
+        Brand
+      );
+      if (response.data.accessToken) {
+        localStorage.setItem(
+          LOCAL_STORAGE_TOKEN_NAME,
+          response.data.accessToken
+        );
+      }
+      if (localStorage[LOCAL_STORAGE_TOKEN_NAME]) {
+        setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
+      }
+      return response.data;
+    } catch (error) {
+      if (error.response.data) {
+        return error.response.data;
+      } else return { success: false, message: error.message };
+    }
+  };
+
+  const phoneValidate = async (phone) => {
+    try {
+      const response = await axios.post("http://localhost:8080/auth/validate-phone", phone)
+      return response.data;
+    }
+    catch (error) {
+      if (error.response.data) {
+        return error.response.data;
+      } else return { success: false, message: error.message };
+    }
+  }
 
   const logoutBrand = () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
@@ -93,7 +160,7 @@ const AuthContextProvider = ({ children }) => {
 
   const allBrand = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/brand/api/brand/allbrand");
+      const response = await axios.get("http://localhost:8080/brand/api/brand/allbrand");
       if (response.data.success) {
         dispatch({
           type: "ALL_BRAND",
@@ -112,7 +179,7 @@ const AuthContextProvider = ({ children }) => {
   const updateBrand = async (Brand, id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/brand/api/brand/${id}`,
+        `http://localhost:8080/brand/api/brand/${id}`,
         Brand
       );
       await loadBrand();
@@ -132,6 +199,10 @@ const AuthContextProvider = ({ children }) => {
     logoutBrand,
     allBrand,
     updateBrand,
+    phoneValidate,
+    loginUser,
+    validateOtp,
+    registerUser
   };
 
   // return provider

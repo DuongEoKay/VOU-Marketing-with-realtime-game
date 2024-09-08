@@ -17,7 +17,7 @@ const VoucherContextProvider = ({children}) => {
     // get all vouchers
     const getAllVouchers = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/brand/api/voucher/");
+          const response = await axios.get("http://localhost:8080/brand/api/voucher/");
           if (response.data.success) {
             dispatch({
               type: "VOUCHERS_LOADED_SUCCESS",
@@ -34,7 +34,8 @@ const VoucherContextProvider = ({children}) => {
     // add voucher
     const addVoucher = async (Voucher) => {
         try {
-          const response = await axios.post("http://localhost:5000/brand/api/voucher/create", Voucher);
+          const response = await axios.post("http://localhost:8080/brand/api/voucher/create", Voucher);
+          console.log(response)
           if (response.data.success) {
             dispatch({ type: "ADD_VOUCHER", payload: response.data.voucher });
             return response.data;
@@ -49,7 +50,7 @@ const VoucherContextProvider = ({children}) => {
     // add voucher of event
     const addVoucherEvent = async (Data) => {
       try {
-        const response = await axios.post("http://localhost:5000/brand/api/voucher/createvoucherevent", Data);
+        const response = await axios.post("http://localhost:8080/brand/api/voucher/createvoucherevent", Data);
         if (response.data.success) {
           dispatch({ type: "ADD_VOUCHER_EVENT", payload: response.data.voucher });
           return response.data;
@@ -65,7 +66,7 @@ const VoucherContextProvider = ({children}) => {
     const deleteVoucher = async (voucherId) => {
         try {
         const response = await axios.delete(
-            `http://localhost:5000/brand/api/voucher/${voucherId}`
+            `http://localhost:8080/brand/api/voucher/${voucherId}`
         );
         if (response.data.success) {
             dispatch({ type: "DELETE_VOUCHER", payload: voucherId });
@@ -80,7 +81,7 @@ const VoucherContextProvider = ({children}) => {
     const deleteVoucherEvent = async (voucherId) => {
       try {
       const response = await axios.delete(
-          `http://localhost:5000/brand/api/voucher/allvoucherofevent/${voucherId}`
+          `http://localhost:8080/brand/api/voucher/allvoucherofevent/${voucherId}`
       );
       if (response.data.success) {
           dispatch({ type: "DELETE_VOUCHER", payload: voucherId });
@@ -94,7 +95,7 @@ const VoucherContextProvider = ({children}) => {
     const getVoucherEvent = async (eventId) => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/brand/api/voucher/voucherofevent/${eventId}`
+          `http://localhost:8080/brand/api/voucher/voucherofevent/${eventId}`
         );
         console.log(response)
         if (response.data.success) {
@@ -110,7 +111,7 @@ const VoucherContextProvider = ({children}) => {
     const getDetailedVoucher = async (VoucherId) => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/brand/api/voucher/detailvoucher/${VoucherId}`
+          `http://localhost:8080/brand/api/voucher/detailvoucher/${VoucherId}`
         );
         if (response.data.success) {
           dispatch({
@@ -128,7 +129,7 @@ const VoucherContextProvider = ({children}) => {
 
     const getAllVouchersEver = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/brand/api/voucher/allvoucher`);
+        const response = await axios.get(`http://localhost:8080/brand/api/voucher/allvoucher`);
         if (response.data.success) {
           dispatch({
             type: "ALL",

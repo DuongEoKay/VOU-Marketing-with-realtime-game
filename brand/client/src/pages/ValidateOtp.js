@@ -10,10 +10,11 @@ import { toast } from "react-toastify";
 import InputPasswordToggle from "../components/input/InputPasswordToggle";
 import { authContext } from "../contexts/authContext";
 
-const SignInPage = () => {
-  const { loginUser } = useContext(authContext);
+const ValidateOtpPage = () => {
+  const { validateOtp } = useContext(authContext);
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation()
+  const username = location.state?.username || ""
 
   const {
     control,
@@ -36,12 +37,12 @@ const SignInPage = () => {
   }, []);
 
   const handleSignIn = async (values) => {
-    const { username, password } = values;
+    const { otp } = values;
     try {
-      const loginData = await loginUser({ 'username': username, 'password':password });
-      if (loginData["valid"]) {
+      const loginData = await validateOtp({ 'username': username, 'otp': otp });
+      if (loginData["accessToken"]) {
         toast.success(loginData["message"]);
-        navigate("/validate-otp", { state: { username } });
+        // navigate("/validate-otp", { state: { username } });
       } else {
         toast.error(loginData["message"]);
       }
@@ -65,14 +66,22 @@ const SignInPage = () => {
             type="text"
             name="username"
             placeholder="Enter your username"
+            value={username}
             control={control}
+            disabled
           />
         </Field>
         <Field>
-          <Label htmlFor="password" className="label">
-            Password
+          <Label htmlFor="username" className="label">
+            OTP
           </Label>
-          <InputPasswordToggle control={control}></InputPasswordToggle>
+          <Input
+            type="text"
+            inputmode="numeric"
+            name="otp"
+            placeholder="Enter your OTP"
+            control={control}
+          />
         </Field>
         <Button
           className="mx-auto w-[200px]"
@@ -90,4 +99,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default ValidateOtpPage;

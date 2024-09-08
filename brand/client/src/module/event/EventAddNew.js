@@ -91,14 +91,14 @@ const EventAddNew = () => {
     const startDate_year = values.eventStartDate.year()
     const startDate_hour = values.eventStartDate.hour()
     const startDate_minute = values.eventStartDate.minute()
-    const startDate_second = values.eventStartDate.second()
+    const startDate_second = "00"
   
     const endDate_day = values.eventEndDate.date()
     const endDate_month = values.eventEndDate.month() + 1
     const endDate_year = values.eventEndDate.year()
     const endDate_hour = values.eventEndDate.hour()
     const endDate_minute = values.eventEndDate.minute()
-    const endDate_second = values.eventEndDate.second()
+    const endDate_second = "00"
 
     const Date_startDate = eventStartDate.toDate()
     const Date_endDate = eventEndDate.toDate()
@@ -109,8 +109,12 @@ const EventAddNew = () => {
     const hinhanh = url
     const soluongvoucher = voucherAmount
     const id_game = gameid
+
+    let totalvoucheravailable = 0
+    for (let i = 0; i < vouchersarr.length; i++) totalvoucheravailable += vouchersarr[i].soluongvoucher
     
-    if(tensukien == "" || tensukien == undefined) toast.error("Please fill in Brand's Name");
+    if(totalvoucheravailable > voucherAmount) toast.error("Number voucher is over limit")
+    else if(tensukien == "" || tensukien == undefined) toast.error("Please fill in Brand's Name");
     else if(voucherAmount == 0) toast.error("Please fill in voucherNum");
     else if(gameid == "") toast.error("Please choose game for your Event");
     else if(Date_startDate >= Date_endDate) toast.error("End Date/Time must be after Start Date/Time");
@@ -147,6 +151,7 @@ const EventAddNew = () => {
           if (allquestionscreated == numQuestions && (totalvoucher == vouchersarr.length || totalvoucher == 0)) {
             toast.success(`New event added successfully`);
             navigate("/manage/events");
+            window.location.reload()
           }
         } 
         else {

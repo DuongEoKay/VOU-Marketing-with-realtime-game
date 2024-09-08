@@ -1,8 +1,6 @@
 require("dotenv").config();
 const { Pool } = require('pg')
 
-const cors = require("cors")
-
 const express = require('express')
 const port = 5000
 
@@ -34,14 +32,12 @@ connectDB();
 
 const app = express();
 app.use(express.json());
-app.use(cors())
 
 app.use("/brand/api/setup", setupRouter);
 app.use("/brand/api/brand", brandRouter);
 app.use("/brand/api/event", eventRouter);
 app.use("/brand/api/voucher", voucherRouter);
 
-
 app.listen(port, () => console.log(`Server has started on port: ${port}`))
 
- require('./eureka-client');
+require('./eureka-client');

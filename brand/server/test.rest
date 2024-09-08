@@ -1,47 +1,100 @@
 ###
-GET http://localhost:5000/brand/api/setup/create
+GET http://localhost:8080/brand/api/setup/create
 
 ###
-GET http://localhost:5000/brand/api/setup/insert
+GET http://localhost:8080/brand/api/setup/insert
 
 ###
-GET http://localhost:5000/brand/api/setup/drop
+GET http://localhost:8080/brand/api/setup/drop
 
 ###
-GET http://localhost:5000/brand/api/setup/
+GET http://localhost:8080/brand/api/setup/
 
 
 ###
-POST http://localhost:5000/brand/api/brand/register
+POST http://localhost:8080/brand/api/brand/register
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZDg2MjJkNGUwZDMwOTEwYTIwZjVkIiwic3ViIjoiYSIsImlhdCI6MTcyNTc5MzgyNiwiZXhwIjoxNzI1ODgwMjI2fQ.w0CXpBqfxcqAt7erLuDGptHCw5q8AEzb6c20r-lBbjbmzNog0SUYRRalGVjUbVADPEl7NtwE5hVI4sk_MMtdyw
+
 
 {
     "sms": "0123456787",
     "ten": "Cocacola",
+    "hinhanh": "https://rubicmarketing.com/wp-content/uploads/2022/12/logo-aquafina.jpg",
+    "linhvuc": "Nước giải khát",
+    "diachi": "123 Nguyễn Văn Cừ, Quận 5, TP.HCM",
+    "kinhdo": "106 0 22’ – 106 054 ’",
+    "vido": "10 0 10’ – 10 0 38"
+}
+
+
+###
+GET http://localhost:8080/brand/api/brand/allbrand
+
+
+###
+GET http://localhost:8080/brand/api/brand/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkY2Y3YjUwMzhlNjI2ODg1NWYxYjgzIiwic3ViIjoiY29jYWNvbGFAZ21haWwuY29tIiwiaWF0IjoxNzI1NzU3MzY1LCJleHAiOjE3MjU4NDM3NjV9.CZ0_42Ef6ZxoA44zDZ9geCp6xu8UxLckQyXABwpwJyEJmJBp5m_ic_bWIovkO3mQjU9bBUT6ez_7aojOMA06xA
+
+###
+POST http://localhost:8080/brand/api/brand/login
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkY2Y3YjUwMzhlNjI2ODg1NWYxYjgzIiwic3ViIjoiY29jYWNvbGFAZ21haWwuY29tIiwiaWF0IjoxNzI1NzU3MzY1LCJleHAiOjE3MjU4NDM3NjV9.CZ0_42Ef6ZxoA44zDZ9geCp6xu8UxLckQyXABwpwJyEJmJBp5m_ic_bWIovkO3mQjU9bBUT6ez_7aojOMA06xA
+
+{
+    "sms": "0123456787",
     "matkhau": "123"
 }
 
 
 ###
-GET http://localhost:5000/brand/api/brand/allbrand
-
-
-###
-GET http://localhost:5000/brand/api/brand/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDg1ODYzNn0.c0cwMPhoSDegIP_DnHrmv6c9mGIpEvwkJCh3g07QdA0
-
-###
-POST http://localhost:5000/brand/api/brand/login
+POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-    "sms": "0123456789",
-    "matkhau": "123"
+    "username": "cocacola",
+    "password": "123456"
 }
 
 ###
-POST http://localhost:5000/brand/api/event/create
+POST http://localhost:8080/auth/validate-otp
+Content-Type: application/json
+
+{
+    "username": "cocacola",
+    "otp": "1711"
+}
+
+###
+POST http://localhost:8080/auth/validate-phone
+Content-Type: application/json
+
+{
+    "phone": "84171234"
+}
+
+###
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "otp": "1711",
+    "email": "cocacola@gmail.com",
+    "fullname": "cocacola",
+    "password": "123456",
+    "role": "ROLE_BRAND_OWNER",
+    "phone": "8417124",
+    "username": "cocacola",
+    "avatar": "avatar.png",
+    "dateofBirth": "01/01/2003",
+    "sex": "Male",
+    "facebook": "facebook.com"
+}
+
+
+###
+POST http://localhost:8080/brand/api/event/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
 
@@ -55,7 +108,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/event/create
+POST http://localhost:8080/brand/api/event/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
 
@@ -63,31 +116,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
     "tensukien": "DogWalk",
     "hinhanh": "https://www.google.com/",
     "id_game": "GAME00002",
-    "soluongvoucher": 5000,
+    "soluongvoucher": 8080,
     "thoigianbatdau": "09/04/2024",
     "thoigianketthuc": "09/06/2024"
 }
 
 ###
-GET  http://localhost:5000/brand/api/event/
+GET http://localhost:8080/brand/api/event/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTIxMjQ0NX0.c52AnS8VvO9FW720NmWbA6ECOqYgcPiAl89XdBuw3eE
 
 ###
-GET  http://localhost:5000/brand/api/event/detailevent/EV00000001
-Content-Type: application/json
+GET http://localhost:8080/brand/api/event/detailevent/EV00000001
 
 ###
-GET http://localhost:5000/brand/api/event/detailevent/EV00000001
+GET http://localhost:8080/brand/api/event/detailevent/EV00000001
 Content-Type: application/json 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-DELETE http://localhost:5000/brand/api/event/EV00000003
+DELETE http://localhost:8080/brand/api/event/EV00000003
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 ###
-PUT http://localhost:5000/brand/api/event/EV00000001
+PUT http://localhost:8080/brand/api/event/EV00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTQ0MDUxOH0.V2O5Jv-U9la7GXzercMFt6ISKek0XEWqtz0ZEHRtumw
 
@@ -97,7 +149,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/event/createquestion
+POST http://localhost:8080/brand/api/event/createquestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -113,7 +165,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/event/createquestion
+POST http://localhost:8080/brand/api/event/createquestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -128,12 +180,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/brand/api/event/fetchquestion/EV00000003
+GET http://localhost:8080/brand/api/event/fetchquestion/EV0000000
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-POST http://localhost:5000/brand/api/event/deletequestion
+POST http://localhost:8080/brand/api/event/deletequestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -143,7 +195,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/event/updatequestion
+POST http://localhost:8080/brand/api/event/updatequestion
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -157,19 +209,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 
 ###
-POST http://localhost:5000/brand/api/voucher/create
+POST http://localhost:8080/brand/api/voucher/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
 {
     "ten": "Voucher 1",
-    "trigia": 50000,
+    "trigia": 80800,
     "mota": "Voucher1",
     "ngayhethan": "09/30/2024"
 }
 
 ###
-POST http://localhost:5000/brand/api/voucher/create
+POST http://localhost:8080/brand/api/voucher/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
@@ -180,18 +232,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/brand/api/voucher/
+GET http://localhost:8080/brand/api/voucher/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-DELETE http://localhost:5000/brand/api/voucher/VC00000001
+DELETE http://localhost:8080/brand/api/voucher/VC00000001
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTU0NDM5NX0.fsKYorW-3eDeSkz2DnZbriOAKJycYm9YQRlnACs6QdI
 
 ###
-GET http://localhost:5000/brand/api/voucher/voucherofevent/EV00000001
+GET http://localhost:8080/brand/api/voucher/voucherofevent/EV00000001
 
 ###
-PUT http://localhost:5000/brand/api/voucher/VC00000001
+PUT http://localhost:8080/brand/api/voucher/VC00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -202,7 +254,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/voucher/createvoucherevent
+POST http://localhost:8080/brand/api/voucher/createvoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
@@ -213,12 +265,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/brand/api/voucher/voucherofevent/EV00000001
+GET http://localhost:8080/brand/api/voucher/voucherofevent/EV00000001
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
 ###
-POST http://localhost:5000/brand/api/voucher/deletevoucherevent
+POST http://localhost:8080/brand/api/voucher/deletevoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -228,7 +280,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-POST http://localhost:5000/brand/api/voucher/updatevoucherevent
+POST http://localhost:8080/brand/api/voucher/updatevoucherevent
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
 
@@ -241,13 +293,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 
 ###
-GET http://localhost:5000/brand/api/event/allevent
+GET http://localhost:8080/brand/api/event/allevent
 
 ###
-GET http://localhost:5000/brand/api/event/eventofbrand/ID00000001
+GET http://localhost:8080/brand/api/event/eventofbrand/ID00000001
 
 ###
-POST http://localhost:5000/brand/api/voucher/updatevoucheramount
+POST http://localhost:8080/brand/api/voucher/updatevoucheramount
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
 
@@ -258,7 +310,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 }
 
 ###
-GET http://localhost:5000/brand/api/voucher/detailvoucher/VC00000001
+GET http://localhost:8080/brand/api/voucher/detailvoucher/VC00000001
 
 ###
-GET http://localhost:5000/brand/api/voucher/allvoucher/
+GET http://localhost:8080/brand/api/voucher/allvoucher/
+
+
+###
+GET http://localhost:8080/games/
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZjOWU3MzJhZmY4NTAyMjRiNjRjZWI1Iiwic3ViIjoibW9ja3VzZXIiLCJpYXQiOjE3MjU3MjI1OTUsImV4cCI6MTcyNTgwODk5NX0.6Gy34EsWqz9dFnoIw6ZrREK4z2cVhGDDtKX_VSpiert6bmzjDrbtWNfGiVu21x_WAJebI9DoaVtIY_HXTYdn6g
+
+###
+POST http://localhost:8080/brand/api/brand/test/
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkY2Y3YjUwMzhlNjI2ODg1NWYxYjgzIiwic3ViIjoiY29jYWNvbGFAZ21haWwuY29tIiwiaWF0IjoxNzI1NzU3MzY1LCJleHAiOjE3MjU4NDM3NjV9.CZ0_42Ef6ZxoA44zDZ9geCp6xu8UxLckQyXABwpwJyEJmJBp5m_ic_bWIovkO3mQjU9bBUT6ez_7aojOMA06xA

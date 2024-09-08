@@ -7,8 +7,8 @@ module.exports = (pool) => {
 
     router.get("/", verifyToken, async (req, res) => {
         try {
-            const brand = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
-            if (!brand) {
+            const brand = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+            if (brand.rowCount === 0) {
                 return res
                 .status(400)
                 .json({ success: false, message: "Brand not found" });
@@ -24,10 +24,18 @@ module.exports = (pool) => {
     // desc Register brand
     // @access Public
 
-    router.post("/register", async (req, res) => {
-        const { sms, ten, matkhau } = req.body;
+    router.post("/register", verifyToken, async (req, res) => {
+        const ID_ChuThuongHieu = req.id
+        const role = req.role
+        if (role !== "ROLE_BRAND_OWNER") {
+            return res
+            .status(400)
+            .json({ success: false, message: "This user is not brand owner" });
+        }
+
+        const { sms, ten, hinhanh } = req.body;
     
-        if (!sms || !ten || !matkhau) {
+        if (!sms || !ten) {
         return res
             .status(400)
             .json({ success: false, message: "Missing information" });
@@ -57,7 +65,7 @@ module.exports = (pool) => {
                 newID = 'ID00000001';
             }
 
-            const newBrand = await pool.query(`INSERT INTO ThuongHieu(ID_ThuongHieu, SMS, Ten, MatKhau, TrangThai) VALUES ('${newID}', '${sms}', '${ten}', '${matkhau}', true) RETURNING *;`)
+            const newBrand = await pool.query(`INSERT INTO ThuongHieu(ID_ThuongHieu, ID_ChuThuongHieu, SMS, Ten, HinhAnh, TrangThai) VALUES ('${newID}', '${ID_ChuThuongHieu}', '${sms}', '${ten}', '${hinhanh}', true) RETURNING *;`)
             var accessToken;
 
             if(newBrand.rowCount > 0) {
@@ -70,6 +78,7 @@ module.exports = (pool) => {
             res.json({
                 success: true,
                 message: "Create new brand successfully",
+                information: newBrand.rows[0],
                 accessToken,
             });
         } catch (error) {
@@ -90,7 +99,7 @@ module.exports = (pool) => {
             .json({ success: false, message: "Missing sms and/or password" });
         }
         try {
-          const existSms = await pool.query(`SELECT * FROM ThuongHieu WHERE SMS = '${sms}'`)
+          const existSms = await pool.query(`SELECT * FROM ThuongHieu WHERE SMS = '${sms}' and ID_ChuThuongHieu = '${req.id}';`)
           if (existSms.rows.length === 0) {
             return res
               .status(400)
@@ -130,7 +139,6 @@ module.exports = (pool) => {
         const {  
             ten, 
             sms, 
-            password, 
             hinhanh,
             linhvuc,
             diachi
@@ -142,7 +150,6 @@ module.exports = (pool) => {
 
         conditions.push(`ten = '${ten}'`);
         conditions.push(`sms = '${sms}'`);
-        conditions.push(`matkhau = '${password}'`);
         conditions.push(`hinhanh = '${hinhanh}'`);
         conditions.push(`linhvuc = '${linhvuc}'`);
         conditions.push(`diachi = '${diachi}'`);
@@ -180,6 +187,12 @@ module.exports = (pool) => {
           });
         }
     });
+
+    router.post("/test", verifyToken, async (req, res) => {
+        const role = req.role
+        const id = req.id
+        return res.json({role, id})
+    })
 
 
     return router;
