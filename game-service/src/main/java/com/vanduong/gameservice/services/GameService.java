@@ -3,6 +3,7 @@ package com.vanduong.gameservice.services;
 import com.vanduong.gameservice.entities.Game;
 import com.vanduong.gameservice.repos.GameRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,11 @@ public class GameService {
         return this.repository.save(game);
     }
 
-    public Game getById(long id) {
-        return this.repository.findById(id)
-                .orElse(null);
+    public Game getById(ObjectId id) {
+        return this.repository.findById(id).orElse(null);
     }
 
-    public void deleteById(long id) {
+    public void deleteById(ObjectId id) {
         this.repository.deleteById(id);
     }
 

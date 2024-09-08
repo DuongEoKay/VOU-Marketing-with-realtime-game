@@ -11,17 +11,17 @@ const initialState = {
 
 const USERItemReducer =(state=initialState, action) => {
     switch(action.type) {
-    case actionTypes.CREATE_USER_ITEM_REQUEST:
+    case actionTypes.CREATE_USER_REQUEST:
     case actionTypes.GET_ALL_USER_REQUEST:
-    case actionTypes.DELETE_USER_ITEM_REQUEST:
-    case actionTypes.SEARCH_USER_ITEM_REQUEST:
-    case actionTypes.UPDATE_USER_ITEMS_AVAILABILITY_REQUEST:
+    case actionTypes.DELETE_USER_REQUEST:
+    case actionTypes.SEARCH_USER_REQUEST:
+    case actionTypes.UPDATE_USERS_REQUEST:
         return {
             ...state,
             loading: true,
             error: null
         };
-    case actionTypes.CREATE_USER_ITEM_SUCCESS:
+    case actionTypes.CREATE_USER_SUCCESS:
         return {
             ...state,
             loading: false,
@@ -33,7 +33,7 @@ const USERItemReducer =(state=initialState, action) => {
             loading: false,
             user: action.payload
         };
-    case actionTypes.DELETE_USER_ITEM_SUCCESS:
+    case actionTypes.DELETE_USER_SUCCESS:
         return {
             ...state,
             loading: false,
@@ -41,7 +41,7 @@ const USERItemReducer =(state=initialState, action) => {
                 (item) => item.id !== action.payload               
             )
         };
-    case actionTypes.UPDATE_USER_ITEMS_AVAILABILITY_SUCCESS:
+    case actionTypes.UPDATE_USERS_SUCCESS:
         console.log("Update USER Item Availability Success");
         return {
             ...state,
@@ -51,18 +51,18 @@ const USERItemReducer =(state=initialState, action) => {
             )
         };
 
-    case actionTypes.SEARCH_USER_ITEM_SUCCESS:
+    case actionTypes.SEARCH_USER_SUCCESS:
         return {
             ...state,
             loading: false,
             search: action.payload
         };
 
-    case actionTypes.CREATE_USER_ITEM_FAILURE:
+    case actionTypes.CREATE_USER_FAILURE:
     case actionTypes.GET_ALL_USER_FAILURE:
-    case actionTypes.DELETE_USER_ITEM_FAILURE:
-    case actionTypes.SEARCH_USER_ITEM_FAILURE:
-    case actionTypes.UPDATE_USER_ITEMS_AVAILABILITY_FAILURE:
+    case actionTypes.DELETE_USER_FAILURE:
+    case actionTypes.SEARCH_USER_FAILURE:
+    case actionTypes.UPDATE_USERS_FAILURE:
         return {
             ...state,
             loading: false,

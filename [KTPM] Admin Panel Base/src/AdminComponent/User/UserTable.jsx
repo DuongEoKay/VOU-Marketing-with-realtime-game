@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { deleteFoodAction, getAllUser } from '../../component/State/User/Action';
+import { deleteFoodAction, deleteUser, getAllUser } from '../../component/State/User/Action';
 import { Avatar, Box, IconButton, Modal } from '@mui/material';
 import { Delete, Edit as EditIcon, Add as AddIcon } from '@mui/icons-material';
 import FilterComponent from './FilterComponent';
@@ -42,7 +42,7 @@ export const UserTable = () => {
     }, [dispatch]);
 
     const handleRemoveUser = (userId) => {
-        dispatch(deleteFoodAction({ userId, jwt: localStorage.getItem('jwt') }));
+        dispatch(deleteUser({ userId, jwt: localStorage.getItem('jwt') }));
     };
 
 

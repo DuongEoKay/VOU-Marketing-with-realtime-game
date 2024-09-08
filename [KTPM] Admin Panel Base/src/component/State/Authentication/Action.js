@@ -23,11 +23,8 @@ export const registerUser = (data) => async (dispatch) => {
 
         data.navigate("/admin/user")
 
-
         console.log("res", res)
         
-        
-
 
         console.log("register success", res)
         dispatch({ type: REGISTER_SUCCESS, payload: res.jwt })

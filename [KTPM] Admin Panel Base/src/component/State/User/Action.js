@@ -1,18 +1,19 @@
 //import {api} from '../../../api/api';
-import { api } from '../../config/api';
+import axios from 'axios';
+import { api, API_URL } from '../../config/api';
 import {
-    DELETE_USER_ITEM_FAILURE,
-    DELETE_USER_ITEM_REQUEST,
-    DELETE_USER_ITEM_SUCCESS,
-    SEARCH_USER_ITEM_FAILURE,
-    SEARCH_USER_ITEM_REQUEST,
-    SEARCH_USER_ITEM_SUCCESS,
-    UPDATE_USER_ITEMS_AVAILABILITY_FAILURE,
-    UPDATE_USER_ITEMS_AVAILABILITY_REQUEST,
-    UPDATE_USER_ITEMS_AVAILABILITY_SUCCESS,
-    CREATE_USER_ITEM_FAILURE,
-    CREATE_USER_ITEM_REQUEST,
-    CREATE_USER_ITEM_SUCCESS,
+    DELETE_USER_FAILURE,
+    DELETE_USER_REQUEST,
+    DELETE_USER_SUCCESS,
+    SEARCH_USER_FAILURE,
+    SEARCH_USER_REQUEST,
+    SEARCH_USER_SUCCESS,
+    UPDATE_USERS_FAILURE,
+    UPDATE_USERS_REQUEST,
+    UPDATE_USERS_SUCCESS,
+    CREATE_USER_FAILURE,
+    CREATE_USER_REQUEST,
+    CREATE_USER_SUCCESS,
     GET_ALL_USER_FAILURE,
     GET_ALL_USER_REQUEST,
     GET_ALL_USER_SUCCESS,
@@ -25,7 +26,7 @@ import {
 
 export const createUserItem = ({values, jwt}) => {
     return async (dispatch) => {
-        dispatch({type: CREATE_USER_ITEM_REQUEST});
+        dispatch({type: CREATE_USER_REQUEST});
         try {
             const response = await api.post('/admin/food/',values,
             {
@@ -33,11 +34,11 @@ export const createUserItem = ({values, jwt}) => {
                     Authorization: `Bearer ${jwt}`
                 }
             });
-            dispatch({type: CREATE_USER_ITEM_SUCCESS, payload: response.data});
+            dispatch({type: CREATE_USER_SUCCESS, payload: response.data});
             console.log("create USER item",response.data);
         } catch (error) {
             console.log("catch error",error);
-            dispatch({type: CREATE_USER_ITEM_FAILURE, payload: error});
+            dispatch({type: CREATE_USER_FAILURE, payload: error});
         }
     };
 };
@@ -87,56 +88,80 @@ export const getAllUser = (reqData) => {
 
 // export const getAllIngredientsOfUSERItem = (reqData) => {
 //     return async (dispatch) => {
-//         dispatch({type: GET_INGREDIENTS_OF_USER_ITEM_REQUEST});
+//         dispatch({type: GET_INGREDIENTS_OF_USER_REQUEST});
 //         try {
 //             const {data} = await api.get(`/food/ingredients/${reqData.USERItemId}`,{
 //                 headers: {
 //                     Authorization: `Bearer ${reqData.jwt}`
 //                 }
 //             });
-//             dispatch({type: GET_INGREDIENTS_OF_USER_ITEM_SUCCESS, payload: data});
+//             dispatch({type: GET_INGREDIENTS_OF_USER_SUCCESS, payload: data});
 //             console.log("get ingredients of USER item",data);
 //         } catch (error) {
 //             console.log("catch error",error);
-//             dispatch({type: GET_INGREDIENTS_OF_USER_ITEM_FAILURE, payload: error});
+//             dispatch({type: GET_INGREDIENTS_OF_USER_FAILURE, payload: error});
 //         }
 //     };
 // }
 
 
-export const updateUser=({foodId, jwt}) => {
-    return async (dispatch) => {
-        dispatch({type: UPDATE_USER_ITEMS_AVAILABILITY_REQUEST});
-        try {
-            const {data} = await api.put(`/food/${foodId}`,{},{
+
+
+export const updateUser = (data) => async (dispatch) => {
+    dispatch({ type: UPDATE_USERS_REQUEST })
+
+    try {
+
+        console.log("data gui tu form", data)
+
+
+        
+        const {data:res} = await axios.put(`${API_URL}/users`, data.userData,
+            {
                 headers: {
-                    Authorization: `Bearer ${jwt}`
+                    Authorization: `Bearer ${data.jwt}`
                 }
-            });
-            dispatch({type: UPDATE_USER_ITEMS_AVAILABILITY_SUCCESS, payload: data});
-            console.log("update USER items availability",data);
-        } catch (error) {
-            console.log("catch error",error);
-            dispatch({type: UPDATE_USER_ITEMS_AVAILABILITY_FAILURE, payload: error});
-        }
-    };
+            }
+        )
+
+        data.navigate("/admin/user")
+
+        console.log("res", res)
+        
+
+        console.log("register success", res)
+        dispatch({ type: UPDATE_USERS_SUCCESS, payload: res.jwt })
+    } catch (error) {
+        dispatch({type: UPDATE_USERS_FAILURE, payload: error})
+        console.log("error", error)
+
+    }
+
 }
 
 
-export const deleteFoodAction = ({foodId, jwt}) => {
+
+
+
+
+
+
+
+export const deleteUser = ({userId, jwt}) => {
     return async (dispatch) => {
-        dispatch({type: DELETE_USER_ITEM_REQUEST});
+        dispatch({type: DELETE_USER_REQUEST});
         try {
-            const {data} = await api.delete(`/admin/food/${foodId}`,{
+            console.log("delete user id",userId, jwt);
+            const {data} = await api.delete(`users/id/${userId}`,{
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }
             });
-            dispatch({type: DELETE_USER_ITEM_SUCCESS, payload: data});
-            console.log("delete USER item",data);
+            dispatch({type: DELETE_USER_SUCCESS, payload: data});
+            console.log("delete User success",data);
         } catch (error) {
             console.log("catch error",error);
-            dispatch({type: DELETE_USER_ITEM_FAILURE, payload: error});
+            dispatch({type: DELETE_USER_FAILURE, payload: error});
         }
     };
 }

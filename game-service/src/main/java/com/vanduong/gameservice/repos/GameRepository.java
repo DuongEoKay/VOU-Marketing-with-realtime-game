@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface GameRepository extends MongoRepository<Game, Long> {
+public interface GameRepository extends MongoRepository<Game, ObjectId> {
 
     Game findByName(String name);
 }

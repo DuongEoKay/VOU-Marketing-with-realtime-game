@@ -1,11 +1,11 @@
 import { AddPhotoAlternate, Face } from '@mui/icons-material';
 import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography, circularProgressClasses } from '@mui/material';
 import { Field, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { upload2Cloudinary } from '../Utils/Upload2Cloudinary';
 import { useDispatch } from 'react-redux';
-import { createGame } from '../../component/State/Game/Action';
+import { createGame, getGameById, updateGame } from '../../component/State/Game/Action';
 import { useNavigate } from 'react-router-dom';
 
 const initialValues = {
@@ -17,10 +17,11 @@ const initialValues = {
   active: true,
 };
 
-export const UpdateGameForm = () => {
+export const UpdateGameForm = ({id}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [uploadImage, setUploadImage] = useState(false);
+  const [game, setGame] = useState(initialValues);
 
   const handleImageChange = async (e, setFieldValue) => {
     const file = e.target.files[0];
@@ -32,16 +33,27 @@ export const UpdateGameForm = () => {
 
   const handleSubmit = (values) => {
     const jwt = localStorage.getItem('jwt')
-    dispatch(createGame({ userData: values, jwt, navigate }));
+    dispatch(updateGame({ gameData: values, jwt, navigate }));
   };
+
+  useEffect(() => {
+    if (id) {
+      const fetchGame = async () => {
+        const gameData = await getGameById({ id, jwt: localStorage.getItem('jwt') });
+        setGame(gameData);
+        console.log(gameData);
+      };
+      fetchGame();
+    }
+  }, [id]);
 
   return (
     <div>
       <Typography variant='h5' className='text-center'>
-        Create Game
+        Update Game
       </Typography>
 
-      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+      <Formik onSubmit={handleSubmit} initialValues={game} enableReinitialize>
         {({ handleSubmit, setFieldValue, values }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -134,7 +146,7 @@ export const UpdateGameForm = () => {
               </Grid>
             </Grid>
             <Button sx={{ mt: 2, padding: "1rem" }} fullWidth variant='contained' type='submit' color='primary'>
-              Create
+              Update
             </Button>
           </form>
         )}

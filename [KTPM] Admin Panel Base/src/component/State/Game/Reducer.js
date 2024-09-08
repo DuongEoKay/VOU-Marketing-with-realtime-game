@@ -16,7 +16,7 @@ const GameReducer =(state=initialState, action) => {
     case actionTypes.GET_ALL_GAME_REQUEST:
     case actionTypes.DELETE_GAME_REQUEST:
     case actionTypes.SEARCH_GAME_REQUEST:
-    case actionTypes.UPDATE_GAMES_AVAILABILITY_REQUEST:
+    case actionTypes.UPDATE_GAMES_REQUEST:
         return {
             ...state,
             loading: true,
@@ -42,7 +42,7 @@ const GameReducer =(state=initialState, action) => {
                 (item) => item.id !== action.payload               
             )
         };
-    case actionTypes.UPDATE_GAMES_AVAILABILITY_SUCCESS:
+    case actionTypes.UPDATE_GAMES_SUCCESS:
         console.log("Update game Availability Success");
         return {
             ...state,
@@ -63,7 +63,7 @@ const GameReducer =(state=initialState, action) => {
     case actionTypes.GET_ALL_GAME_FAILURE:
     case actionTypes.DELETE_GAME_FAILURE:
     case actionTypes.SEARCH_GAME_FAILURE:
-    case actionTypes.UPDATE_GAMES_AVAILABILITY_FAILURE:
+    case actionTypes.UPDATE_GAMES_FAILURE:
         return {
             ...state,
             loading: false,

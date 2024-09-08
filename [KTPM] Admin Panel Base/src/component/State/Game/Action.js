@@ -9,9 +9,9 @@ import {
     SEARCH_GAME_FAILURE,
     SEARCH_GAME_REQUEST,
     SEARCH_GAME_SUCCESS,
-    UPDATE_GAMES_AVAILABILITY_FAILURE,
-    UPDATE_GAMES_AVAILABILITY_REQUEST,
-    UPDATE_GAMES_AVAILABILITY_SUCCESS,
+    UPDATE_GAMES_FAILURE,
+    UPDATE_GAMES_REQUEST,
+    UPDATE_GAMES_SUCCESS,
     CREATE_GAME_FAILURE,
     CREATE_GAME_REQUEST,
     CREATE_GAME_SUCCESS,
@@ -70,49 +70,58 @@ export const getAllGame = (reqData) => {
 };
 
 
-export const searchGame =({keyword, jwt}) => {
-    return async (dispatch) => {
-        dispatch({type: SEARCH_GAME_REQUEST});
-        try {
-            const {data} = await api.get(`/food/search?name=${keyword}`,{
+export const getGameById = async (reqData) => {
+    
+    try {
+            console.log("data tu form", reqData);
+            const {data} = await api.get(`/games/${reqData.id}`,
+            {
                 headers: {
-                    Authorization: `Bearer ${jwt}`
+                    Authorization: `Bearer ${reqData.jwt}`
                 }
+                
             });
-            dispatch({type: SEARCH_GAME_SUCCESS, payload: data});
-            console.log("search GAME item",data);
+            console.log("get game by id",data);
+            return data;
         } catch (error) {
             console.log("catch error",error);
-            dispatch({type: SEARCH_GAME_FAILURE, payload: error});
+            return error;
         }
-    };
-}
 
 
-export const updateGame=({foodId, jwt}) => {
+};
+
+
+export const updateGame=(data) => {
     return async (dispatch) => {
-        dispatch({type: UPDATE_GAMES_AVAILABILITY_REQUEST});
+        dispatch({type: UPDATE_GAMES_REQUEST});
         try {
-            const {data} = await api.put(`/food/${foodId}`,{},{
-                headers: {
-                    Authorization: `Bearer ${jwt}`
+            const {data:res} = await axios.put(`${API_URL}/games`, data.gameData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${data.jwt}`
+                    }
                 }
-            });
-            dispatch({type: UPDATE_GAMES_AVAILABILITY_SUCCESS, payload: data});
+            )
+    
+            data.navigate("/admin/game")
+    
+            console.log("res", res)
+            dispatch({type: UPDATE_GAMES_SUCCESS, payload: res});
             console.log("update GAME items availability",data);
         } catch (error) {
             console.log("catch error",error);
-            dispatch({type: UPDATE_GAMES_AVAILABILITY_FAILURE, payload: error});
+            dispatch({type: UPDATE_GAMES_FAILURE, payload: error});
         }
     };
 }
 
 
-export const deleteGame = ({foodId, jwt}) => {
+export const deleteGame = ({gameId, jwt}) => {
     return async (dispatch) => {
         dispatch({type: DELETE_GAME_REQUEST});
         try {
-            const {data} = await api.delete(`/admin/food/${foodId}`,{
+            const {data} = await api.delete(`/games/${gameId}`,{
                 headers: {
                     Authorization: `Bearer ${jwt}`
                 }

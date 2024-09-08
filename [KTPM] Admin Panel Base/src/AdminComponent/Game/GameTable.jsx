@@ -2,13 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { deleteFoodAction, getAllUser } from '../../component/State/User/Action';
 import { Avatar, Box, IconButton, Modal } from '@mui/material';
 import { Delete, Edit as EditIcon, Add as AddIcon } from '@mui/icons-material';
 import FilterComponent from './FilterComponent';
 import { RegisterForm } from '../../component/Auth/RegisterForm';
 import { useLocation } from 'react-router-dom'
-import { getAllGame } from '../../component/State/Game/Action';
+import { deleteGame, getAllGame } from '../../component/State/Game/Action';
 import { CreateGameForm } from './CreateGameForm';
 import { UpdateGameForm } from './UpdateGameForm';
 
@@ -31,6 +30,8 @@ export const GameTable = () => {
         p: 4,
         
     };
+
+
     const dispatch = useDispatch();
     const { game } = useSelector(state => state);
     const navigate = useNavigate();
@@ -41,8 +42,15 @@ export const GameTable = () => {
         dispatch(getAllGame({ jwt: localStorage.getItem('jwt') }));
     }, [dispatch]);
 
-    const handleRemoveUser = (userId) => {
-        dispatch(deleteFoodAction({ userId, jwt: localStorage.getItem('jwt') }));
+    const handleRemoveGame = (gameId) => {
+        dispatch(deleteGame({ gameId, jwt: localStorage.getItem('jwt') }));
+    };
+
+    const [selectedGameId, setSelectedGameId] = useState(null);
+    const handleUpdateClick = (id) => {
+        setSelectedGameId(id);
+        console.log("id", id);
+        navigate('/admin/game/update');
     };
 
     const columns = [
@@ -85,7 +93,7 @@ export const GameTable = () => {
             name: 'Update',
             cell: row => (
                 <>
-                    <IconButton onClick={() => navigate(`/admin/restaurant/edit-user/${row.id}`)}>
+                    <IconButton onClick={() => {handleUpdateClick(row.id)}}>
                         <EditIcon style={{ color: 'black' }}/>
                     </IconButton>
                 </>
@@ -95,7 +103,7 @@ export const GameTable = () => {
             name: 'Delete',
             cell: row => (
                 <>
-                    <IconButton onClick={() => handleRemoveUser(row.id)}>
+                    <IconButton onClick={() => handleRemoveGame(row.id)}>
                         <Delete style={{ color: 'black' }}/>
                     </IconButton>
                 </>
@@ -152,6 +160,14 @@ export const GameTable = () => {
                     <CreateGameForm />
                 </Box>
 
+            </Modal>
+            <Modal
+                open={location.pathname === '/admin/game/update'}
+                onClose={handleOnClose}
+            >
+                <Box sx={style}>
+                    <UpdateGameForm id={selectedGameId}/>
+                </Box>
             </Modal>
         </div>
     );
