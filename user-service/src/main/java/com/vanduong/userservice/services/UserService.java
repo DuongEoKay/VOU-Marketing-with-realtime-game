@@ -1,9 +1,6 @@
 package com.vanduong.userservice.services;
 
-import com.vanduong.userservice.entities.BasicResponse;
-import com.vanduong.userservice.entities.User;
-import com.vanduong.userservice.entities.VoucherRequest;
-import com.vanduong.userservice.entities.VoucherResponse;
+import com.vanduong.userservice.entities.*;
 import com.vanduong.userservice.entities.value_objects.Department;
 import com.vanduong.userservice.entities.value_objects.ResponseTemplateVO;
 import com.vanduong.userservice.repository.UserRepository;
@@ -121,6 +118,16 @@ public class UserService {
         return ResponseEntity.ok(new BasicResponse("Add point successfully"));
     }
 
+    public ResponseEntity<BasicResponse> addPointToUser(AddPointRequest addPointRequest) {
+        User user = this.repository.findById(new ObjectId(addPointRequest.getId())).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
+        user.setPoint(user.getPoint() + addPointRequest.getPoint());
+        this.repository.save(user);
+        return ResponseEntity.ok(new BasicResponse("Add point successfully"));
+    }
 
 
 }

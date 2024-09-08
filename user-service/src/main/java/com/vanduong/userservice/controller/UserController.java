@@ -1,8 +1,6 @@
 package com.vanduong.userservice.controller;
 
-import com.vanduong.userservice.entities.User;
-import com.vanduong.userservice.entities.VoucherRequest;
-import com.vanduong.userservice.entities.VoucherResponse;
+import com.vanduong.userservice.entities.*;
 import com.vanduong.userservice.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +81,11 @@ public class UserController {
     @PostMapping(value = "/remove-voucher/{id}")
     public ResponseEntity<VoucherResponse> removeVoucherFromUser(@PathVariable ObjectId id, @RequestBody VoucherRequest voucherRequest) {
         return userService.removeVoucherFromUser(id, voucherRequest);
+    }
+
+    @PostMapping(value = "/add-point")
+    public ResponseEntity<BasicResponse> addPointToUser( @RequestBody AddPointRequest addPointRequest) {
+        return userService.addPointToUser(addPointRequest);
     }
 
 
