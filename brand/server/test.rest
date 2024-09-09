@@ -2,14 +2,10 @@
 GET http://localhost:8080/brand/api/setup/create
 
 ###
-GET http://localhost:8080/brand/api/setup/insert
-
-###
 GET http://localhost:8080/brand/api/setup/drop
 
 ###
 GET http://localhost:8080/brand/api/setup/
-
 
 ###
 POST http://localhost:8080/brand/api/brand/register
@@ -294,6 +290,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 
 ###
 GET http://localhost:8080/brand/api/event/allevent
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
+
 
 ###
 GET http://localhost:8080/brand/api/event/eventofbrand/ID00000001
@@ -301,12 +299,12 @@ GET http://localhost:8080/brand/api/event/eventofbrand/ID00000001
 ###
 POST http://localhost:8080/brand/api/voucher/updatevoucheramount
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMSIsImlhdCI6MTcyNTMwMTcwNX0.smbpA7u8H05yhHbY4PeuFgErUytLioAaFBhwKoYVHLc
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
 
 {
-    "id_voucher": "VC00000001",
-    "id_sukien": "EV00000003",
-    "soluong": 100
+    "id_voucher": "VC00000002",
+    "id_sukien": "EV00000001",
+    "soluong": 35
 }
 
 ###
@@ -318,7 +316,11 @@ GET http://localhost:8080/brand/api/voucher/allvoucher/
 
 ###
 GET http://localhost:8080/games/
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZjOWU3MzJhZmY4NTAyMjRiNjRjZWI1Iiwic3ViIjoibW9ja3VzZXIiLCJpYXQiOjE3MjU3MjI1OTUsImV4cCI6MTcyNTgwODk5NX0.6Gy34EsWqz9dFnoIw6ZrREK4z2cVhGDDtKX_VSpiert6bmzjDrbtWNfGiVu21x_WAJebI9DoaVtIY_HXTYdn6g
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
+
+###
+GET http://localhost:8080/games/66deae28ed58f2224f78614f
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
 
 ###
 POST http://localhost:8080/brand/api/brand/test/

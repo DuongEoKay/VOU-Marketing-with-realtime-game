@@ -107,7 +107,7 @@ const DetailVoucherPage = () => {
                   <VoucherValue className="mb-6">Voucher Value: {voucher.trigia}</VoucherValue>
                   <h1 className="voucher-heading">{voucher.ten}</h1>
                   <VoucherMeta
-                    date={voucher.ngayhethan.slice(0, -5)}
+                    date={voucher.ngayhethan}
                     brandName={brand_name}
                     brandId={brand_id}
                   ></VoucherMeta>

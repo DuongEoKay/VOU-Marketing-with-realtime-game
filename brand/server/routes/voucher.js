@@ -175,7 +175,7 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/createvoucherevent", verifyToken, async (req, res) => {
-        const { id_voucher, id_sukien, soluong, ngansach } = req.body;
+        const { id_voucher, id_sukien, soluong } = req.body;
     
         if (!id_voucher || !id_sukien || !soluong) {
         return res
@@ -190,8 +190,8 @@ module.exports = (pool) => {
                 .json({ success: false, message: "Voucher of event is exist" });
             }
 
-            const newVoucher = await pool.query(`INSERT INTO Voucher_SuKien (ID_Voucher, ID_SuKien, SoLuong, NganSach) VALUES ($1, $2, $3, $4) RETURNING *`,
-                                                [id_voucher, id_sukien, soluong, ngansach])
+            const newVoucher = await pool.query(`INSERT INTO Voucher_SuKien (ID_Voucher, ID_SuKien, SoLuong, SoLuongSuDung, NganSach) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+                                                [id_voucher, id_sukien, soluong, 0, 0])
 
             if(newVoucher.rowCount > 0) {
                 res.json({
@@ -331,7 +331,11 @@ module.exports = (pool) => {
             .json({ success: false, message: "Voucher of this Event is not exist" });
         }
         else {
+            const voucher_trigia = await pool.query(`SELECT TriGia FROM Voucher WHERE ID_Voucher = '${id_voucher}';`)
+            const trigia = voucher_trigia.rows[0]?.trigia
             const amount_left = existsVoucherofEvent.rows[0].soluong - soluong
+            const soluongsudung = existsVoucherofEvent.rows[0].soluongsudung + soluong
+            const ngansach = trigia * soluongsudung
             if(amount_left < 0) {
                 return res
                 .status(400)
@@ -339,7 +343,7 @@ module.exports = (pool) => {
             }
             else {
                 try {
-                    const isUpdated = await pool.query(`UPDATE Voucher_SuKien SET soluong = ${amount_left} WHERE ID_Voucher = '${id_voucher}' AND ID_SuKien = '${id_sukien}' RETURNING *;`)
+                    const isUpdated = await pool.query(`UPDATE Voucher_SuKien SET soluong = ${amount_left}, soluongsudung = ${soluongsudung}, ngansach = ${ngansach} WHERE ID_Voucher = '${id_voucher}' AND ID_SuKien = '${id_sukien}' RETURNING *;`)
                     if (isUpdated.rowCount > 0) {
                         return res.json({
                             success: true,

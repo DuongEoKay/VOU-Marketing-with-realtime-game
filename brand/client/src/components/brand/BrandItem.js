@@ -46,11 +46,11 @@ const BrandItem = ({ brand }) => {
     <BrandItemStyles>
       <div className="brand" onClick={() => navigate(`/brand/${brand.id_thuonghieu}`)}>
         <div className="brand-image">
-          <img src={brand.hinhanh} alt="brandAvt" />
+          <img src={brand?.hinhanh} alt="brandAvt" />
         </div>
         <div className="brand-content">
-          <h3 className="brand-name">{brand.ten}</h3>
-          <p className="brand-desc">{brand.linhvuc}</p>
+          <h3 className="brand-name">{brand?.ten}</h3>
+          <p className="brand-desc">{brand?.linhvuc}</p>
         </div>
       </div>
     </BrandItemStyles>

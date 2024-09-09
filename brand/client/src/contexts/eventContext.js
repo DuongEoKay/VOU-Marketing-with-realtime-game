@@ -13,6 +13,7 @@ const EventContextProvider = ({ children }) => {
       brandevents: [],
       allevents: [],
       eventsLoading: true,
+      games: [],
     });
   
     // get all events
@@ -145,6 +146,23 @@ const EventContextProvider = ({ children }) => {
       }
     };
 
+    const getGameName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/games/`);
+        if (response.data) {
+          dispatch({
+            type: "GAME",
+            payload: response.data,
+          });
+          return response.data;
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+        }
+    }
+
     // event context data
     const eventContextData = {
       eventState,
@@ -155,7 +173,8 @@ const EventContextProvider = ({ children }) => {
       updateEvent,
       getAllEventsOfBrand,
       getAllEventsEver,
-      deleteQuestionEvent
+      deleteQuestionEvent,
+      getGameName,
     };
   
     return (

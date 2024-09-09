@@ -8,6 +8,11 @@ const truncateten = (ten, maxLength) => {
   }
 };
 
+const formatDate = (date) => {
+  const format = new Date(date)
+  return format.toLocaleString()
+}
+
 const VoucherTableItem = ({ voucher }) => {
   const truncatedten = truncateten(voucher.ten, 60);
   return (
@@ -24,7 +29,7 @@ const VoucherTableItem = ({ voucher }) => {
       />
       <div className="flex-1">
         <h3 className="font-semibold">{truncatedten}</h3>
-        <time className="text-sm text-gray-500">{voucher?.ngayhethan}</time>
+        <time className="text-sm text-gray-500">{formatDate(voucher?.ngayhethan)}</time>
       </div>
     </div>
   );

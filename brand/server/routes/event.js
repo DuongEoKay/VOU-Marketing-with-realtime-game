@@ -17,12 +17,10 @@ module.exports = (pool) => {
             }
             if (event.rowCount > 0) {
                 const formatData = await Promise.all(event.rows.map(async row => {
-                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
                     const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
                     return {
                         ...row,
                         brand_name: brand_name.rows[0]?.ten,
-                        game_name: game_name.rows[0]?.ten,
                     }
                 }))
                 res.json({ success: true, events: formatData });
@@ -45,14 +43,6 @@ module.exports = (pool) => {
             .status(400)
             .json({ success: false, message: "Missing information" });
         }
-
-        // const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
-        // if(isGameExist.rowCount === 0) {
-        //     return res.json({
-        //         success: false,
-        //         message: "There is no game that match your choice"
-        //     })
-        // }
 
         try {
             const existEvent = await pool.query(`SELECT * FROM SuKien WHERE tensukien = '${tensukien}'`)
@@ -132,16 +122,6 @@ module.exports = (pool) => {
         let { tensukien, hinhanh, soluongvoucher, mota, thoigianbatdau, thoigianketthuc, id_game } = req.body
         const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
         const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
-        
-        if(id_game) {
-            const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
-            if(isGameExist.rowCount === 0) {
-                return res.json({
-                    success: false,
-                    message: "There is no game that match your choice"
-                })
-            }
-        }
 
         let updateParam = "";
 
@@ -379,12 +359,10 @@ module.exports = (pool) => {
             }
             if (detailedEvent.rowCount > 0) {
                 const formatData = await Promise.all(detailedEvent.rows.map(async row => {
-                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
                     const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
                     return {
                         ...row,
                         brand_name: brand_name.rows[0]?.ten,
-                        game_name: game_name.rows[0]?.ten,
                     }
                 }))
                 res.json({ success: true, events: formatData });
@@ -408,12 +386,10 @@ module.exports = (pool) => {
             const events = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id}';`)
             if (events.rowCount > 0) {
                 const formatData = await Promise.all(events.rows.map(async row => {
-                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
                     const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
                     return {
                         ...row,
                         brand_name: brand_name.rows[0]?.ten,
-                        game_name: game_name.rows[0]?.ten,
                     }
                 }))
                 res.json({ success: true, events: formatData });
@@ -436,12 +412,10 @@ module.exports = (pool) => {
             const events = await pool.query(`SELECT * FROM SuKien;`)
             if (events.rowCount > 0) {
                 const formatData = await Promise.all(events.rows.map(async row => {
-                    const game_name = await pool.query(`SELECT Ten FROM Game WHERE ID_Game = '${row.id_game}';`)
                     const brand_name = await pool.query(`SELECT Ten FROM ThuongHieu WHERE ID_ThuongHieu = '${row.id_thuonghieu}';`)
                     return {
                         ...row,
                         brand_name: brand_name.rows[0]?.ten,
-                        game_name: game_name.rows[0]?.ten,
                     }
                 }))
                 res.json({ success: true, events: formatData });

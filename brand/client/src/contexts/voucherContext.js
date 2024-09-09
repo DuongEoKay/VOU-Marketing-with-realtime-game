@@ -35,7 +35,6 @@ const VoucherContextProvider = ({children}) => {
     const addVoucher = async (Voucher) => {
         try {
           const response = await axios.post("http://localhost:8080/brand/api/voucher/create", Voucher);
-          console.log(response)
           if (response.data.success) {
             dispatch({ type: "ADD_VOUCHER", payload: response.data.voucher });
             return response.data;

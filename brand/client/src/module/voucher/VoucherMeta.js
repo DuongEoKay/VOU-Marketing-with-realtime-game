@@ -41,14 +41,8 @@ const VoucherMeta = ({
   const navigate = useNavigate();
 
   const format = () => {
-    const year = date.slice(0, 4)
-    const month = date.slice(5,7) - 1
-    const day = date.slice(8,10)
-    const hour = date.slice(11,13)
-    const minute = date.slice(14,16)
-    const second = date.slice(17,19)
-    const formatDate = new Date(year, month, day, hour, minute, second).toLocaleString()
-    return formatDate
+    const formatDate = new Date(date)
+    return formatDate.toLocaleString()
   }
   const formatDate = format()
   return (

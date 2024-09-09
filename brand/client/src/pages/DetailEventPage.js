@@ -86,8 +86,6 @@ const DetailEventPage = () => {
   useState(() => getAllEventsEver(), []);
   useState(() => getVoucherEvent(detailid), []);
 
-  console.log(voucherevent)
-
   let relatedEvents = allevents.filter((event) => {
     return (
       event?.id_thuonghieu === detailedevent[0]?.id_thuonghieu &&
