@@ -72,27 +72,40 @@ public class UserService {
         }
 
         Map<String, Integer> vouchers = user.getVouchers();
-        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),vouchers));
+        return ResponseEntity.ok(new VoucherResponse(user.getUsername(), vouchers, "Get voucher successfully"));
     }
 
 
     public ResponseEntity<VoucherResponse> addVoucherToUser(ObjectId id, VoucherRequest voucherRequest) {
         User user = this.repository.findById(id).orElse(null);
-        if (user == null) {
-            return null;
+        User target = this.repository.findByPhone(voucherRequest.getTargetPhone()).orElse(null);
+        try {
+
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+            if (target == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+
+
+            user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
+
+
+
+
+            if(user.getPoint() < 0){
+                return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Not enough point to add voucher"));
+            }
+
+            target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+            this.repository.save(user);
+            this.repository.save(target);
+            return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(),target.getVouchers(), "Failed to add voucher"));
         }
-
-
-
-        user.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
-
-        user.setPoint(user.getPoint()-voucherRequest.getPoint());
-
-        if(user.getPoint()<0){
-            return ResponseEntity.badRequest().body(new VoucherResponse("Not enough point",null));
-        }
-        this.repository.save(user);
-        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
     }
 
     public ResponseEntity<VoucherResponse> removeVoucherFromUser(ObjectId id, VoucherRequest voucherRequest) {
@@ -103,31 +116,51 @@ public class UserService {
 
         user.removeVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
         this.repository.save(user);
-        return ResponseEntity.ok(new VoucherResponse(user.getUsername(),user.getVouchers()));
+        return ResponseEntity.ok(new VoucherResponse(user.getUsername(), user.getVouchers(), "Remove voucher successfully"));
 
     }
 
-    public ResponseEntity<BasicResponse> addPointToUser(ObjectId id, int point) {
-        User user = this.repository.findById(id).orElse(null);
-        if (user == null) {
-            return null;
-        }
-
-        user.setPoint(user.getPoint() + point);
-        this.repository.save(user);
-        return ResponseEntity.ok(new BasicResponse("Add point successfully"));
-    }
 
     public ResponseEntity<BasicResponse> addPointToUser(AddPointRequest addPointRequest) {
-        User user = this.repository.findById(new ObjectId(addPointRequest.getId())).orElse(null);
-        if (user == null) {
-            return null;
+        try {
+            User user = this.repository.findById(addPointRequest.getId()).orElse(null);
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            user.setPoint(user.getPoint() + addPointRequest.getPoint());
+            this.repository.save(user);
+            return ResponseEntity.ok(new BasicResponse("Add point successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new BasicResponse("Failed to add point"));
         }
 
-        user.setPoint(user.getPoint() + addPointRequest.getPoint());
-        this.repository.save(user);
-        return ResponseEntity.ok(new BasicResponse("Add point successfully"));
+
     }
 
+    public ResponseEntity<VoucherResponse> sendVoucherToUser(ObjectId id, VoucherRequest voucherRequest) {
+        User user = this.repository.findById(id).orElse(null);
+        User target = this.repository.findByPhone(voucherRequest.getTargetPhone()).orElse(null);
+        try {
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+            if (target == null) {
+                return ResponseEntity.notFound().build();
+            }
+            if(user.getVouchers().get(voucherRequest.getVoucher()) < voucherRequest.getQuantity()){
+                return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Not enough voucher to send"));
+            }
 
+
+            target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+            user.removeVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+            this.repository.save(user);
+            this.repository.save(target);
+            return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Send voucher successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Failed to send voucher"));
+        }
+    }
 }
+

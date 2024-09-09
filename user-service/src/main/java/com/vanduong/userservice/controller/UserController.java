@@ -88,6 +88,11 @@ public class UserController {
         return userService.addPointToUser(addPointRequest);
     }
 
+    @PostMapping(value = "/send-voucher/{id}")
+    public ResponseEntity<VoucherResponse> sendVoucherToUser(@PathVariable ObjectId id, @RequestBody VoucherRequest voucherRequest) {
+        return userService.sendVoucherToUser(id, voucherRequest);
+    }
+
 
 
 

@@ -12,4 +12,5 @@ import java.util.Map;
 public class VoucherResponse {
     private String username;
     private Map<String, Integer> vouchers;
+    private String message;
 }
