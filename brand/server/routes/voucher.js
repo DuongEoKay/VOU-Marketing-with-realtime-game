@@ -105,7 +105,7 @@ module.exports = (pool) => {
             
                 const deleteVoucher = await pool.query(
                     `DELETE FROM Voucher WHERE ID_Voucher = $1 AND ID_ThuongHieu = $2`, 
-                    [id_voucher, req.ID_ThuongHieu]
+                    [id_voucher, id_thuonghieu]
                 );
             
                 if (deleteVoucher.rowCount > 0) {
@@ -125,7 +125,7 @@ module.exports = (pool) => {
     });
 
     router.put("/:id", verifyToken, async (req, res) => {
-        let { qrcode, hinhanh, trigia, mota, ngayhethan, trangthai } = req.body
+        let { ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan } = req.body
         const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
         const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
 
@@ -133,12 +133,13 @@ module.exports = (pool) => {
 
         let conditions = [];
 
+        if (ten) conditions.push(`ten = '${ten}'`);
         if (qrcode) conditions.push(`qrcode = '${qrcode}'`);
         if (hinhanh) conditions.push(`hinhanh = '${hinhanh}'`);
         if (trigia && trigia > 0) conditions.push(`trigia = ${trigia}`);
+        if (diem && diem > 0) conditions.push(`diem = ${diem}`);
         if (mota) conditions.push(`mota = '${mota}'`);
         if (ngayhethan) conditions.push(`ngayhethan = '${ngayhethan}'`);
-        if (trangthai) conditions.push(`trangthai = ${trangthai}`);
 
         if (conditions.length > 0) {
             updateParam = conditions.join(' , ');

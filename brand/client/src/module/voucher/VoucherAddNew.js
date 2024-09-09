@@ -61,7 +61,7 @@ const VoucherAddNew = () => {
     const hinhanh = urlHinhanh
 
     if (!Number.isInteger(parseInt(trigia, 10))) toast.error("Value of Voucher must be an integer")
-      if (!Number.isInteger(parseInt(diem, 10))) toast.error("Point of Voucher must be an integer")
+    else if (!Number.isInteger(parseInt(diem, 10))) toast.error("Point of Voucher must be an integer")
     else {
         try {
             const newVoucherData = await addVoucher({ ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan });

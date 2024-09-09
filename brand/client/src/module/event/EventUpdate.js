@@ -30,10 +30,11 @@ const EventUpdate = () => {
 
   const { slug } = useParams();
   const {
-    eventState: { detailedevent },
+    eventState: { detailedevent, games },
     getDetailedEvent,
     updateEvent,
-    deleteQuestionEvent
+    deleteQuestionEvent,
+    getGameName
   } = useContext(eventContext);
 
   const {
@@ -45,6 +46,7 @@ const EventUpdate = () => {
   const detailid = id;
   useState(() => getDetailedEvent(detailid), []);
   useState(() => getAllQuestions(detailid), []);
+  useState(() => getGameName(), []);
 
   const { control, watch, register, formState: { errors }, reset, setValue, handleSubmit } = useForm({
     mode: "onChange",
@@ -77,6 +79,7 @@ const EventUpdate = () => {
   const [numQuestions, setNumQuestions] = useState(0);
   const [mota, setMota] = useState("");
   const [question, setQuestions] = useState([])
+  const [gamename, setgameName] = useState("")
 
   const updateEventHandler = async (values) => {
     const startDate_day = StartDateValue.date()
@@ -143,7 +146,9 @@ const EventUpdate = () => {
   useEffect(() => {
     if (detailedevent.length > 0) {
       const event = detailedevent[0];
+      const game = games.find((game) => game.id === event.id_game)
       setMota(event.mota || "");
+      setgameName(game ? game.name : "")
       setStartDateValue(dayjs(event.thoigianbatdau) || dayjs())
       setEndDateValue(dayjs(event.thoigianketthuc) || dayjs())
     }
@@ -237,8 +242,6 @@ const EventUpdate = () => {
     ],
   };
 
-  console.log(StartDateValue)
-
   return (
     <>
       <DashboardHeading
@@ -311,10 +314,10 @@ const EventUpdate = () => {
               <Field>
                 <Label>Game Name</Label>
                 <Dropdown>
-                  <Dropdown.Select placeholder={event.id_game == "GAME00001" ? "Shake" : "Quiz" }></Dropdown.Select>
+                  <Dropdown.Select placeholder={gamename}></Dropdown.Select>
                   <Dropdown.List>
-                    {game.length > 0 &&
-                      game.slice(0).map((item) => (
+                    {games.length > 0 &&
+                      games.slice(0).map((item) => (
                         <Dropdown.Option
                           key={item.id}
                           onClick={() => handleClickGameOption(item)}

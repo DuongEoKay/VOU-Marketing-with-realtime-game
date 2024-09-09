@@ -302,9 +302,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
 
 {
-    "id_voucher": "VC00000002",
+    "id_voucher": "VC00000001",
     "id_sukien": "EV00000001",
-    "soluong": 35
+    "soluong": 1
 }
 
 ###

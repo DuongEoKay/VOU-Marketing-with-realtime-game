@@ -36,7 +36,7 @@ const BrandProfile = () => {
   const [error, updateError] = useState();
 
   const updatebrand = async (values) => {
-    let { ten, sms, linhvuc, password, diachi } = values;
+    let { ten, sms, linhvuc, diachi } = values;
     let hinhanh;
     hinhanh = url == undefined ? brand.hinhanh : url;
     ten = ten == undefined ? brand.ten : ten;

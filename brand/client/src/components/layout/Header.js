@@ -32,8 +32,8 @@ const menuLinks = [
     ),
   },
   {
-    url: "/blog",
-    title: "Blog",
+    url: "/events",
+    title: "Events",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
