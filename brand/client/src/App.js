@@ -15,6 +15,8 @@ import ContactPage from "pages/ContactPage";
 import DetailEventPage from 'pages/DetailEventPage';
 import DetailVoucherPage from 'pages/DetailVoucherPage';
 import EventUpdate from 'module/event/EventUpdate';
+import SignUpBrandPage from 'pages/SignUpBrand';
+import SignUpPage from 'pages/SignUp';
 
 function App() {
   return (
@@ -22,7 +24,10 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/sign-in" element={<Auth authRoute="sign-in" />} />
-        <Route path="/sign-up" element={<Auth authRoute="sign-up" />} />
+        <Route path="/sign-up" element={<SignUpPage></SignUpPage>} />
+        <Route path="/sign-up-brand" element={<SignUpBrandPage></SignUpBrandPage>} />
+        <Route path="/phone-number" element={<Auth authRoute="phone-number" />}/>
+        <Route path="/validate-otp" element={<Auth authRoute="validate-otp" />}/>
         <Route path="/event/:slug" element={<DetailEventPage></DetailEventPage>}></Route>
         <Route path="/voucher/:slug" element={<DetailVoucherPage></DetailVoucherPage>}></Route>
         <Route path="/contact" element={<ContactPage></ContactPage>}></Route>

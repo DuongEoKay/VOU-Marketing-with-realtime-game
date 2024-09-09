@@ -2,6 +2,9 @@ import React from "react";
 import { useContext } from "react";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
+import SignUpBrandPage from "pages/SignUpBrand";
+import ValidateOtpPage from "pages/ValidateOtp";
+import PhonePage from "pages/Phone";
 import { authContext } from "../contexts/authContext";
 import { Navigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
@@ -24,7 +27,8 @@ const Auth = ({ authRoute }) => {
     body = (
       <>
         {authRoute === "sign-in" && <SignInPage />}
-        {authRoute === "sign-up" && <SignUpPage />}
+        {authRoute === "phone-number" && <PhonePage />}
+        {authRoute === "validate-otp" && <ValidateOtpPage />}
       </>
     );
   }

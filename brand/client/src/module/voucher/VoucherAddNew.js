@@ -46,14 +46,14 @@ const VoucherAddNew = () => {
   const [mota, setMota] = useState("");
 
   const addVoucherHandler = async (values) => {
-    const { ten, trigia, voucherEndDate } = values
+    const { ten, trigia, diem, voucherEndDate } = values
   
     const endDate_day = voucherEndDate.date()
     const endDate_month = voucherEndDate.month() + 1
     const endDate_year = voucherEndDate.year()
     const endDate_hour = voucherEndDate.hour()
     const endDate_minute = voucherEndDate.minute()
-    const endDate_second = voucherEndDate.second()
+    const endDate_second = "00"
 
     const ngayhethan = endDate_month + "/" + endDate_day + "/" + endDate_year + " " + endDate_hour + ":" + endDate_minute + ":" + endDate_second
 
@@ -61,9 +61,10 @@ const VoucherAddNew = () => {
     const hinhanh = urlHinhanh
 
     if (!Number.isInteger(parseInt(trigia, 10))) toast.error("Value of Voucher must be an integer")
+      if (!Number.isInteger(parseInt(diem, 10))) toast.error("Point of Voucher must be an integer")
     else {
         try {
-            const newVoucherData = await addVoucher({ ten, qrcode, hinhanh, trigia, mota, ngayhethan });
+            const newVoucherData = await addVoucher({ ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan });
             if (newVoucherData["success"]) {
                 toast.success(`New voucher added successfully`);
                 navigate("/manage/vouchers");
@@ -242,7 +243,7 @@ const VoucherAddNew = () => {
             )}
           </Field>
         </div>
-        <div className="form-layout ml-2">
+        <div className="form-layout">
           <Field>
             <Label>Voucher Value</Label>
             <Input
@@ -252,6 +253,17 @@ const VoucherAddNew = () => {
               required
             ></Input>
           </Field>
+          <Field>
+            <Label>Voucher Point</Label>
+            <Input
+              control={control}
+              placeholder="Enter your voucher's point"
+              name="diem"
+              required
+            ></Input>
+          </Field>
+        </div>
+        <div className="single-form-layout ml-44">
           <Field>
             <Label>Voucher Expired Date</Label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -267,7 +279,7 @@ const VoucherAddNew = () => {
             </LocalizationProvider>
           </Field>
         </div>
-        <div className="solo-form-layout">
+        <div className="single-form-layout">
           <div className="mb-10">
             <Field>
               <Label>Description</Label>

@@ -6,12 +6,14 @@ module.exports = (pool) => {
     const router = express.Router();
 
     router.get("/", verifyToken, async (req, res) => {
+        const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+        const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
         try {
-        const voucher = await pool.query(`SELECT * FROM Voucher WHERE ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
-        if (!voucher) {
-            return res
-            .status(400)
-            .json({ success: false, message: "There is no voucher" });
+            const voucher = await pool.query(`SELECT * FROM Voucher WHERE ID_ThuongHieu = '${id_thuonghieu}'`)
+            if (!voucher) {
+                return res
+                .status(400)
+                .json({ success: false, message: "There is no voucher" });
         }
         res.json({ success: true, voucher: voucher.rows });
         } catch (error) {
@@ -25,7 +27,10 @@ module.exports = (pool) => {
     // @access Public
 
     router.post("/create", verifyToken, async (req, res) => {
-        const { ten, qrcode, hinhanh, trigia, mota, ngayhethan } = req.body;
+        const { ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan } = req.body;
+
+        const brand = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+        const id_thuonghieu = brand.rows[0].id_thuonghieu
     
         if (!ten || !trigia || !ngayhethan) {
         return res
@@ -65,9 +70,7 @@ module.exports = (pool) => {
                 newID = 'VC00000001';
             }
 
-            const id_thuonghieu = req.ID_ThuongHieu
-
-            const newVoucher = await pool.query(`INSERT INTO Voucher(ID_Voucher, ID_ThuongHieu, ten, qrcode, hinhanh, trigia, mota, ngayhethan, trangthai) VALUES ('${newID}', '${id_thuonghieu}', '${ten}', '${tmp_qrcode}', '${tmp_hinhanh}', ${trigia}, '${mota}', '${ngayhethan}', true) RETURNING *;`)
+            const newVoucher = await pool.query(`INSERT INTO Voucher(ID_Voucher, ID_ThuongHieu, ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan, trangthai) VALUES ('${newID}', '${id_thuonghieu}', '${ten}', '${tmp_qrcode}', '${tmp_hinhanh}', ${trigia}, ${diem}, '${mota}', '${ngayhethan}', true) RETURNING *;`)
         
             res.json({
                 success: true,
@@ -84,9 +87,11 @@ module.exports = (pool) => {
     });
 
     router.delete("/:id", verifyToken, async (req, res) => {
+        const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+        const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
         try {
             const id_voucher = req.params.id;
-            const existVoucher = await pool.query(`SELECT * FROM Voucher WHERE ID_Voucher = '${id_voucher}' AND ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
+            const existVoucher = await pool.query(`SELECT * FROM Voucher WHERE ID_Voucher = '${id_voucher}' AND ID_ThuongHieu = '${id_thuonghieu}'`)
         
             if (existVoucher.rows.length === 0) {
                 return res
@@ -121,6 +126,8 @@ module.exports = (pool) => {
 
     router.put("/:id", verifyToken, async (req, res) => {
         let { qrcode, hinhanh, trigia, mota, ngayhethan, trangthai } = req.body
+        const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+        const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
 
         let updateParam = "";
 
@@ -138,7 +145,7 @@ module.exports = (pool) => {
         }
 
         try {
-            const isUpdated = await pool.query(`UPDATE Voucher SET ${updateParam} WHERE ID_Voucher = '${req.params.id}' AND ID_ThuongHieu = '${req.ID_ThuongHieu}' RETURNING *;`)
+            const isUpdated = await pool.query(`UPDATE Voucher SET ${updateParam} WHERE ID_Voucher = '${req.params.id}' AND ID_ThuongHieu = '${id_thuonghieu}' RETURNING *;`)
 
             if (isUpdated.rowCount > 0) {
                 return res.json({

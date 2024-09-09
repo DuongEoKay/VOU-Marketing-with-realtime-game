@@ -45,14 +45,12 @@ const BrandProfile = () => {
     sms = sms == "" ? brand.sms : sms;
     linhvuc = linhvuc == undefined ? brand.linhvuc : linhvuc;
     linhvuc = linhvuc == "" ? brand.linhvuc : linhvuc;
-    password = password == undefined ? brand.matkhau : password;
-    password = password == "" ? brand.password : password;
     diachi = diachi == undefined ? brand.diachi : diachi;
     diachi = diachi == "" ? brand.diachi : diachi;
 
     try {
       const updateData = await updateBrand(
-        { ten, sms, password, hinhanh, linhvuc, diachi },
+        { ten, sms, hinhanh, linhvuc, diachi },
         brand.id_thuonghieu
       );
       if (updateData["success"]) {
@@ -152,15 +150,6 @@ const BrandProfile = () => {
               placeholder={brand.linhvuc}
             ></Input>
           </Field>
-          <Field>
-            <Label>Password</Label>
-            <InputPasswordToggle
-              control={control}
-              defaultValue={`${brand.matkhau}`}
-            ></InputPasswordToggle>
-          </Field>
-        </div>
-        <div className="solo-form-layout">
           <Field>
             <Label>Address</Label>
             <Input

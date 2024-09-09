@@ -7,7 +7,9 @@ module.exports = (pool) => {
 
     router.get("/", verifyToken, async (req, res) => {
         try {
-            const event = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
+            const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+            const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
+            const event = await pool.query(`SELECT * FROM SuKien WHERE ID_ThuongHieu = '${id_thuonghieu}'`)
             if (!event) {
                 return res
                 .status(400)
@@ -44,13 +46,13 @@ module.exports = (pool) => {
             .json({ success: false, message: "Missing information" });
         }
 
-        const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
-        if(isGameExist.rowCount === 0) {
-            return res.json({
-                success: false,
-                message: "There is no game that match your choice"
-            })
-        }
+        // const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
+        // if(isGameExist.rowCount === 0) {
+        //     return res.json({
+        //         success: false,
+        //         message: "There is no game that match your choice"
+        //     })
+        // }
 
         try {
             const existEvent = await pool.query(`SELECT * FROM SuKien WHERE tensukien = '${tensukien}'`)
@@ -77,7 +79,8 @@ module.exports = (pool) => {
                 newID = 'EV00000001';
             }
 
-            const id_thuonghieu = req.ID_ThuongHieu
+            const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+            const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
 
             const newEvent = await pool.query(`INSERT INTO SuKien(ID_SuKien, ID_ThuongHieu, ID_Game, TenSuKien, HinhAnh, SoLuongVoucher, MoTa, ThoiGianBatDau, ThoiGianKetThuc) VALUES ('${newID}', '${id_thuonghieu}', '${id_game}', '${tensukien}', '${hinhanh}', ${soluongvoucher}, '${mota}', '${thoigianbatdau}', '${thoigianketthuc}') RETURNING *;`)
         
@@ -99,6 +102,8 @@ module.exports = (pool) => {
         try {
             const id_sukien = req.params.id;
             const existEvent = await pool.query(`SELECT * FROM SuKien WHERE ID_SuKien = '${id_sukien}' AND ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
+            const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+            const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
         
             if (existEvent.rows.length === 0) {
                 return res
@@ -106,7 +111,7 @@ module.exports = (pool) => {
                 .json({ success: false, message: "Event is not exist" });
             }
             else {
-                const isDeleted = await pool.query(`DELETE FROM SuKien WHERE ID_SuKien = '${id_sukien}' AND ID_ThuongHieu = '${req.ID_ThuongHieu}'`)
+                const isDeleted = await pool.query(`DELETE FROM SuKien WHERE ID_SuKien = '${id_sukien}' AND ID_ThuongHieu = '${id_thuonghieu}'`)
                 if (isDeleted.rowCount > 0) {
                     return res.json({
                         success: true,
@@ -125,6 +130,8 @@ module.exports = (pool) => {
 
     router.put("/:id", verifyToken, async (req, res) => {
         let { tensukien, hinhanh, soluongvoucher, mota, thoigianbatdau, thoigianketthuc, id_game } = req.body
+        const thuonghieu = await pool.query(`SELECT * FROM ThuongHieu WHERE ID_ChuThuongHieu = '${req.id}'`)
+        const id_thuonghieu = thuonghieu.rows[0].id_thuonghieu
         
         if(id_game) {
             const isGameExist = await pool.query(`SELECT * FROM Game WHERE ID_Game = '${id_game}';`)
@@ -153,7 +160,7 @@ module.exports = (pool) => {
         }
 
         try {
-            const isUpdated = await pool.query(`UPDATE SuKien SET ${updateParam} WHERE ID_SuKien = '${req.params.id}' AND ID_ThuongHieu = '${req.ID_ThuongHieu}' RETURNING *;`)
+            const isUpdated = await pool.query(`UPDATE SuKien SET ${updateParam} WHERE ID_SuKien = '${req.params.id}' AND ID_ThuongHieu = '${id_thuonghieu}' RETURNING *;`)
 
             if (isUpdated.rowCount > 0) {
                 return res.json({
@@ -359,7 +366,7 @@ module.exports = (pool) => {
 
     // @route GET api/detailevent
     // @desc Get detail event
-    // @access Private
+    // @access Public
 
     router.get("/detailevent/:id", async (req, res) => {
         const id = req.params.id;
