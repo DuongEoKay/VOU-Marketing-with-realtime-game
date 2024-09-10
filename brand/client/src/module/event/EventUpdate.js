@@ -105,7 +105,9 @@ const EventUpdate = () => {
     tensukien = tensukien == "" ? detailedevent[0].tensukien : tensukien;
     let soluongvoucher
     soluongvoucher = voucherAmount == 0 ? detailedevent[0].soluongvoucher : voucherAmount;
-    const updateInfor = {tensukien, hinhanh, soluongvoucher, mota, thoigianbatdau, thoigianketthuc, id_game}
+    let plainText = stripHtml(mota)
+
+    const updateInfor = {tensukien, hinhanh, soluongvoucher, "mota": plainText, thoigianbatdau, thoigianketthuc, id_game}
 
     try {
       const updateEventData = await updateEvent(detailid, updateInfor);
@@ -226,6 +228,12 @@ const EventUpdate = () => {
     else if(answer == "C") setValue(`questions[${index}].correctAnswer`, answerC)
     else if(answer == "D") setValue(`questions[${index}].correctAnswer`, answerD)
   }
+
+  const stripHtml = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
 
   const modules = {
     toolbar: [
