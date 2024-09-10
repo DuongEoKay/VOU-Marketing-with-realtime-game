@@ -263,7 +263,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1I
 ###
 GET http://localhost:8080/brand/api/voucher/voucherofevent/EV00000001
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRF9UaHVvbmdIaWV1IjoiSUQwMDAwMDAwMiIsImlhdCI6MTcyNDQ0MDYzOX0.aKATRP3K1MwVWUqBdJ87cx9rXUNmdm702ey6RlaioHo
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZjIzMDUxNGZmYTE0NzFhY2E2NTczIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU5MDgyNTAsImV4cCI6MTcyNTk5NDY1MH0.jNXQ2YdOh6HX6IwJczIs8YDQgml2nLL4bINkyNKN_xQpGNyYrrX-AzrWyjpVv9NW0uwv7138YA0a2gfT8oq3Ww
 
 ###
 POST http://localhost:8080/brand/api/voucher/deletevoucherevent
@@ -302,8 +302,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
 
 {
-    "id_voucher": "VC00000001",
-    "id_sukien": "EV00000001",
+    "id_voucher": "VC00000002",
+    "id_sukien": "EV00000002",
     "soluong": 1
 }
 
@@ -325,3 +325,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsI
 ###
 POST http://localhost:8080/brand/api/brand/test/
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkY2Y3YjUwMzhlNjI2ODg1NWYxYjgzIiwic3ViIjoiY29jYWNvbGFAZ21haWwuY29tIiwiaWF0IjoxNzI1NzU3MzY1LCJleHAiOjE3MjU4NDM3NjV9.CZ0_42Ef6ZxoA44zDZ9geCp6xu8UxLckQyXABwpwJyEJmJBp5m_ic_bWIovkO3mQjU9bBUT6ez_7aojOMA06xA
+
+###
+GET http://localhost:8080/brand/api/voucher/allvoucherevent
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZjIzMDUxNGZmYTE0NzFhY2E2NTczIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU5NzAwNzIsImV4cCI6MTcyNjA1NjQ3Mn0.jgBFmdYhv_BCopY1jVPb1BUou7uYSHMvaqoCkmy3lmUaqVgXYw3rWHdEeZ9Q9h69Jp6YINr5OQoh-oBH4qcU9g

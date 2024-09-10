@@ -25,6 +25,12 @@ export const voucherReducer = (state, action) => {
           voucherevent: payload,
           vouchersLoading: false,
         };
+      case "ALL_VOUCHEREVENT":
+        return {
+          ...state,
+          allvoucherevent: payload,
+          vouchersLoading: false,
+        };
       default:
         return state;
     }

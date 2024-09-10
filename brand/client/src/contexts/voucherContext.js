@@ -11,6 +11,7 @@ const VoucherContextProvider = ({children}) => {
         detailedvoucher: [],
         allvouchers: [],
         voucherevent: [],
+        allvoucherevent: [],
         vouchersLoading: true,
     });
 
@@ -155,6 +156,22 @@ const VoucherContextProvider = ({children}) => {
       }
     };
 
+    const getAllVoucherEvent = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/brand/api/voucher/allvoucherevent`);
+        if (response.data.success) {
+          dispatch({
+            type: "ALL_VOUCHEREVENT",
+            payload: response.data.vouchers,
+          });
+        }
+      } catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+      }
+    };
+
     const voucherContextData = {
       voucherState,
       getAllVouchers,
@@ -166,6 +183,7 @@ const VoucherContextProvider = ({children}) => {
       addVoucherEvent,
       getVoucherEvent,
       updateVoucher,
+      getAllVoucherEvent
     };
 
     return (

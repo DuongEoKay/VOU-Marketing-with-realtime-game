@@ -106,6 +106,43 @@ export const soluongvoucherArray = [
   },
 ];
 
+export const monthArray = [
+  { id: 0, month: 1 },
+  {
+    id: 1, month: 2,
+  },
+  {
+    id: 2, month: 3,
+  },
+  {
+    id: 3, month: 4,
+  },
+  {
+    id: 4, month: 5,
+  },
+  {
+    id: 5, month: 6,
+  },
+  {
+    id: 6, month: 7,
+  },
+  {
+    id: 7, month: 8,
+  },
+  {
+    id: 8, month: 9,
+  },
+  {
+    id: 9, month: 10,
+  },
+  {
+    id: 10, month: 11,
+  },
+  {
+    id: 11, month: 12,
+  },
+];
+
 export const game = [
   { id: "GAME00001", 
     name: "Shake" },

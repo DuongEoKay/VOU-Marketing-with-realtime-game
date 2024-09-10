@@ -449,6 +449,38 @@ module.exports = (pool) => {
             });
         }
     })
+
+    // @route GET api/allvoucherevent
+    // @desc GET allvoucherevent
+    // @access Public
+
+    router.get("/allvoucherevent", async (req, res) => {
+        try {
+            const vouchers = await pool.query(`SELECT * FROM Voucher_SuKien;`)
+            if (vouchers.rowCount > 0) {
+                const formatData = await Promise.all(vouchers.rows.map(async row => {
+                    const tensukien = await pool.query(`SELECT TenSuKien FROM SuKien WHERE ID_SuKien = '${row.id_sukien}';`)
+                    const thoigianketthuc = await pool.query(`SELECT ThoiGianKetThuc FROM SuKien WHERE ID_SuKien = '${row.id_sukien}';`)
+                    const trigia = await pool.query(`SELECT TriGia FROM Voucher WHERE ID_Voucher = '${row.id_voucher}';`)
+                    const tenvoucher = await pool.query(`SELECT Ten FROM Voucher WHERE ID_Voucher = '${row.id_voucher}';`)
+                    return {
+                        ...row,
+                        tensukien: tensukien.rows[0]?.tensukien,
+                        thoigianketthuc: thoigianketthuc.rows[0]?.thoigianketthuc,
+                        trigia: trigia.rows[0]?.trigia,
+                        tenvoucher: tenvoucher.rows[0]?.ten,
+                    }
+                }))
+                res.json({ success: true, vouchers: formatData });
+            }
+        } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "internal server error",
+        });
+        }
+    });
     
     return router;
 }
