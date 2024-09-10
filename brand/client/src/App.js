@@ -19,6 +19,8 @@ import SignUpBrandPage from 'pages/SignUpBrand';
 import SignUpPage from 'pages/SignUp';
 import EventPage from 'pages/EventPage';
 import VoucherUpdate from 'module/voucher/VoucherUpdate';
+import StatisticsManage from 'module/brand/StatisticsManage'
+import BrandInfo from 'module/brand/BrandInfo';
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
         <Route path="/validate-otp" element={<Auth authRoute="validate-otp" />}/>
         <Route path="/event/:slug" element={<DetailEventPage></DetailEventPage>}></Route>
         <Route path="/voucher/:slug" element={<DetailVoucherPage></DetailVoucherPage>}></Route>
+        <Route path="/brand/:slug" element={<BrandInfo></BrandInfo>}></Route>
         <Route path="/contact" element={<ContactPage></ContactPage>}></Route>
         <Route element={<ProtectedRoute Component={DashboardLayout} />}>
           <Route
@@ -58,6 +61,10 @@ function App() {
           <Route
             path="/manage/add-voucher"
             element={<VoucherAddNew></VoucherAddNew>}
+          ></Route>
+          <Route
+            path="/manage/statistics"
+            element={<StatisticsManage></StatisticsManage>}
           ></Route>
           <Route
             path="/manage/update-voucher/:slug"

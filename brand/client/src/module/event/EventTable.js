@@ -83,9 +83,9 @@ const EventTable = ({ filterevents, brands, isAdmin = false, sortedEvents }) => 
                         }
                         ></ActionEdit>
                     )}
-                    <ActionDelete
+                    {/* <ActionDelete
                         onClick={() => handleDeleteEvent(event?.id_sukien)}
-                    ></ActionDelete>
+                    ></ActionDelete> */}
                     </div>
                 </td>
                 </tr>
@@ -116,9 +116,9 @@ const EventTable = ({ filterevents, brands, isAdmin = false, sortedEvents }) => 
                         }
                         ></ActionEdit>
                     )}
-                    <ActionDelete
+                    {/* <ActionDelete
                         onClick={() => handleDeleteEvent(event?._id)}
-                    ></ActionDelete>
+                    ></ActionDelete> */}
                     </div>
                 </td>
                 </tr>
