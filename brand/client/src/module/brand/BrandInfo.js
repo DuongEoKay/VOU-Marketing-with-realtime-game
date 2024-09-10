@@ -174,7 +174,7 @@ const BrandInfo = () => {
               </div>
               <div className="mt-5">
                 <span className="text-sm desc">
-                  {curBrand?.mota || "This brand has not left any traces"}
+                  {curBrand?.linhvuc || "This brand has not left any traces"}
                 </span>
               </div>
             </div>

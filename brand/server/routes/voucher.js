@@ -470,6 +470,7 @@ module.exports = (pool) => {
                         tenvoucher: voucher.rows[0]?.ten,
                         ngayhethan: voucher.rows[0]?.ngayhethan,
                         mota: voucher.rows[0]?.mota,
+                        diem: voucher.rows[0]?.diem,
                     }
                 }))
                 res.json({ success: true, vouchers: formatData });
