@@ -29,6 +29,12 @@ public class GatewayConfig {
                 .route("brand-service", r -> r.path("/brand/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://brand-service"))
+                .route("report-service", r -> r.path("/report/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://report-service"))
+                .route("log-service", r -> r.path("/log/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://log-service"))
                 .build();
     }
 
