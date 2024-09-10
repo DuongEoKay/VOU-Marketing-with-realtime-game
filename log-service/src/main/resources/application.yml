@@ -1,18 +1,18 @@
 server:
-  port: 9002
+  port: 9011
 
 spring:
   application:
-    name: user-service
+    name: log-service
   data:
     mongodb:
       uri: mongodb+srv://duong:17112003@ktpm.syri56f.mongodb.net/<KTPM>?retryWrites=true&w=majority&appName=KTPM
   kafka:
+    auto-offset-reset: latest
     bootstrap-servers: localhost:29092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
+    group-id: consumer-group
+    topic:
+      name: log
 
 
 jwt:

@@ -4,8 +4,13 @@
     <file url="file://$PROJECT_DIR$/auth-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/config-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game-event-producer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/game-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/log-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/log-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/report-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/report-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service01/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service02/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

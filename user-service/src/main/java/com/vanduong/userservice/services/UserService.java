@@ -1,8 +1,6 @@
 package com.vanduong.userservice.services;
 
 import com.vanduong.userservice.entities.*;
-import com.vanduong.userservice.entities.value_objects.Department;
-import com.vanduong.userservice.entities.value_objects.ResponseTemplateVO;
 import com.vanduong.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -11,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,9 @@ import java.util.Map;
 @Service
 @Slf4j
 public class UserService {
+
+    @Autowired
+    private ProducerService producerService;
 
     private final UserRepository repository;
     private final RestTemplate restTemplate;
@@ -130,6 +133,22 @@ public class UserService {
 
             user.setPoint(user.getPoint() + addPointRequest.getPoint());
             this.repository.save(user);
+
+
+            GamePlayData gamePlayData = new GamePlayData();
+            gamePlayData.setId(addPointRequest.getId().toString());
+            gamePlayData.setGameId(addPointRequest.getGameId());
+            gamePlayData.setEventId(addPointRequest.getEventId());
+            gamePlayData.setScores(addPointRequest.getScores());
+            gamePlayData.setDate(new Timestamp(System.currentTimeMillis()).toString());
+
+
+            producerService.sendMessage("play",gamePlayData);
+
+            String log = "User " + user.getUsername() + " played game " + addPointRequest.getGameId()+" at event " +addPointRequest.getEventId()+" received "+addPointRequest.getScores() + " score and got " + addPointRequest.getPoint() + " points";
+
+            producerService.sendMessage("log", log);
+
             return ResponseEntity.ok(new BasicResponse("Add point successfully"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new BasicResponse("Failed to add point"));
