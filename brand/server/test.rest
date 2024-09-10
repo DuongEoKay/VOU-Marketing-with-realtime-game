@@ -299,11 +299,11 @@ GET http://localhost:8080/brand/api/event/eventofbrand/ID00000001
 ###
 POST http://localhost:8080/brand/api/voucher/updatevoucheramount
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZGIxOGE0YzBhMTQxMWI4Njc2OWZhIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU4OTEzMTYsImV4cCI6MTcyNTk3NzcxNn0.EUe57vxhpf0jq280_noC0vYF-kqZDKWTIDGDzrtNDkd81XvdVoS1Ow6MPIu2a72UhBk8-sI9gSz2A5mU6MMhEQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZjIzMDUxNGZmYTE0NzFhY2E2NTczIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU5OTA5MDIsImV4cCI6MTcyNjA3NzMwMn0.LxkbwbWODLkU7p9J7EIExeYPe6rVtGtfhCOHuBAZH-d3PashRHRJOXdJwrV0G1S4JoQLe3txYDVrLivV4LcDuA
 
 {
     "id_voucher": "VC00000002",
-    "id_sukien": "EV00000002",
+    "id_sukien": "EV00000001",
     "soluong": 1
 }
 
@@ -328,4 +328,8 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsI
 
 ###
 GET http://localhost:8080/brand/api/voucher/allvoucherevent
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZjIzMDUxNGZmYTE0NzFhY2E2NTczIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU5NzAwNzIsImV4cCI6MTcyNjA1NjQ3Mn0.jgBFmdYhv_BCopY1jVPb1BUou7uYSHMvaqoCkmy3lmUaqVgXYw3rWHdEeZ9Q9h69Jp6YINr5OQoh-oBH4qcU9g
+
+###
+GET http://localhost:8080/report/user-count-by-all-events
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiUk9MRV9CUkFORF9PV05FUiIsImlkIjoiNjZkZjIzMDUxNGZmYTE0NzFhY2E2NTczIiwic3ViIjoicGl6emFodXR2bkBnbWFpbC5jb20iLCJpYXQiOjE3MjU5NzAwNzIsImV4cCI6MTcyNjA1NjQ3Mn0.jgBFmdYhv_BCopY1jVPb1BUou7uYSHMvaqoCkmy3lmUaqVgXYw3rWHdEeZ9Q9h69Jp6YINr5OQoh-oBH4qcU9g

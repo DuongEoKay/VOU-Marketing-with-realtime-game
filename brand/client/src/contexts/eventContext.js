@@ -14,6 +14,7 @@ const EventContextProvider = ({ children }) => {
       allevents: [],
       eventsLoading: true,
       games: [],
+      usercount: [],
     });
   
     // get all events
@@ -163,6 +164,24 @@ const EventContextProvider = ({ children }) => {
         }
     }
 
+    const userCount = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/report/user-count-by-all-events`)
+        if (response.data) {
+          dispatch({
+            type: "USERCOUNT",
+            payload: response.data,
+          });
+          return response.data;
+        }
+      }
+      catch (error) {
+        return error.response.data
+          ? error.response.data
+          : { success: false, message: "Server error" };
+        }
+    }
+
     // event context data
     const eventContextData = {
       eventState,
@@ -175,6 +194,7 @@ const EventContextProvider = ({ children }) => {
       getAllEventsEver,
       deleteQuestionEvent,
       getGameName,
+      userCount,
     };
   
     return (

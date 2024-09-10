@@ -11,6 +11,8 @@
         <module name="config-service" />
         <module name="game-service" />
         <module name="gateway-service" />
+        <module name="log-service" />
+        <module name="report-service" />
         <module name="user-service" />
         <module name="game-service (2)" />
         <module name="discovery-service" />
@@ -27,7 +29,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
-      <module name="config-service" options="-parameters" />
+      <module name="config-service" options="" />
       <module name="discovery-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="game-event-producer" options="-parameters" />
@@ -35,6 +37,8 @@
       <module name="game-service (1)" options="-parameters" />
       <module name="game-service (2)" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="log-service" options="-parameters" />
+      <module name="report-service" options="-parameters" />
       <module name="service01" options="-parameters" />
       <module name="service02" options="-parameters" />
       <module name="user-service" options="-parameters" />

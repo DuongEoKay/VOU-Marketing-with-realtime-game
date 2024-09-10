@@ -1,10 +1,13 @@
 import React from "react";
 
-const ActionEdit = ({ onClick = () => {} }) => {
+const ActionEdit = ({ onClick = () => {}, disabled = false }) => {
   return (
     <span
-      className="flex items-center justify-center w-10 h-10 bg-green-500 border border-gray-200 rounded cursor-pointer"
-      onClick={onClick}
+      className={`flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer ${
+        disabled ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+      }`}
+      onClick={disabled ? null : onClick}
+      aria-disabled={disabled}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

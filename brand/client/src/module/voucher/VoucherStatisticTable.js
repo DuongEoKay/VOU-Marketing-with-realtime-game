@@ -13,9 +13,11 @@ const VoucherStatisticTable = ({ filtervouchers, isAdmin = false, sortedVouchers
         {filtervouchers.length > 0
             ? filtervouchers?.map((voucher, index) => (
                 <tr>
-                <td>{`0${index + 1}`}</td>
                 <td>
                     <VoucherStatisticTableItem voucher={voucher}></VoucherStatisticTableItem>
+                </td>
+                <td>
+                    <span className="text-gray-500">{voucher?.tenvoucher}</span>
                 </td>
                 <td>
                     <span className="text-gray-500">{voucher?.trigia}</span>
@@ -24,7 +26,7 @@ const VoucherStatisticTable = ({ filtervouchers, isAdmin = false, sortedVouchers
                     <span className="text-gray-500">{voucher?.soluongsudung}</span>
                 </td>
                 <td>
-                    <span className="text-gray-500">{voucher?.tensukien}</span>
+                    <span className="text-gray-500">{voucher?.userCount}</span>
                 </td>
                 <td>
                     <span className="text-gray-500">{voucher?.ngansach}</span>
@@ -33,7 +35,6 @@ const VoucherStatisticTable = ({ filtervouchers, isAdmin = false, sortedVouchers
             ))
             : sortedVouchers?.map((voucher, index) => (
                 <tr>
-                <td>{`0${index + 1}`}</td>
                 <td>
                     <VoucherStatisticTableItem voucher={voucher}></VoucherStatisticTableItem>
                 </td>

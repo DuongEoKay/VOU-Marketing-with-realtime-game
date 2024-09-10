@@ -4,6 +4,7 @@ import DashboardHeading from "module/dashboard/DashboardHeading";
 import styled from "styled-components";
 import VoucherStatisticTable from "../voucher/VoucherStatisticTable";
 import { voucherContext } from "contexts/voucherContext";
+import { eventContext } from "contexts/eventContext";
 import ReactPaginate from "react-paginate";
 import { monthArray } from "utils/constants";
 
@@ -57,11 +58,19 @@ function parseDate(dateString) {
 
 const StatisticsManage = () => {
   const {
-    voucherState: { allvoucherevent },
-    getAllVoucherEvent,
+    voucherState: { allvoucherevent},
+    getAllVoucherEvent
   } = useContext(voucherContext);
 
+  const {
+    eventState: { usercount },
+    userCount,
+  } = useContext(eventContext);
+
   useState(() => getAllVoucherEvent(), []);
+  useState(() => userCount(), []);
+
+  console.log(usercount)
 
   const [filters, setFilters] = useState({
     soluongsudung: 0,
@@ -72,9 +81,24 @@ const StatisticsManage = () => {
     tenvoucher: ""
   });
 
-  console.log(allvoucherevent)
+  const updatedEvents = allvoucherevent.map(event => {
+    if (usercount.hasOwnProperty(event.id_sukien)) {
+      return {
+        ...event,
+        userCount: usercount[event.id_sukien]
+      };
+    }
+    else {
+      return {
+        ...event,
+        userCount: 0
+      };
+    }
+    
+    return event;
+  });
 
-  const filteredVouchers = allvoucherevent?.filter((voucher) => {
+  const filteredVouchers = updatedEvents?.filter((voucher) => {
     const searchTerm = filters.searchTerm?.toLowerCase() || ""; 
 
     const tenvoucher = voucher.tenvoucher?.toLowerCase() || "";
@@ -84,7 +108,7 @@ const StatisticsManage = () => {
     const eventendMonth = eventendDate.getMonth() + 1;
 
     const isMonthMatch =
-        !filters.month || new Date(voucher.thoigianketthuc).getMonth() + 1  === filters.month;
+      !filters.month || new Date(voucher.thoigianketthuc).getMonth() + 1  === filters.month;
 
     const isMatch = tenvoucher.includes(searchTerm) || tensukien.includes(searchTerm);
 
@@ -100,7 +124,7 @@ const StatisticsManage = () => {
   };
 
   const handleMonthChange = (e) => {
-    const selectedMonth = parseInt(e.target.value, 10);
+    const selectedMonth = e.target.value === "" ? null : parseInt(e.target.value, 10);
     setFilters((prevFilters) => ({
       ...prevFilters,
       month: selectedMonth === "" ? null : parseInt(selectedMonth, 10),
@@ -155,7 +179,7 @@ const StatisticsManage = () => {
           <label className="p-4 text-black bg-gray-200 rounded-md">
             <select
                 className="bg-inherit"
-                value={filters.thoigianketthuc}
+                value={filters.month || ""}
                 onChange={handleMonthChange}
             >
                 <option value="">{`Month`}</option>
@@ -179,16 +203,16 @@ const StatisticsManage = () => {
       <Table>
         <thead>
           <tr>
-            <th>Id</th>
+            <th>Event</th>
             <th>Voucher</th>
             <th>Value</th>
             <th>Used</th>
-            <th>Event</th>
+            <th>Players</th>
             <th>Total</th>
           </tr>
         </thead>
         <tbody>
-          {allvoucherevent.length > 0 ? (
+          {updatedEvents.length > 0 ? (
             <VoucherStatisticTable
               filtervouchers={currentPageData}
               sortedVouchers={sortedVouchers}

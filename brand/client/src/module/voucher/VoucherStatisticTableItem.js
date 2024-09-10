@@ -14,9 +14,9 @@ const formatDate = (date) => {
 }
 
 const VoucherStatisticTableItem = ({ voucher }) => {
-  const truncatedten = truncateten(voucher.tenvoucher, 60);
+  const truncatedten = truncateten(voucher.tensukien, 60);
   return (
-    <div className="flex items-center gap-x-3">
+    <div className="flex items-center">
       <div className="flex-1">
         <h3 className="font-semibold">{truncatedten}</h3>
         <time className="text-sm text-gray-500">{`Event End Date: ${formatDate(voucher?.thoigianketthuc)}`}</time>
