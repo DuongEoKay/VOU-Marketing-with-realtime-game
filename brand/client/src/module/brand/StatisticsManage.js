@@ -50,7 +50,7 @@ const StatisticsManageStyles  = styled.div`
   }
 `;
 
-const itemsPerPage = 3;
+const itemsPerPage = 10;
 
 function parseDate(dateString) {
   return new Date(dateString);

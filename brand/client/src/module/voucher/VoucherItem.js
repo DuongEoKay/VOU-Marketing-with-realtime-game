@@ -57,7 +57,7 @@ const VoucherItem = ({ voucher }) => {
         alt="VoucherImage"
         to={`/voucher/${voucher.id_voucher}`}
       ></VoucherImage>
-      <VoucherValue type="secondary">Vouchers: {voucher?.trigia}</VoucherValue>
+      <VoucherValue type="secondary">Value: {voucher?.trigia}</VoucherValue>
       <VoucherTitle to={`/voucher/${voucher.id_voucher}`}>{truncatedTitle}</VoucherTitle>
       <VoucherMeta
         brandName={voucher?.brand_name}
