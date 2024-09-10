@@ -21,7 +21,6 @@ const AuthContextProvider = ({ children }) => {
 
     try {
       const response = await axios.get("http://localhost:8080/brand/api/brand");
-      console.log(response)
       if (response.data.success) {
         dispatch({
           type: "SET_AUTH",
@@ -82,7 +81,6 @@ const AuthContextProvider = ({ children }) => {
         "http://localhost:8080/auth/validate-otp",
         brand
       );
-      console.log("otp", response.data)
       if (response.data.accessToken) {
         localStorage.setItem(
           LOCAL_STORAGE_TOKEN_NAME,

@@ -28,7 +28,7 @@ const EventAddNew = () => {
 
   const [isDefaultImageVisible, setDefaultImageVisible] = useState(true);
 
-  const { addEvent } = useContext(eventContext);
+  const { eventState: { games }, addEvent, getGameName } = useContext(eventContext);
   const { addQuestion } = useContext(questionContext)
   const { voucherState: { vouchers },  getAllVouchers, addVoucherEvent } = useContext(voucherContext)
 
@@ -50,6 +50,9 @@ const EventAddNew = () => {
       name_voucher: []
     },
   });
+
+  useState(() => getGameName(), [])
+  console.log("games", games)
 
   const modules = {
     toolbar: [
@@ -288,8 +291,8 @@ const EventAddNew = () => {
             <Dropdown>
               <Dropdown.Select placeholder="Select game for your Event"></Dropdown.Select>
               <Dropdown.List>
-                {game.length > 0 &&
-                  game.slice(0).map((item) => (
+                {games.length > 0 &&
+                  games.slice(0).map((item) => (
                     <Dropdown.Option
                       key={item.id}
                       onClick={() => handleClickGameOption(item)}

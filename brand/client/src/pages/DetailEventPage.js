@@ -63,16 +63,27 @@ const EventDetailsPageStyles = styled.div`
 const DetailEventPage = () => {
   const { slug } = useParams();
   const {
-    eventState: { detailedevent, allevents },
-    getDetailedEvent, getAllEventsEver
+    eventState: { detailedevent, allevents, games },
+    getDetailedEvent, getAllEventsEver, getGameName
   } = useContext(eventContext);
   const id = slug;
   const detailid = id;
 
   useState(() => getDetailedEvent(detailid), []);
+  useState(() => getGameName(detailid), []);
 
   const brand_name = detailedevent[0]?.brand_name;
   const brand_id = detailedevent[0]?.id_thuonghieu;
+
+  const [gamename, setgameName] = useState("")
+
+  useEffect(() => {
+    if (detailedevent.length > 0) {
+      const event = detailedevent[0];
+      const game = games.find((game) => game.id === event.id_game)
+      setgameName(game ? game.name : "")
+    }
+  }, [detailedevent]);
 
   const {
     authState: { brand },
@@ -85,8 +96,6 @@ const DetailEventPage = () => {
 
   useState(() => getAllEventsEver(), []);
   useState(() => getVoucherEvent(detailid), []);
-
-  console.log(voucherevent)
 
   let relatedEvents = allevents.filter((event) => {
     return (
@@ -123,6 +132,7 @@ const DetailEventPage = () => {
                     brandName={brand_name}
                     brandId={brand_id}
                   ></EventMeta>
+                  <EventVoucherNum className="mt-4">Game: {gamename}</EventVoucherNum>
                 </div>
               </div>
               <div className="event-content">

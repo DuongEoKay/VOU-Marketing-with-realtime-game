@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Swiper } from "swiper/react";
+import { eventContext } from "contexts/eventContext";
 import Heading from "components/layout/Heading";
+import EventFeature from "module/event/EventFeature";
 
 const HomeFeatureStyles = styled.div`
   .view-all {
@@ -25,22 +26,28 @@ const HomeFeatureStyles = styled.div`
 `;
 
 const HomeFeature = () => {
+  const {
+    eventState: { allevents },
+    getAllEventsEver,
+  } = useContext(eventContext);
+
+  useState(() => getAllEventsEver(), []);
   const navigate = useNavigate();
   return (
     <HomeFeatureStyles className="home-block">
       <div className="container">
-        <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={"auto"}>
-          <div className="flex items-center justify-between">
-            <Heading>Feature</Heading>
-            <span onClick={() => navigate("/blog")} className="view-all">
-              View all
-            </span>
-          </div>
-          <div className="grid-layout"></div>
-        </Swiper>
+        <div className="flex items-center justify-between">
+          <Heading>Feature</Heading>
+          <span onClick={() => navigate("/events")} className="view-all">
+            View all
+          </span>
+        </div>
+        <div className="grid-layout">
+          <EventFeature events={allevents}></EventFeature>
+        </div>
       </div>
     </HomeFeatureStyles>
   );
-};
+}
 
 export default HomeFeature;

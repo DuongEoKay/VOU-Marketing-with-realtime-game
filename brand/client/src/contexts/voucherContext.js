@@ -35,7 +35,6 @@ const VoucherContextProvider = ({children}) => {
     const addVoucher = async (Voucher) => {
         try {
           const response = await axios.post("http://localhost:8080/brand/api/voucher/create", Voucher);
-          console.log(response)
           if (response.data.success) {
             dispatch({ type: "ADD_VOUCHER", payload: response.data.voucher });
             return response.data;
@@ -61,6 +60,20 @@ const VoucherContextProvider = ({children}) => {
           : { success: false, message: "Server error" };
       }
     };
+
+    // update voucher
+    const updateVoucher = async (id, Voucher) => {
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/brand/api/voucher/${id}`, Voucher
+        );
+        return response.data;
+      } catch (error) {
+        if (error.response.data) {
+          return error.response.data;
+        } else return { success: false, message: error.message };
+      }
+    }
 
     // delete voucher
     const deleteVoucher = async (voucherId) => {
@@ -97,7 +110,6 @@ const VoucherContextProvider = ({children}) => {
         const response = await axios.get(
           `http://localhost:8080/brand/api/voucher/voucherofevent/${eventId}`
         );
-        console.log(response)
         if (response.data.success) {
             dispatch({ type: "VOUCHER_OF_EVENT", payload: response.data.voucher });
             return response.data;
@@ -152,7 +164,8 @@ const VoucherContextProvider = ({children}) => {
       getAllVouchersEver,
       deleteVoucherEvent,
       addVoucherEvent,
-      getVoucherEvent
+      getVoucherEvent,
+      updateVoucher,
     };
 
     return (

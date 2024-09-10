@@ -37,6 +37,12 @@ export const eventReducer = (state, action) => {
           smalllastevents: payload,
           eventsLoading: false,
         };
+      case "GAME":
+        return {
+          ...state,
+          games: payload,
+          eventsLoading: false,
+        };
       default:
         return state;
     }
