@@ -22,6 +22,18 @@ public class ReportService {
     }
 
     public PlayData save(PlayData playData) {
+        System.out.println("Save play data "+playData);
         return repository.save(playData);
     }
+
+    public int getPlayByEvent(String id) {
+        List<PlayData> playDataList = repository.findByEventId(id);
+        return playDataList.size();
+    }
+
+    public int getPlayByGame(String id) {
+        List<PlayData> playDataList = repository.findByGameId(id);
+        return playDataList.size();
+    }
+
 }

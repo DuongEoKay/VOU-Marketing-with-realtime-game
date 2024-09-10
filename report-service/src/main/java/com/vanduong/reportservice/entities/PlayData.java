@@ -30,6 +30,8 @@ public class PlayData {
 
     private String date;
 
+    private int point;
+
 
 
 

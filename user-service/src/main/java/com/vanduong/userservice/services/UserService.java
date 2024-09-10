@@ -136,16 +136,19 @@ public class UserService {
 
 
             GamePlayData gamePlayData = new GamePlayData();
-            gamePlayData.setId(addPointRequest.getId().toString());
+            gamePlayData.setUserId(addPointRequest.getId().toString());
             gamePlayData.setGameId(addPointRequest.getGameId());
             gamePlayData.setEventId(addPointRequest.getEventId());
             gamePlayData.setScores(addPointRequest.getScores());
             gamePlayData.setDate(new Timestamp(System.currentTimeMillis()).toString());
+            gamePlayData.setPoint(addPointRequest.getPoint());
+
+            System.out.println("data send:  "+gamePlayData);
 
 
             producerService.sendMessage("play",gamePlayData);
 
-            String log = "User " + user.getUsername() + " played game " + addPointRequest.getGameId()+" at event " +addPointRequest.getEventId()+" received "+addPointRequest.getScores() + " score and got " + addPointRequest.getPoint() + " points";
+            String log = "User " + user.getUsername() + " played game " + addPointRequest.getGameId()+" at event " +addPointRequest.getEventId()+" received "+addPointRequest.getScores() + " score and got " + addPointRequest.getPoint() + " points at "+gamePlayData.getDate();
 
             producerService.sendMessage("log", log);
 

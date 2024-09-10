@@ -14,7 +14,15 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    @GetMapping("/play-by-event/{id}")
+    public int getPlayByEventReport( @PathVariable String id) {
+        return reportService.getPlayByEvent("id");
+    }
 
+    @GetMapping("/play-by-game/{id}")
+    public int getPlayByGameReport( @PathVariable String id) {
+        return reportService.getPlayByGame("id");
+    }
 
 
 
