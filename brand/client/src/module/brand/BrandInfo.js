@@ -55,21 +55,8 @@ const BrandInfoStyles = styled.div`
       object-fit: cover;
     }
   }
-  .fl_button {
-    color: white;
-    background-color: ${theme.primary};
-    cursor: pointer;
-    padding: calc(1em + 0.5vw);
-    line-height: 1;
-    border-radius: calc(0.1em + 0.4vw);
-    font-weight: 600;
-    height: 20px;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-.brand_info {
+
+  .brand_info {
     text-align: center;
   }
 
@@ -86,7 +73,7 @@ const BrandInfoStyles = styled.div`
       display: flex;
       gap: 1rem;
     }
-    .active {
+  .active {
       background-color: black;
       color: #fff;
       border-radius: 4px;
