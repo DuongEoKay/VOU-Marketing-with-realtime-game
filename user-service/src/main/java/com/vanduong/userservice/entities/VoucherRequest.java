@@ -13,4 +13,5 @@ public class VoucherRequest {
     private String voucher;
     private int quantity;
     private int point;
+    private String event;
 }

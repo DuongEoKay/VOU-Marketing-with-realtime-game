@@ -23,10 +23,11 @@ public class UserService {
     private ProducerService producerService;
 
     private final UserRepository repository;
+
     private final RestTemplate restTemplate;
 
     @Autowired
-    public UserService(UserRepository repository,
+    public UserService(UserRepository repository, UserRepository repository1,
                        RestTemplate restTemplate) {
         this.repository = repository;
         this.restTemplate = restTemplate;
@@ -92,9 +93,9 @@ public class UserService {
             }
 
 
-
+            System.out.println("user point: "+user.getPoint());
             user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
-
+            System.out.println("user point after: "+user.getPoint());
 
 
 
@@ -104,6 +105,8 @@ public class UserService {
 
             target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
             this.repository.save(user);
+            System.out.println("buy user: "+user);
+            System.out.println("real user"+this.repository.findById(user.getId()).orElse(null));
             this.repository.save(target);
             return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
         } catch (Exception e) {
