@@ -52,7 +52,6 @@ const EventAddNew = () => {
   });
 
   useState(() => getGameName(), [])
-  console.log("games", games)
 
   const modules = {
     toolbar: [
@@ -113,6 +112,8 @@ const EventAddNew = () => {
     const soluongvoucher = voucherAmount
     const id_game = gameid
 
+    let plainText = stripHtml(mota)
+
     let totalvoucheravailable = 0
     for (let i = 0; i < vouchersarr.length; i++) totalvoucheravailable += vouchersarr[i].soluongvoucher
     
@@ -123,7 +124,7 @@ const EventAddNew = () => {
     else if(Date_startDate >= Date_endDate) toast.error("End Date/Time must be after Start Date/Time");
     else {
       try {
-        const newEventData = await addEvent({ tensukien, hinhanh, id_game, soluongvoucher, mota, thoigianbatdau, thoigianketthuc });
+        const newEventData = await addEvent({ tensukien, hinhanh, id_game, soluongvoucher, "mota": plainText, thoigianbatdau, thoigianketthuc });
         if (newEventData["success"]) {
           let allquestionscreated = 0
           for (let i = 0; i < numQuestions; i++) {
@@ -240,6 +241,12 @@ const EventAddNew = () => {
     else if(answer == "C") setValue(`questions[${index}].correctAnswer`, answerC)
     else if(answer == "D") setValue(`questions[${index}].correctAnswer`, answerD)
   }
+
+  const stripHtml = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
 
   return (
     <>
@@ -407,7 +414,7 @@ const EventAddNew = () => {
                   name="mota"
                   value={mota}
                   onChange={setMota}
-                />
+                  />
               </div>
             </Field>
           </div>

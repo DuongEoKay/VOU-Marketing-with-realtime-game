@@ -105,12 +105,12 @@ const VoucherUpdate = () => {
     trigia = trigia == "" ? detailedvoucher[0].trigia : trigia;
     diem = diem == "" ? detailedvoucher[0].diem : diem;
 
-    console.log(values)
+    let plainText = stripHtml(mota)
 
     if (!Number.isInteger(parseInt(trigia, 10))) toast.error("Value of Voucher must be an integer")
     else if (!Number.isInteger(parseInt(diem, 10))) toast.error("Point of Voucher must be an integer")
     else {
-        const updateInfor = {ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan}
+        const updateInfor = {ten, qrcode, hinhanh, trigia, diem, "mota": plainText, ngayhethan}
         try {
             const updateVoucherData = await updateVoucher(detailid, updateInfor);
             if (updateVoucherData["success"]) {
@@ -179,6 +179,12 @@ const VoucherUpdate = () => {
       ["link", "image", "video"],
       ["clean"],
     ],
+  };
+
+  const stripHtml = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
   };
 
   return (

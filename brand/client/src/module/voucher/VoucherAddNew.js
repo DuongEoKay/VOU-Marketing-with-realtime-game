@@ -60,11 +60,13 @@ const VoucherAddNew = () => {
     const qrcode = urlQRCode
     const hinhanh = urlHinhanh
 
+    let plainText = stripHtml(mota)
+
     if (!Number.isInteger(parseInt(trigia, 10))) toast.error("Value of Voucher must be an integer")
     else if (!Number.isInteger(parseInt(diem, 10))) toast.error("Point of Voucher must be an integer")
     else {
         try {
-            const newVoucherData = await addVoucher({ ten, qrcode, hinhanh, trigia, diem, mota, ngayhethan });
+            const newVoucherData = await addVoucher({ ten, qrcode, hinhanh, trigia, diem, "mota": plainText, ngayhethan });
             if (newVoucherData["success"]) {
                 toast.success(`New voucher added successfully`);
                 navigate("/manage/vouchers");
@@ -109,6 +111,12 @@ const VoucherAddNew = () => {
     setValue("hinhanh", urlHinhanh);
     setDefaultImageVisibleHinhAnh(false);
   }
+
+  const stripHtml = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
 
   const modules = {
     toolbar: [
