@@ -60,9 +60,9 @@ const EventItem = ({ event }) => {
       <EventVoucherNum type="secondary">Vouchers: {event?.soluongvoucher}</EventVoucherNum>
       <EventTitle to={`/event/${event.id_sukien}`}>{truncatedTitle}</EventTitle>
       <EventMeta
-        brandName={event?.brand_name}
         brandId={event?.id_thuonghieu}
-        date={event?.ngaybatdau}
+        startdate={event?.thoigianbatdau}
+        enddate={event?.thoigianketthuc}
       ></EventMeta>
     </EventItemStyles>
   );

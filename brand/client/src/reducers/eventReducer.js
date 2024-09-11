@@ -43,6 +43,12 @@ export const eventReducer = (state, action) => {
           games: payload,
           eventsLoading: false,
         };
+      case "USERCOUNT":
+        return {
+          ...state,
+          usercount: payload,
+          eventsLoading: false,
+        };
       default:
         return state;
     }

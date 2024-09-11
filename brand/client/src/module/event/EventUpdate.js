@@ -9,12 +9,13 @@ import { Button } from "components/button";
 import DashboardHeading from "module/dashboard/DashboardHeading";
 import { useNavigate } from "react-router-dom";
 import CloudinaryUploader from "components/image/CloudinaryUploader";
-import { soluongvoucherArray, game } from "utils/constants";
+import { soluongvoucherArray } from "utils/constants";
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { eventContext } from "contexts/eventContext";
+import { voucherContext } from "contexts/voucherContext";
 import { questionContext } from "contexts/questionContext";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -42,10 +43,17 @@ const EventUpdate = () => {
     getAllQuestions, 
     addQuestion
   } = useContext(questionContext)
+
+  const {
+    voucherState: { vouchers, voucherevent },
+    getVoucherEvent, getAllVouchers, deleteVoucherEvent, addVoucherEvent
+  } = useContext(voucherContext)
   const id = slug;
   const detailid = id;
   useState(() => getDetailedEvent(detailid), []);
   useState(() => getAllQuestions(detailid), []);
+  useState(() => getAllVouchers(detailid), []);
+  useState(() => getVoucherEvent(detailid), []);
   useState(() => getGameName(), []);
 
   const { control, watch, register, formState: { errors }, reset, setValue, handleSubmit } = useForm({
@@ -80,6 +88,7 @@ const EventUpdate = () => {
   const [mota, setMota] = useState("");
   const [question, setQuestions] = useState([])
   const [gamename, setgameName] = useState("")
+  const [vouchersarr, setVouchersArray] = useState([])
 
   const updateEventHandler = async (values) => {
     const startDate_day = StartDateValue.date()
@@ -109,12 +118,18 @@ const EventUpdate = () => {
 
     const updateInfor = {tensukien, hinhanh, soluongvoucher, "mota": plainText, thoigianbatdau, thoigianketthuc, id_game}
 
-    try {
+    let totalvoucheravailable = 0
+    if (vouchersarr) {
+      for (let i = 0; i < vouchersarr.length; i++) totalvoucheravailable += vouchersarr[i].soluong
+    }
+
+    if(totalvoucheravailable > soluongvoucher) toast.error("Number voucher is over limit")
+    else try {
       const updateEventData = await updateEvent(detailid, updateInfor);
       if (updateEventData["success"]) {
         const isQuestionsDeleted = await deleteQuestionEvent(detailid)
+        let allquestionscreated = 0
         if(isQuestionsDeleted["success"]) {
-          let allquestionscreated = 0
           for (let i = 0; i < numQuestions; i++) {
             const id_sukien = detailid
             const cauhoi = watch(`questions[${i}].question`)
@@ -128,10 +143,24 @@ const EventUpdate = () => {
               allquestionscreated = allquestionscreated + 1
             }
           }
-          if (allquestionscreated == numQuestions) {
-            toast.success(`Event updated successfully`);
-            navigate("/manage/events");
+        }
+        let totalvoucher = 0
+        const isVouchersDeleted = await deleteVoucherEvent(detailid)
+        if(isVouchersDeleted["success"]) {
+          if(vouchersarr){
+            for (let i = 0; i < vouchersarr.length; i++) {
+              const id_sukien = detailid
+              const id_voucher = vouchersarr[i].id_voucher
+              const soluong = vouchersarr[i].soluong
+              const data = { id_sukien, id_voucher, soluong }
+              const newVoucherEvent = await addVoucherEvent(data)
+              if(newVoucherEvent["success"]) totalvoucher += 1
+            }
           }
+        }
+        if (allquestionscreated == numQuestions && (totalvoucher == vouchersarr.length || totalvoucher == 0)) {
+          toast.success(`Event updated successfully`);
+          navigate("/manage/events");
         }
       } else {
         toast.error(updateEventData["message"]);
@@ -139,6 +168,8 @@ const EventUpdate = () => {
     } catch (error) {
       console.log(error);
     }
+
+    
   };
 
   useEffect(() => {
@@ -157,6 +188,12 @@ const EventUpdate = () => {
   }, [detailedevent]);
 
   useEffect(() => {
+    if (voucherevent.length > 0) {
+      setVouchersArray(voucherevent)
+    }
+  }, [voucherevent]);
+
+  useEffect(() => {
     if (questions && questions.length > 0) {
       reset({
         ...watch(),  // Keep existing values in the form
@@ -173,6 +210,18 @@ const EventUpdate = () => {
       setNumQuestions(questions.length || 0);
     }
   }, [questions, reset]);
+
+  const handleClickVoucherOption = (item) => {
+    if(vouchersarr.find(voucher => voucher.id_voucher === item.id_voucher))
+      setVouchersArray(vouchersarr.filter(voucher => voucher.id_voucher != item.id_voucher))
+    else setVouchersArray([...vouchersarr, { ...item, soluong: 0 }])
+  };
+
+  const handleVoucherInputChange = (id, value) => {
+    setVouchersArray(vouchersarr.map(voucher =>
+      voucher.id_voucher === id ? { ...voucher, soluong: parseInt(value, 10) } : voucher
+    ));
+  };
 
   const handleClickOption = (item) => {
     setValue("voucherId", item.id);
@@ -296,28 +345,43 @@ const EventUpdate = () => {
             </div>
             <div className="form-layout">
               <Field>
-                <Label>Image</Label>
-                <img
-                    className="w-[20rem] h-[15rem] object-cover mb-3 rounded-3xl"
-                    src={url ? url : event.hinhanh}
-                    alt="EventImage"
-                ></img>
-                <CloudinaryUploader onUpload={handleOnUpload}>
-                  {({ open }) => {
-                    function handleOnClick(e) {
-                      e.preventDefault();
-                      open();
-                    }
-                    return (
-                        <button
-                            className="p-3 text-sm text-white bg-green-500 rounded-md"
-                            onClick={handleOnClick}
+                <Label>Voucher Available</Label>
+                <Dropdown>
+                  <Dropdown.Select placeholder="Select Voucher"></Dropdown.Select>
+                  <Dropdown.List>
+                    {vouchers.length > 0 &&
+                      vouchers.slice(0).map((item) => (
+                        <Dropdown.Option
+                          key={item.id_voucher}
+                          onClick={() => handleClickVoucherOption(item)}
                         >
-                            Change Image
-                        </button>
-                    );
-                  }}
-                </CloudinaryUploader>
+                          {item.ten}
+                        </Dropdown.Option>
+                      ))}
+                  </Dropdown.List>
+                </Dropdown>
+                <div className="flex flex-wrap gap-4 mt-2">
+                  {vouchersarr.length > 0 &&
+                    vouchersarr.map((voucher) => (
+                      <div key={voucher.id_voucher} className="flex items-center gap-2">
+                        <span
+                          key={voucher.id_voucher}
+                          className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50 m-1"
+                        >
+                          {voucher.ten || voucher.tenvoucher}
+                        </span>
+                        <input
+                          type="number"
+                          placeholder="Enter voucher num"
+                          value={voucher.soluong}
+                          onChange={(e) => handleVoucherInputChange(voucher.id_voucher, e.target.value)}
+                          className="p-2 border border-gray-300 rounded"
+                          min="0"
+                        />
+                      </div>
+                    ))
+                  }
+                </div>
               </Field>
               <Field>
                 <Label>Game Name</Label>
@@ -340,6 +404,32 @@ const EventUpdate = () => {
                     {selectgameName?.name}
                   </span>
                 )}
+              </Field>
+            </div>
+            <div className="single-form-layout">
+              <Field>
+                  <Label>Image</Label>
+                  <img
+                      className="w-[20rem] h-[15rem] object-cover mb-3 rounded-3xl"
+                      src={url ? url : event.hinhanh}
+                      alt="EventImage"
+                  ></img>
+                  <CloudinaryUploader onUpload={handleOnUpload}>
+                    {({ open }) => {
+                      function handleOnClick(e) {
+                        e.preventDefault();
+                        open();
+                      }
+                      return (
+                          <button
+                              className="p-3 text-sm text-white bg-green-500 rounded-md"
+                              onClick={handleOnClick}
+                          >
+                              Change Image
+                          </button>
+                      );
+                    }}
+                  </CloudinaryUploader>
               </Field>
             </div>
             <div className="solo-form-layout">

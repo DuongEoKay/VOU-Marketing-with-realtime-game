@@ -55,7 +55,20 @@ const BrandInfoStyles = styled.div`
       object-fit: cover;
     }
   }
-
+  .fl_button {
+    color: white;
+    background-color: ${theme.primary};
+    cursor: pointer;
+    padding: calc(1em + 0.5vw);
+    line-height: 1;
+    border-radius: calc(0.1em + 0.4vw);
+    font-weight: 600;
+    height: 20px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .brand_info {
     text-align: center;
   }
@@ -73,7 +86,7 @@ const BrandInfoStyles = styled.div`
       display: flex;
       gap: 1rem;
     }
-  .active {
+    .active {
       background-color: black;
       color: #fff;
       border-radius: 4px;
@@ -134,8 +147,8 @@ const BrandInfo = () => {
           ></img>
           <div className="absolute background_blur"></div>
           <div className="small_container">
-            <div className="flex items-center justify-center gap-16 mb-10 profile_container">
-              <div className="flex items-center gap-4 justify-evenly follow_info">
+            <div className="ml-36 flex items-center justify-center gap-14 mb-10 profile_container">
+              <div className="flex items-center gap-4 justify-evenly">
                 <div>
                   <p className="font-bold text-center text-black">
                     {brandevents.length}
@@ -155,21 +168,52 @@ const BrandInfo = () => {
                   </button>
               </div>
             </div>
-
             <div className="mb-20 brand_info">
               <p className="text-lg font-bold fullname">{curBrand?.ten}</p>
               <div className="flex justify-center gap-3 mt-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="16"
                   width="16"
-                  viewBox="0 0 512 512"
-                  className="text-gray-400"
+                  height="16"
+                  viewBox="0 0 6.827 6.827"
                 >
-                  <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                  <defs>
+                    <style>
+                      {`
+                        .fill-none { fill: none; }
+                        .fill-primary { fill: #ff6e40; }
+                      `}
+                    </style>
+                  </defs>
+                  <g>
+                    <g>
+                      <path
+                        className="fill-none"
+                        d="M0 0h6.827v6.827H0z"
+                      />
+                      <path
+                        className="fill-none"
+                        d="M.853.853h5.12v5.12H.853z"
+                      />
+                    </g>
+                    <g>
+                      <path
+                        className="fill-primary"
+                        d="M.909 2.24c.067 1.39 1.968 3.158 3.255 3.57.863.275 2.148-.269 1.64-.777L5 4.23c-.122-.123-.32-.108-.439.01l-.46.462c-.992-.54-1.408-.966-1.953-1.951l.462-.462c.119-.119.132-.317.01-.439l-.803-.803C1.37.598.883 1.715.908 2.24z"
+                      />
+                      <path
+                        className="fill-primary"
+                        d="m.909 2.24 1.24.51.462-.46c.119-.12.132-.318.01-.44l-.803-.803C1.37.598.883 1.715.908 2.24z"
+                      />
+                      <path
+                        className="fill-primary"
+                        d="M4.164 5.81c.863.275 2.148-.269 1.64-.777L5 4.23c-.122-.123-.32-.108-.439.01l-.46.462.062 1.107z"
+                      />
+                    </g>
+                  </g>
                 </svg>
                 <span className="text-xs font-semibold text-gray-400 location">
-                  {curBrand?.email}
+                  {curBrand?.sms}
                 </span>
               </div>
               <div className="mt-5">
