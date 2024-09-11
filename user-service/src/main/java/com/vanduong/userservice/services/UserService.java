@@ -93,22 +93,29 @@ public class UserService {
             }
 
 
-            System.out.println("user point: "+user.getPoint());
-            user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
-            System.out.println("user point after: "+user.getPoint());
+            if(user.equals(target))
+            {
+                if(user.getPoint() < voucherRequest.getPoint()*voucherRequest.getQuantity()){
+                    return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Not enough point to add voucher"));
+                }
+                user.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+                user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
+                this.repository.save(user);
+                return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
+            }else{
+                user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
 
+                if(user.getPoint() < 0 ){
+                    return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Not enough point to add voucher"));
+                }
 
-
-            if(user.getPoint() < 0){
-                return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Not enough point to add voucher"));
+                target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
+                this.repository.save(user);
+                this.repository.save(target);
+                return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
             }
 
-            target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
-            this.repository.save(user);
-            System.out.println("buy user: "+user);
-            System.out.println("real user"+this.repository.findById(user.getId()).orElse(null));
-            this.repository.save(target);
-            return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(),target.getVouchers(), "Failed to add voucher"));
         }

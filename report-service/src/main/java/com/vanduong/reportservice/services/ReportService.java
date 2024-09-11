@@ -41,7 +41,9 @@ public class ReportService {
 
     public Map<String, Integer> getUserCountByAllEvents() {
         List<PlayData> playDataList = repository.findAll();
+        System.out.println("Play data list " + playDataList);
         return playDataList.stream()
+                .filter(playData -> playData.getEventId() != null) // Filter out null event IDs
                 .collect(Collectors.groupingBy(
                         PlayData::getEventId,
                         Collectors.collectingAndThen(
