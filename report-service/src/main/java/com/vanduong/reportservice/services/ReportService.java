@@ -90,45 +90,31 @@ public class ReportService {
     }
 
 
-    public int getPlayByLastWeek()
-    {
-        List<PlayData> playDataList = repository.findAll();
-        LocalDate today = LocalDate.now();
-        LocalDate lastWeek = today.minusWeeks(1);
+    private List<PlayData> getPlayDataWithinDateRange(LocalDate startDate, LocalDate endDate) {
+    List<PlayData> playDataList = repository.findAll();
+    return playDataList.stream()
+            .filter(playData -> {
+                ObjectId objectId = playData.getId();
+                Date date = new Date(objectId.getTimestamp() * 1000L);
+                LocalDate playDate = Instant.ofEpochMilli(date.getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                return (playDate.isEqual(startDate) || playDate.isAfter(startDate)) && playDate.isBefore(endDate);
+            })
+            .collect(Collectors.toList());
+}
 
-        List<PlayData> lastWeekPlayData = playDataList.stream()
-                .filter(playData -> {
-                    ObjectId objectId = playData.getId();
-                    Date date = new Date(objectId.getTimestamp() * 1000L);
-                    LocalDate playDate = Instant.ofEpochMilli(date.getTime())
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate();
-                    return playDate.isAfter(lastWeek) && playDate.isBefore(today);
-                })
-                .collect(Collectors.toList());
+public int getPlayByLastWeek() {
+    LocalDate today = LocalDate.now();
+    LocalDate lastWeek = today.minusWeeks(1);
+    return getPlayDataWithinDateRange(lastWeek, today).size();
+}
 
-        return lastWeekPlayData.size();
-    }
-
-    public int getPlayByLastMonth()
-    {
-        List<PlayData> playDataList = repository.findAll();
-        LocalDate today = LocalDate.now();
-        LocalDate lastMonth = today.minusMonths(1);
-
-        List<PlayData> lastMonthPlayData = playDataList.stream()
-                .filter(playData -> {
-                    ObjectId objectId = playData.getId();
-                    Date date = new Date(objectId.getTimestamp() * 1000L);
-                    LocalDate playDate = Instant.ofEpochMilli(date.getTime())
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate();
-                    return playDate.isAfter(lastMonth) && playDate.isBefore(today);
-                })
-                .collect(Collectors.toList());
-
-        return lastMonthPlayData.size();
-    }
+public int getPlayByLastMonth() {
+    LocalDate today = LocalDate.now();
+    LocalDate lastMonth = today.minusMonths(1);
+    return getPlayDataWithinDateRange(lastMonth, today).size();
+}
 }
 
 
