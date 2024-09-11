@@ -62,13 +62,13 @@ const SignUpPage = () => {
       const registeruser = await registerUser({
         otp,
         email, 
-        fullname, 
+        'fullName': fullname,
         password,
         'role': "ROLE_BRAND_OWNER",
         phone,
         username,
         'avatar': url,
-        'dateofBirth"': newString,
+        'dateOfBirth': newString,
         sex,
         facebook
       })

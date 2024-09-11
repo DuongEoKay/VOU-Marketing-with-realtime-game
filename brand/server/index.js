@@ -2,7 +2,7 @@ require("dotenv").config();
 const { Pool } = require('pg')
 
 const express = require('express')
-const port = 5000
+const port = 5001
 
 const pool = new Pool({
     host: process.env.DB_HOST,
