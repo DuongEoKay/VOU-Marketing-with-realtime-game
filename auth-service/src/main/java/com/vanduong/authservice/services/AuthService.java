@@ -16,6 +16,9 @@ import java.util.Map;
 @Service
 public class AuthService {
 
+    @Autowired
+    private ProducerService producerService;
+
     private final RestTemplate restTemplate;
     private final JwtUtil jwt;
 
@@ -60,6 +63,7 @@ public class AuthService {
                 // Store OTP in user's session or a temporary storage
 
                 // Return a response indicating that the OTP has been sent
+                producerService.sendMessage("log", phoneValidateRequest.getPhone()+" has been validated");
                 return new OtpResponse(true, "OTP sent");
             } else {
                 return new OtpResponse(false, "Phone already exist or invalid phone number");
@@ -98,6 +102,7 @@ public class AuthService {
                 String accessToken = jwt.generate(userVO, "ACCESS");
                 String refreshToken = jwt.generate(userVO, "REFRESH");
 
+                producerService.sendMessage("log", userVO.getUsername() + " has been registered");
                 return new AuthResponse(accessToken, refreshToken, "User registered successfully");
             } else {
                 return new AuthResponse(null, null, "Invalid OTP");
@@ -127,6 +132,7 @@ public class AuthService {
         String accessToken = jwt.generate(userVO, "ACCESS");
         String refreshToken = jwt.generate(userVO, "REFRESH");
 
+        producerService.sendMessage("log", userVO.getUsername() + " has been registered by admin");
         return new AuthResponse(accessToken, refreshToken, "User registered successfully");
 
     }
@@ -161,6 +167,7 @@ public class AuthService {
                 // Store OTP in user's session or a temporary storage
 
                 // Return a response indicating that the OTP has been sent
+
                 return new OtpResponse(true, "OTP sent");
             } else {
                 return new OtpResponse(false, "Invalid username or password");
@@ -192,6 +199,7 @@ public class AuthService {
                 String accessToken = jwt.generate(userVO, "ACCESS");
                 String refreshToken = jwt.generate(userVO, "REFRESH");
 
+                producerService.sendMessage("log", userVO.getUsername() + " has been logged in");
                 return new AuthResponse(accessToken, refreshToken, "User logged in successfully");
             } else {
                 // If the OTPs do not match, return an error response

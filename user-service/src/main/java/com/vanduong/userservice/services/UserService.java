@@ -101,6 +101,7 @@ public class UserService {
                 user.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
                 user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
                 this.repository.save(user);
+                producerService.sendMessage("log", user.getUsername() + " bought " + voucherRequest.getQuantity() + " " + voucherRequest.getVoucher() + " voucher to himself");
                 return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
             }else{
                 user.setPoint(user.getPoint() - voucherRequest.getPoint()*voucherRequest.getQuantity());
@@ -112,6 +113,7 @@ public class UserService {
                 target.addVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
                 this.repository.save(user);
                 this.repository.save(target);
+                producerService.sendMessage("log", user.getUsername() + " bought " + voucherRequest.getQuantity() + " " + voucherRequest.getVoucher() + " voucher for " + target.getUsername());
                 return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Add voucher successfully"));
             }
 
@@ -158,7 +160,7 @@ public class UserService {
 
             producerService.sendMessage("play",gamePlayData);
 
-            String log = "User " + user.getUsername() + " played game " + addPointRequest.getGameId()+" at event " +addPointRequest.getEventId()+" received "+addPointRequest.getScores() + " score and got " + addPointRequest.getPoint() + " points at "+gamePlayData.getDate();
+            String log = user.getUsername() + " played " + addPointRequest.getGameId()+" at event " +addPointRequest.getEventId()+" received "+addPointRequest.getScores() + " score and got " + addPointRequest.getPoint() + " points at "+gamePlayData.getDate();
 
             producerService.sendMessage("log", log);
 
@@ -189,10 +191,22 @@ public class UserService {
             user.removeVoucher(voucherRequest.getVoucher(), voucherRequest.getQuantity());
             this.repository.save(user);
             this.repository.save(target);
+
+            producerService.sendMessage("log", user.getUsername() + " sent " + voucherRequest.getQuantity() + " " + voucherRequest.getVoucher() + " voucher to " + target.getUsername());
             return ResponseEntity.ok(new VoucherResponse(target.getPhone(), target.getVouchers(), "Send voucher successfully"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new VoucherResponse(target.getPhone(), target.getVouchers(), "Failed to send voucher"));
         }
     }
+
+    public int getTotalCustomer() {
+        return this.repository.findByRole(USER_ROLE.ROLE_CUSTOMER).size();
+    }
+
+    public int getTotalBrand() {
+        return this.repository.findByRole(USER_ROLE.ROLE_BRAND_OWNER).size();
+    }
+
+
 }
 

@@ -8,6 +8,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +29,7 @@ public class ReportService {
     }
 
     public PlayData save(PlayData playData) {
-        System.out.println("Save play data "+playData);
+        System.out.println("Save play data " + playData);
         return repository.save(playData);
     }
 
@@ -53,4 +57,78 @@ public class ReportService {
                 ));
     }
 
+    public Map<String, Integer> getTotalPlayByGame() {
+        List<PlayData> playDataList = repository.findAll();
+        System.out.println("Play data list " + playDataList);
+        return playDataList.stream()
+                .filter(playData -> playData.getGameId() != null) // Filter out null game IDs
+                .collect(Collectors.groupingBy(
+                        PlayData::getGameId,
+                        Collectors.collectingAndThen(
+                                Collectors.counting(),
+                                Long::intValue
+                        )
+                ));
+    }
+
+    public int getPlayByToday() {
+        List<PlayData> playDataList = repository.findAll();
+        LocalDate today = LocalDate.now();
+
+        List<PlayData> todayPlayData = playDataList.stream()
+                .filter(playData -> {
+                    ObjectId objectId = playData.getId();
+                    Date date = new Date(objectId.getTimestamp() * 1000L);
+                    LocalDate playDate = Instant.ofEpochMilli(date.getTime())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    return playDate.equals(today);
+                })
+                .collect(Collectors.toList());
+
+        return todayPlayData.size();
+    }
+
+
+    public int getPlayByLastWeek()
+    {
+        List<PlayData> playDataList = repository.findAll();
+        LocalDate today = LocalDate.now();
+        LocalDate lastWeek = today.minusWeeks(1);
+
+        List<PlayData> lastWeekPlayData = playDataList.stream()
+                .filter(playData -> {
+                    ObjectId objectId = playData.getId();
+                    Date date = new Date(objectId.getTimestamp() * 1000L);
+                    LocalDate playDate = Instant.ofEpochMilli(date.getTime())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    return playDate.isAfter(lastWeek) && playDate.isBefore(today);
+                })
+                .collect(Collectors.toList());
+
+        return lastWeekPlayData.size();
+    }
+
+    public int getPlayByLastMonth()
+    {
+        List<PlayData> playDataList = repository.findAll();
+        LocalDate today = LocalDate.now();
+        LocalDate lastMonth = today.minusMonths(1);
+
+        List<PlayData> lastMonthPlayData = playDataList.stream()
+                .filter(playData -> {
+                    ObjectId objectId = playData.getId();
+                    Date date = new Date(objectId.getTimestamp() * 1000L);
+                    LocalDate playDate = Instant.ofEpochMilli(date.getTime())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    return playDate.isAfter(lastMonth) && playDate.isBefore(today);
+                })
+                .collect(Collectors.toList());
+
+        return lastMonthPlayData.size();
+    }
 }
+
+

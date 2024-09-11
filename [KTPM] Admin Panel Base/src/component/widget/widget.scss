@@ -1,0 +1,66 @@
+.widget {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 10px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(20, 20, 20, 0.47);
+  border-radius: 10px;
+  height: 80px; /* Reduced height */
+  width: 30%; /* Set width to fit three widgets in a row */
+  margin: 10px; /* Add margin for spacing between widgets */
+
+  .left,
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title {
+      font-weight: bold;
+      font-size: 14px;
+      color: rgb(81, 172, 81); /* Updated color */
+    }
+
+    .counter {
+      font-size: 28px;
+      font-weight: 300;
+      color: black; /* Updated color */
+    }
+
+    .link {
+      width: max-content;
+      font-size: 12px;
+      border-bottom: 1px solid gray;
+      color: black; /* Updated color */
+    }
+
+    .percentage {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: black; /* Updated color */
+
+      &.positive {
+        color: green;
+      }
+      &.negative {
+        color: red;
+      }
+    }
+
+    .icon {
+      font-size: 30px;
+      padding: 5px;
+      border-radius: 5px;
+      align-self: flex-end;
+    }
+  }
+}
+
+/* Container to hold the widgets in a row */
+.widget-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

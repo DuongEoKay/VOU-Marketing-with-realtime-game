@@ -32,7 +32,7 @@ public class GatewayConfig {
                 .route("report-service", r -> r.path("/report/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://report-service"))
-                .route("log-service", r -> r.path("/log/**")
+                .route("log-service", r -> r.path("/logs/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://log-service"))
                 .build();

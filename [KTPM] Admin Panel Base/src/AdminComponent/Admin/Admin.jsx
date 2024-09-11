@@ -5,6 +5,7 @@ import { User } from '../User/User'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Game } from '../Game/Game'
+import { Dashboard } from '../Dashboard/Dashboard'
 
 
 export const Admin = () => {
@@ -21,7 +22,7 @@ export const Admin = () => {
         </div>
         <div className='lg:w-[85%]'>
             <Routes>
-                <Route path='/dashboard' element={<User/>}/>
+                <Route path='/dashboard' element={<Dashboard/>}/>
                 <Route path='/user' element={<User/>}/>
                 <Route path="/user/:register" element={<User />} />
                 <Route path="/user/:update" element={<User />} />

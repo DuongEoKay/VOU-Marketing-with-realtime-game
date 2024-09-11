@@ -1,10 +1,12 @@
 package com.vanduong.gameservice.controllers;
 
 import com.vanduong.gameservice.entities.Game;
+import com.vanduong.gameservice.entities.TotalResponse;
 import com.vanduong.gameservice.services.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +43,15 @@ public class GameController {
     @PutMapping
     public Game update(@RequestBody Game game) {
         return gameService.update(game);
+    }
+
+    @GetMapping(value = "/total-game")
+    public ResponseEntity<TotalResponse> getTotalBrand() {
+        int amount = gameService.getTotalGame();
+        String title = "Total Games";
+        String icon ="game";
+        TotalResponse response = new TotalResponse(amount, title, icon);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -93,6 +93,24 @@ public class UserController {
         return userService.sendVoucherToUser(id, voucherRequest);
     }
 
+    @GetMapping(value = "/total-customer")
+    public ResponseEntity<TotalResponse> getTotalCustomer() {
+        int amount = userService.getTotalCustomer();
+        String title = "Total Customers";
+        String icon ="user";
+        TotalResponse response = new TotalResponse(amount, title, icon);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/total-brand")
+    public ResponseEntity<TotalResponse> getTotalBrand() {
+        int amount = userService.getTotalBrand();
+        String title = "Total Brands";
+        String icon ="brand";
+        TotalResponse response = new TotalResponse(amount, title, icon);
+        return ResponseEntity.ok(response);
+    }
+
 
 
 

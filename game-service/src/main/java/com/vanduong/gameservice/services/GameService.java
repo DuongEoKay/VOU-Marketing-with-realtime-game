@@ -49,4 +49,8 @@ public class GameService {
     public List<Game> getAllGame() {
         return this.repository.findAll();
     }
+
+    public int getTotalGame() {
+        return this.repository.findAll().size();
+    }
 }

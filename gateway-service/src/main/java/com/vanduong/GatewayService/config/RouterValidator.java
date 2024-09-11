@@ -15,7 +15,10 @@ public class RouterValidator {
             "/auth/login",
             "/auth/validate-otp",
             "/auth/validate-phone",
-            "/brand/api/setup/"
+            "/brand/api/setup/",
+            "/users/total-customer",
+            "/users/total-brand",
+            "/games/total-game"
     );
 
     public Predicate<ServerHttpRequest> isSecured =
