@@ -11,8 +11,6 @@
         <module name="config-service" />
         <module name="game-service" />
         <module name="gateway-service" />
-        <module name="log-service" />
-        <module name="report-service" />
         <module name="user-service" />
         <module name="game-service (2)" />
         <module name="discovery-service" />
