@@ -7,7 +7,7 @@ const client = new Eureka({
         hostName: 'localhost',
         ipAddr: '127.0.0.1', // Use '127.0.0.1' or the actual IP address
         port: {
-            '$': 5000,
+            '$': 5001,
             '@enabled': 'true',
         },
         vipAddress: 'brand-service', // Match this with the app name
